@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="horizontalBackground">#6CFAFAFA</color>
+    <color name="colorPrimary">#e14124</color>
+    <color name="colorPrimaryDark">#e14124</color>
+    <color name="colorAccent">#e14124</color>
+
+    <color name="colorBlackTransparent">#50000000</color>
+    <color name="colorLightBlack">#FF4A4A4A</color>
+
+    <color name="colorSnackBarErrorBg">#ffa069</color>
+    <color name="colorSnackBarErrorText">#c400c6</color>
+    <color name="colorSnackBarSuccessBg">#FFDF5130</color>
+    <color name="colorSnackBarSuccessText">#FFFFFF</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+
+</resources>
