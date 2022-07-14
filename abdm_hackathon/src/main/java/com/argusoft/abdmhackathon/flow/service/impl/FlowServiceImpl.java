@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 /**
  * <p>
@@ -32,10 +33,15 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public QuestionDto getNextQuestion(Integer questionId, String answer, String preferredLanguage) {
 
-        FlowMaster flowMaster = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, answer);
-        if (flowMaster == null) {
-            flowMaster = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, null);
+        Integer nextQuestionId = null;
+        if (Objects.isNull(questionId)) {
+            nextQuestionId = flowMasterDao.getFirstQuestionId();
+        } else {
+            nextQuestionId = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, answer);
+            if (nextQuestionId == null) {
+                nextQuestionId = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, null);
+            }
         }
-        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionMasterDao.retrieveById(flowMaster.getQuestionId()));
+        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionMasterDao.retrieveById(nextQuestionId));
     }
 }

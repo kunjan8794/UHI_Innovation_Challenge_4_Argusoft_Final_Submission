@@ -4,5 +4,7 @@ import com.argusoft.abdmhackathon.flow.model.FlowMaster;
 
 public interface FlowMasterDao {
 
-    FlowMaster getFlowByQuestionIDAndAnswer(Integer QuestionId,String Answer);
+    Integer getFlowByQuestionIDAndAnswer(Integer questionId,String answer);
+
+    Integer getFirstQuestionId();
 }
