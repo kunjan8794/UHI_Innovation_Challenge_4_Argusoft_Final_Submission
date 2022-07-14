@@ -12,7 +12,7 @@
     <artifactId>abdmhackathon</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>abdmhackathon</name>
-    <description>Em Care Project</description>
+    <description>ABDM Hackathon Project</description>
     <properties>
         <java.version>13</java.version>
         <maven.test.skip>true</maven.test.skip>
