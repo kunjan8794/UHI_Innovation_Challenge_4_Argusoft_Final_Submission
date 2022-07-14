@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.argusoft.emcare")
-@EntityScan(basePackages = "com.argusoft.emcare")
+@ComponentScan(basePackages = "com.argusoft.abdmhackathon")
+@EntityScan(basePackages = "com.argusoft.abdmhackathon")
 public class AbdmHackathonApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
