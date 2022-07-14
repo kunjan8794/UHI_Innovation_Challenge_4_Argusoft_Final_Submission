@@ -1,9 +1,7 @@
 package com.argusoft.abdmhackathon.question.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Defines methods for QuestionMaster
@@ -21,10 +19,11 @@ public class QuestionMaster {
     private String description;
     private String image;
     private String question;
-    private String questionHn;
     private String questionGu;
+    private String questionHn;
     private String type;
-    private String options;
+    @OneToMany(targetEntity = QuestionOptionMaster.class, mappedBy = "queId", fetch = FetchType.EAGER)
+    private List<QuestionOptionMaster> options;
 
     public Integer getId() {
         return id;
@@ -66,20 +65,20 @@ public class QuestionMaster {
         this.question = question;
     }
 
-    public String getQuestionHn() {
-        return questionHn;
-    }
-
-    public void setQuestionHn(String questionHn) {
-        this.questionHn = questionHn;
-    }
-
     public String getQuestionGu() {
         return questionGu;
     }
 
     public void setQuestionGu(String questionGu) {
         this.questionGu = questionGu;
+    }
+
+    public String getQuestionHn() {
+        return questionHn;
+    }
+
+    public void setQuestionHn(String questionHn) {
+        this.questionHn = questionHn;
     }
 
     public String getType() {
@@ -90,11 +89,11 @@ public class QuestionMaster {
         this.type = type;
     }
 
-    public String getOptions() {
+    public List<QuestionOptionMaster> getOptions() {
         return options;
     }
 
-    public void setOptions(String options) {
+    public void setOptions(List<QuestionOptionMaster> options) {
         this.options = options;
     }
 }

@@ -1,7 +1,6 @@
 package com.argusoft.abdmhackathon.flow.service.impl;
 
 import com.argusoft.abdmhackathon.flow.dao.FlowMasterDao;
-import com.argusoft.abdmhackathon.flow.model.FlowMaster;
 import com.argusoft.abdmhackathon.flow.service.FlowService;
 import com.argusoft.abdmhackathon.question.dao.QuestionMasterDao;
 import com.argusoft.abdmhackathon.question.dto.QuestionDto;
@@ -42,6 +41,6 @@ public class FlowServiceImpl implements FlowService {
                 nextQuestionId = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, null);
             }
         }
-        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionMasterDao.retrieveById(nextQuestionId));
+        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionMasterDao.retrieveById(nextQuestionId), preferredLanguage);
     }
 }
