@@ -1,0 +1,18 @@
+spring:
+    devtools: 
+        livereload:
+            enabled: true
+    datasource:
+        url: jdbc:postgresql://localhost:5434/abdm_hackathon
+        username: postgres
+        password: argusadmin
+    jpa:
+        hibernate:
+            ddl-auto: update
+            show-sql: true
+        properties:
+            hibernate:
+                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    jackson:
+        default-property-inclusion: NON_NULL
