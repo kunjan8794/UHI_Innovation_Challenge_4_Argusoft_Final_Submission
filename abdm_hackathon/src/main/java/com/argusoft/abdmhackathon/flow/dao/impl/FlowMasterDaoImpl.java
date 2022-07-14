@@ -1,8 +1,8 @@
 package com.argusoft.abdmhackathon.flow.dao.impl;
 
 
-import com.argusoft.abdmhackathon.database.common.impl.GenericDaoImpl;
-import com.argusoft.abdmhackathon.flow.dao.FlowMasterDao;
+import com.argusoft.abdmhackathon.database.dao.GenericRepositoryImpl;
+import com.argusoft.abdmhackathon.flow.dao.FlowMasterCustomDao;
 import com.argusoft.abdmhackathon.flow.model.FlowMaster;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -12,15 +12,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.concurrent.Flow;
 
 @Repository
-public class FlowMasterDaoImpl extends GenericDaoImpl<FlowMaster, Integer> implements FlowMasterDao {
+public class FlowMasterDaoImpl extends GenericRepositoryImpl implements FlowMasterCustomDao {
+
 
 
     @Override
     public Integer getFirstQuestionId () {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<FlowMaster> criteria = criteriaBuilder.createQuery(FlowMaster.class);
         Root<FlowMaster> root = criteria.from(FlowMaster.class);
@@ -31,7 +31,7 @@ public class FlowMasterDaoImpl extends GenericDaoImpl<FlowMaster, Integer> imple
     }
     @Override
     public Integer getFlowByQuestionIDAndAnswer(Integer questionId,String answer){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<FlowMaster> criteria = criteriaBuilder.createQuery(FlowMaster.class);
         Root<FlowMaster> root = criteria.from(FlowMaster.class);
@@ -41,7 +41,7 @@ public class FlowMasterDaoImpl extends GenericDaoImpl<FlowMaster, Integer> imple
             questionCondition = criteriaBuilder.equal(root.get(FlowMaster.Fields.QUESTION_ID), questionId);
             Predicate answerCondition = criteriaBuilder.equal(root.get(FlowMaster.Fields.ANSWER), answer);
             criteria.select(root).where(criteriaBuilder.and(questionCondition, answerCondition));
-            FlowMaster flowMaster=(FlowMaster) session.createQuery(criteria);
+            FlowMaster flowMaster=(FlowMaster) session.createQuery(criteria).list().get(0);
             return flowMaster.getNextQuestionId();
         } else {
             questionCondition = criteriaBuilder.equal(root.get(FlowMaster.Fields.QUESTION_ID), questionId);

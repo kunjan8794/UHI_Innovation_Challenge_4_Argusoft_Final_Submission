@@ -96,4 +96,17 @@ public class QuestionMaster {
     public void setOptions(List<QuestionOptionMaster> options) {
         this.options = options;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionMaster{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", question='" + question + '\'' +
+                ", questionGu='" + questionGu + '\'' +
+                ", questionHn='" + questionHn + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

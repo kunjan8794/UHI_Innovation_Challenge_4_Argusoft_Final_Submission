@@ -2,13 +2,13 @@ package com.argusoft.abdmhackathon.flow.service.impl;
 
 import com.argusoft.abdmhackathon.flow.dao.FlowMasterDao;
 import com.argusoft.abdmhackathon.flow.service.FlowService;
-import com.argusoft.abdmhackathon.question.dao.QuestionMasterDao;
 import com.argusoft.abdmhackathon.question.dto.QuestionDto;
 import com.argusoft.abdmhackathon.question.mapper.QuestionModelToDtoMapper;
+import com.argusoft.abdmhackathon.question.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 
 /**
@@ -24,7 +24,7 @@ import java.util.Objects;
 public class FlowServiceImpl implements FlowService {
 
     @Autowired
-    private QuestionMasterDao questionMasterDao;
+    private QuestionService questionService;
 
     @Autowired
     private FlowMasterDao flowMasterDao;
@@ -41,6 +41,6 @@ public class FlowServiceImpl implements FlowService {
                 nextQuestionId = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, null);
             }
         }
-        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionMasterDao.retrieveById(nextQuestionId), preferredLanguage);
+        return QuestionModelToDtoMapper.convertQuestionModelToDto(questionService.getQuestionByQuestionId(nextQuestionId), preferredLanguage);
     }
 }
