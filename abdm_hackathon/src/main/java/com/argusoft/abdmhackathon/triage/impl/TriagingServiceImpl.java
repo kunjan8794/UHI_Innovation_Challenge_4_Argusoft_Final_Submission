@@ -32,7 +32,7 @@ public class TriagingServiceImpl implements TriagingService {
     private static String COUGHORCOLD_DESC = "";
     private static String ORAL_FLUID_TEST_RECOMMENDATION = "Oral Fluid Test Recommendation";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
-    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation  ";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Some Dehydration.";
     private static String POSSIBLE_BONE_INFECTION = "Possible Bone/Joint Infection";
     private static String POSSIBLE_BONE_INFECTION_DESC = "";
@@ -47,6 +47,7 @@ public class TriagingServiceImpl implements TriagingService {
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         checkForCoughSymptoms(mapOfAnswers, results);
+        checkForDiarrhoea(mapOfAnswers, results);
         checkForFeverSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
@@ -91,6 +92,33 @@ public class TriagingServiceImpl implements TriagingService {
 
             if (symptoms.contains("STRIDOR_IN_CHILD") && symptoms.contains("OXYGEN_SATURATION_LT90")) {
                 results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
+            }
+        }
+    }
+
+    public static void checkForDiarrhoea(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+        String symptoms = mapOfAnswers.get(25);
+
+        if (symptoms != null) {
+
+            if (symptoms.contains("SUNKEN_EYES") && symptoms.contains("SKIN_PINCH_VERY_SLOWLY")) {
+                results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);
+            }
+
+            List<String> symptomsList = new ArrayList<>();
+            symptomsList.add("SUNKEN_EYES");
+            symptomsList.add("SKIN_PINCH_VERY_SLOWLY");
+            symptomsList.add("RESTLESS_IRRITABLE");
+            symptomsList.add("SKIN_PINCH_SLOWLY");
+            Integer symptomCount = 0;
+            for (String s:symptomsList) {
+                if (symptoms.contains(s)) {
+                    symptomCount++;
+                }
+                if (symptomCount >= 2) {
+                    results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                    break;
+                }
             }
         }
     }
