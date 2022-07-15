@@ -23,7 +23,7 @@ public class TriagingServiceImpl implements TriagingService {
     private static String PNEUMONIA = "Probable Pneumonia";
     private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing.";
 
-    private static String PNEUMONIA_DESC = "\nWe suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DESC = "We suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
     private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing.";
     private static String PNEUMONIA_COUGH_GTE14_DESC = "The child has prolonged coughing. It can be a probable case of Pneumonia.";
     private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing.";
@@ -40,6 +40,11 @@ public class TriagingServiceImpl implements TriagingService {
     private static String FEVER_DESC = "Fever ";
     private static String POSSIBLE_URINE_INFECTION = "Possible Urine Infection ";
     private static String POSSIBLE_URINE_INFECTION_DESC = "Fever ";
+    private static String SEVERE_COMPLICATED_MEASLES = "Severe Complicated Measles";
+    private static String SEVERE_COMPLICATED_MEASLES_DESC = "Severe Complicated Measles";
+    private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION = "Measles with Eye or Mouth Complication";
+    private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC = "Measles with Eye or Mouth Complication";
+
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -326,8 +331,11 @@ public class TriagingServiceImpl implements TriagingService {
                 break;
             }
         }
-        if (hasFever && measlesInLast3Months && cloudingOfCornea && signCounts >= 1) {
-            results.put(FEVER, FEVER_DESC);
+        if (hasFever && signCounts >= 1 && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
+            results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);
+        }
+        if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && signCounts >= 1) {
+            results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);
         }
     }
 
