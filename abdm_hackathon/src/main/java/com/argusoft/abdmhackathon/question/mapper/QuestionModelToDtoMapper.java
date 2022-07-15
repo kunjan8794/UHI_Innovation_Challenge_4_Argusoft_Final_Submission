@@ -59,7 +59,7 @@ public class QuestionModelToDtoMapper {
         if (options != null && !options.isEmpty()) {
             Map<String, String> map = new HashMap<>();
             for (QuestionOptionMaster master : options) {
-                map.put(master.getConstant(), master.getOptionGu());
+                map.put(master.getConstant(), master.getOption());
             }
             return map;
         }
@@ -70,7 +70,7 @@ public class QuestionModelToDtoMapper {
         if (options != null && !options.isEmpty()) {
             Map<String, String> map = new HashMap<>();
             for (QuestionOptionMaster master : options) {
-                map.put(master.getConstant(), master.getOptionGu());
+                map.put(master.getConstant(), master.getOptionHn());
             }
             return map;
         }
