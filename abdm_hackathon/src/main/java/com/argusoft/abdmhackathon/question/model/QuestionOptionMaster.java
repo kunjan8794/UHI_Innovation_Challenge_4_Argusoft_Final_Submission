@@ -18,6 +18,7 @@ public class QuestionOptionMaster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer queId;
+    private String constant;
     private String option;
     private String optionHn;
     private String optionGu;
@@ -36,6 +37,14 @@ public class QuestionOptionMaster {
 
     public void setQueId(Integer queId) {
         this.queId = queId;
+    }
+
+    public String getConstant() {
+        return constant;
+    }
+
+    public void setConstant(String constant) {
+        this.constant = constant;
     }
 
     public String getOption() {

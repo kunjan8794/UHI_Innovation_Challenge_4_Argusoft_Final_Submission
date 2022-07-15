@@ -18,7 +18,7 @@ public class FlowMaster implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer questionId;
-    private Integer previousQuestionId;
+    private Boolean isFirstQuestion;
     private Integer nextQuestionId;
     private String answer;
 
@@ -38,12 +38,12 @@ public class FlowMaster implements Serializable {
         this.questionId = questionId;
     }
 
-    public Integer getPreviousQuestionId() {
-        return previousQuestionId;
+    public Boolean getFirstQuestion() {
+        return isFirstQuestion;
     }
 
-    public void setPreviousQuestionId(Integer previousQuestionId) {
-        this.previousQuestionId = previousQuestionId;
+    public void setFirstQuestion(Boolean firstQuestion) {
+        isFirstQuestion = firstQuestion;
     }
 
     public Integer getNextQuestionId() {
@@ -64,7 +64,7 @@ public class FlowMaster implements Serializable {
     public static class Fields {
 
         public static final String QUESTION_ID = "questionId";
-        public static final String PREVIOUS_QUESTION_ID = "previousQuestionId";
+        public static final String IS_FIRST_QUESTION = "isFirstQuestion";
         public static final String NEXT_QUESTION_ID = "nextQuestionId";
         public static final String ANSWER="answer";
     }
