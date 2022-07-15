@@ -20,8 +20,9 @@ public class MobileController {
     }
 
     @RequestMapping(value = "get-triaging-result",method = RequestMethod.POST)
-    public Map<String, String> getTriagingResult(@RequestBody Map<Integer, String> submitData){
+    public Map<String, String> getTriagingResult(@RequestBody Map<Integer, String> submitData,
+                                                 @RequestBody Map<String, String> previousClassifications){
         System.out.println(submitData.entrySet());
-        return triagingService.doTriage(submitData);
+        return triagingService.doTriage(submitData, previousClassifications);
     }
 }
