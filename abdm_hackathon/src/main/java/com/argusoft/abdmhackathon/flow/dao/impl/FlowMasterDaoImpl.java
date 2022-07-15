@@ -24,7 +24,7 @@ public class FlowMasterDaoImpl extends GenericRepositoryImpl implements FlowMast
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<FlowMaster> criteria = criteriaBuilder.createQuery(FlowMaster.class);
         Root<FlowMaster> root = criteria.from(FlowMaster.class);
-        Predicate questionCondition = criteriaBuilder.isNull(root.get(FlowMaster.Fields.PREVIOUS_QUESTION_ID));
+        Predicate questionCondition = criteriaBuilder.isTrue(root.get(FlowMaster.Fields.IS_FIRST_QUESTION));
         criteria.select(root).where(questionCondition);
         List<FlowMaster> flowMasters = (List<FlowMaster>) session.createQuery(criteria).list();
         return flowMasters.get(0).getQuestionId();

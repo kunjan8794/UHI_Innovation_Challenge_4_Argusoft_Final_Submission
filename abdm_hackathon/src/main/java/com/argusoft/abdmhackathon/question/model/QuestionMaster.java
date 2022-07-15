@@ -16,7 +16,11 @@ public class QuestionMaster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
+    private String titleGu;
+    private String titleHn;
     private String description;
+    private String descriptionGu;
+    private String descriptionHn;
     private String image;
     private String question;
     private String questionGu;
@@ -41,12 +45,44 @@ public class QuestionMaster {
         this.title = title;
     }
 
+    public String getTitleGu() {
+        return titleGu;
+    }
+
+    public void setTitleGu(String titleGu) {
+        this.titleGu = titleGu;
+    }
+
+    public String getTitleHn() {
+        return titleHn;
+    }
+
+    public void setTitleHn(String titleHn) {
+        this.titleHn = titleHn;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDescriptionGu() {
+        return descriptionGu;
+    }
+
+    public void setDescriptionGu(String descriptionGu) {
+        this.descriptionGu = descriptionGu;
+    }
+
+    public String getDescriptionHn() {
+        return descriptionHn;
+    }
+
+    public void setDescriptionHn(String descriptionHn) {
+        this.descriptionHn = descriptionHn;
     }
 
     public String getImage() {
@@ -107,6 +143,7 @@ public class QuestionMaster {
                 ", questionGu='" + questionGu + '\'' +
                 ", questionHn='" + questionHn + '\'' +
                 ", type='" + type + '\'' +
+                ", options=" + options +
                 '}';
     }
 }
