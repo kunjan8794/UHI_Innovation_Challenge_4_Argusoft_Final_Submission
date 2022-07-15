@@ -38,6 +38,11 @@ public class TriagingServiceImpl implements TriagingService {
     private static String FEVER_DESC = "Fever ";
     private static String POSSIBLE_URINE_INFECTION = "Possible Urine Infection ";
     private static String POSSIBLE_URINE_INFECTION_DESC = "Fever ";
+    private static String SEVERE_COMPLICATED_MEASLES = "Severe Complicated Measles";
+    private static String SEVERE_COMPLICATED_MEASLES_DESC = "Severe Complicated Measles";
+    private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION = "Measles with Eye or Mouth Complication";
+    private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC = "Measles with Eye or Mouth Complication";
+
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -95,7 +100,7 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        
+
         if (Objects.equals(ifForStriderInCalmChild, "YES")) {
             results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
         }
@@ -276,7 +281,7 @@ public class TriagingServiceImpl implements TriagingService {
         }
         boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
         boolean measlesInLast3Months = Arrays.stream(feverResultsArray).anyMatch("MEASLES_IN_LAST_3MONTHS"::equals);
-        boolean pusDrainingFromEye   = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
+        boolean pusDrainingFromEye = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
         boolean mouthUlcersNotDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_NOT_DEEP"::equals);
         boolean mouthUlcersDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_DEEP"::equals);
         boolean cough = Arrays.stream(feverResultsArray).anyMatch("COUGH"::equals);
@@ -284,7 +289,7 @@ public class TriagingServiceImpl implements TriagingService {
         boolean redEyes = Arrays.stream(feverResultsArray).anyMatch("RED_EYES"::equals);
         boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
         List<Boolean> checkList = new ArrayList<>();
-        Integer signCounts=0;
+        Integer signCounts = 0;
         checkList.add(cough);
         checkList.add(runnyNose);
         checkList.add(redEyes);
@@ -292,12 +297,15 @@ public class TriagingServiceImpl implements TriagingService {
             if (Boolean.TRUE.equals(value)) {
                 signCounts++;
             }
-            if (signCounts >=1) {
+            if (signCounts >= 1) {
                 break;
             }
         }
-        if (hasFever && measlesInLast3Months && cloudingOfCornea && signCounts>=1) {
-            results.put(FEVER, FEVER_DESC);
+        if (hasFever && signCounts >= 1 && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
+            results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);
+        }
+        if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && signCounts >= 1) {
+            results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);
         }
     }
 
