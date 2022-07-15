@@ -6,5 +6,9 @@ interface Preference {
 
     fun isLogin(): Boolean
 
+    fun setAppLanguage(lanCode: String)
+
+    fun getAppLanguage(): String
+
     fun clear()
 }

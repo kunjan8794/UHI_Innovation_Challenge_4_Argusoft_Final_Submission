@@ -2,6 +2,8 @@ package com.uhi.data.remote
 
 import com.uhi.BuildConfig
 import com.uhi.ui.common.model.Album
+import com.uhi.ui.common.model.Question
+import com.uhi.ui.common.model.TriagingRequest
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,7 +24,7 @@ class ApiManager : Api {
             })
         }
         return@lazy Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient.build())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
@@ -33,6 +35,13 @@ class ApiManager : Api {
         return executeApiHelper { apiService.getRepositories(request) }
     }
 
+    override suspend fun getQuestion(request: Map<String, Any?>): ApiResponse<Question> {
+        return executeApiHelper { apiService.getQuestion(request) }
+    }
+
+    override suspend fun getResults(request: Map<String, Any?>,previousClassifications: Map<String, Any?>): ApiResponse<Map<String, String>?> {
+        return executeApiHelper { apiService.getResults(TriagingRequest(request,previousClassifications)) }
+    }
 }
 
 

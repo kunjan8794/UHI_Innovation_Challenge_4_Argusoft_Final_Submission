@@ -30,4 +30,10 @@
     <string name="label_i_am_doctor">I am doctor</string>
     <string name="label_i_am_patient">I am patient</string>
     <string name="label_i_am">I am</string>
+    <string name="label_i_am_nurse">"I am HCW"</string>
+    <string name="error_msg_select_answer">Please give answer of the question</string>
+    <string name="title_language">Select Language</string>
+    <string name="title_attention">Attention</string>
+    <string name="button_continue">" Continue Consultation"</string>
+    <string name="button_go_to">Go to Treatment</string>
 </resources>

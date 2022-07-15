@@ -49,13 +49,20 @@
         <item name="cornerRadius">@dimen/_8sdp</item>
     </style>
 
+    <style name="MaterialCardView.Filled" parent="Widget.Material3.CardView.Filled">
+        <item name="cornerRadius">@dimen/_8sdp</item>
+        <item name="cardBackgroundColor">@color/colorWhite</item>
+        <item name="cardElevation">@dimen/_8sdp</item>
+    </style>
+
     <style name="TextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/open_sans_regular</item>
     </style>
 
-    <style name="TextView.Title" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextView.Title" parent="TextAppearance.Material3.TitleLarge"/>
 
-    </style>
+    <style name="TextView.Medium" parent="TextAppearance.Material3.TitleMedium"/>
+
     <style name="TextView.Title.ColoPrimary" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>

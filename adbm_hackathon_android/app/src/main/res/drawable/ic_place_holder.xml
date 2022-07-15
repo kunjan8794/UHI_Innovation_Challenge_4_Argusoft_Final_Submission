@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:drawable="@color/colorLightBlack50"/>
+    <item
+        android:bottom="@dimen/_32sdp"
+        android:left="@dimen/_32sdp"
+        android:right="@dimen/_32sdp"
+        android:top="@dimen/_32sdp"
+        android:drawable="@drawable/ic_abdm_small_logo" />
+</layer-list>

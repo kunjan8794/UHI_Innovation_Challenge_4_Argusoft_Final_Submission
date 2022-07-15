@@ -1,5 +1,6 @@
 package com.uhi.ui.common.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.uhi.data.local.pref.Preference
+import com.uhi.ui.dashboard.DashboardActivity
 import com.uhi.utils.extention.hideKeyboard
 import com.uhi.utils.extention.onViewBinding
 import javax.inject.Inject
@@ -35,12 +37,20 @@ abstract class BaseFragment<B : ViewBinding> : Fragment(), View.OnClickListener 
         initObserver()
     }
 
-    override fun onClick(v: View?) {
-        hideKeyboard(v)
+    override fun onClick(view: View?) {
+        hideKeyboard(view)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    public fun restartApp() {
+        val intent = Intent(activity, DashboardActivity::class.java)
+        //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        activity?.finish()
+        activity?.startActivity(intent)
+
     }
 }

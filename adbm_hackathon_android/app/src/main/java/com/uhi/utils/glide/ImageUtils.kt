@@ -33,11 +33,11 @@ import java.io.IOException
  *                      If the actual request will executed before the thumbnail then after applying actual request, this will not load the thumbnail URL.
  */
 fun GlideRequests.loadUrl(
-    imageView: ImageView, @Nullable url: String, @Nullable @RawRes @DrawableRes resPlaceHolderId: Int = 0, isLoadThumb:
+    imageView: ImageView, @Nullable url: String?, @Nullable @RawRes @DrawableRes resPlaceHolderId: Int = 0, isLoadThumb:
     Boolean = false
 ) {
-    takeIf { url.isNotEmpty() && url.isValidURL() }?.let {
-        if (url.contains(".gif")) {
+    takeIf { url?.isNotEmpty() == true && url.isValidURL() }?.let {
+        if (url?.contains(".gif") == true) {
             asGif().placeholder(resPlaceHolderId).error(resPlaceHolderId).load(url).into(imageView)
         } else {
             val glideRequests = load(url)
@@ -48,6 +48,7 @@ fun GlideRequests.loadUrl(
                     .placeholder(resPlaceHolderId).error(resPlaceHolderId)
                 thumbnail.into(imageView)
             } else {
+                glideRequests.centerCrop()
                 glideRequests.into(imageView)
             }
         }

@@ -1,6 +1,7 @@
 package com.uhi.data.remote
 
 import retrofit2.Response
+import java.net.ConnectException
 import java.net.UnknownHostException
 
 inline fun <T> executeApiHelper(responseMethod: () -> Response<T>): ApiResponse<T> {
@@ -22,7 +23,7 @@ inline fun <T> executeApiHelper(responseMethod: () -> Response<T>): ApiResponse<
     } catch (exception: Exception) {
         exception.printStackTrace()
         when (exception) {
-            is UnknownHostException -> ApiResponse.NoInternetConnection
+            is UnknownHostException, is ConnectException -> ApiResponse.NoInternetConnection
             else -> ApiResponse.ServerError("Unexpected internal server error.")
         }
     }
