@@ -32,6 +32,12 @@ public class TriagingServiceImpl implements TriagingService {
     private static String ORAL_FLUID_TEST_RECOMMENDATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Some Dehydration.";
+    private  static String POSSIBLE_BONE_INFECTION="Possible Bone/Joint Infection";
+    private  static String POSSIBLE_BONE_INFECTION_DESC="";
+    private  static String FEVER="Fever ";
+    private  static String FEVER_DESC="Fever ";
+    private  static String POSSIBLE_URINE_INFECTION="Possible Urine Infection ";
+    private  static String POSSIBLE_URINE_INFECTION_DESC="Fever ";
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -206,12 +212,28 @@ public class TriagingServiceImpl implements TriagingService {
         }
 
     }
-    private static void checkForFever(Map<Integer, String> mapOfAnswers,Map<String,String> results) {
-        //DIARRHOEA
-        //AND
-        //NOT ENOUGH SIGNS TO CLASSIFY AS SOME DEHYDRATION
-        //OR
-        //SEVERE DEHYDRATION
+    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers,Map<String,String> results) {
+        String feverResults = mapOfAnswers.get(24);
+        String[] feverResultsArray = feverResults != null ? feverResults.split(",") : new String[0];
+        if(feverResultsArray.length == 0){
+            return;
+        }
+        boolean hasFever=Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
+        boolean refusalUseLimb=Arrays.stream(feverResultsArray).anyMatch("REFUSAL_USE_LIMB"::equals);
+        boolean warmTenderSwollenJointBone= Arrays.stream(feverResultsArray).anyMatch("WARM_TENDER_SWOLLEN_JOINT_BONE"::equals);
+        boolean difficultyPassingUrine=Arrays.stream(feverResultsArray).anyMatch("DIFFICULTY_PASSING_URINE"::equals);
+        boolean oralSoresMouthUlcers=Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
+
+        if(hasFever){
+            results.put(FEVER,FEVER_DESC);
+        }
+        if(hasFever && refusalUseLimb && warmTenderSwollenJointBone){
+            results.put(POSSIBLE_BONE_INFECTION,POSSIBLE_BONE_INFECTION_DESC);
+        }
+        if(hasFever && difficultyPassingUrine){
+            results.put(POSSIBLE_URINE_INFECTION,POSSIBLE_URINE_INFECTION_DESC);
+        }
+
     }
     private static void forDiarrhoeaWithNoDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
