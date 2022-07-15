@@ -4,43 +4,41 @@ import com.argusoft.abdmhackathon.triage.TriagingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 @Service
 @Transactional
 public class TriagingServiceImpl implements TriagingService {
 
+    private static String SEVERE_PNEUMONIA = "Severe Pneumonia";
+    private static String SEVERE_PNEUMONIA_DESC = "The child seems to have STRIDORS & the " +
+            "Oxygen saturation levels are below 90%. There is a very high possibility of the child having severe Pneumonitis.";
+    private static String PNEUMONIA = "Pneumonia";
+    private static String PNEUMONIA_DESC = "The child has chest indrawing. We suggest checking exposure of HIV or conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DESC_WHEEZING = "";
+
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers) {
-        String severPneumonia =forSeverePneumonia(mapOfAnswers);
-        String pneumonia =forPneumonia(mapOfAnswers);
-        Map<String, String> results=new LinkedHashMap<>();
-        if(severPneumonia != null){
-            results.put(severPneumonia,"YES");
-            return results;
-        };
-        if(pneumonia != null){
-            results.put(pneumonia,"YES");
-            return results;
-        };
+        Map<String, String> results = new LinkedHashMap<>();
+        checkForSeverePneumonia(mapOfAnswers, results);
+        checkForPneumonia(mapOfAnswers, results);
         return results;
     }
 
-    private static String forSeverePneumonia(Map<Integer, String> mapOfAnswers) {
+    private static void checkForSeverePneumonia(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         //IF STRIDER IN CALM CHILD = YES
         //OR
         //IF OXYGEN SATURATION < 90%
-        String foundResult=null;
+        String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        if(ifForStriderInCalmChild =="YES" || oxygenSaturation == "LT90"){
-            foundResult="SEVEREPNEUMONIA";
+        if (ifForStriderInCalmChild == "YES" || oxygenSaturation == "LT90") {
+            results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
         }
-        return foundResult;
     }
 
-    private static String forPneumonia(Map<Integer, String> mapOfAnswers) {
+    private static void checkForPneumonia(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         //IF CHEST INDRAWING  = YES
         //AND
         //IF CONFIRMED HIV INFECTION OR HIV EXPOSED
@@ -52,7 +50,7 @@ public class TriagingServiceImpl implements TriagingService {
         //COUGH FOR HOW LONG?  >=14
         //OR
         //DIFFICULTY BREATHING FOR HOW LONG? >=14
-        String foundResult=null;
+        String foundResult = null;
 
         String chestIndrawing = mapOfAnswers.get(7);
         String wheezing = mapOfAnswers.get(10);
@@ -60,11 +58,18 @@ public class TriagingServiceImpl implements TriagingService {
         String coughHowLong = mapOfAnswers.get(4);
         String difficultyInBreathing = mapOfAnswers.get(14);
 
-        if((chestIndrawing =="YES") || ((wheezing == "YES" && recurrentWheezing == "YES") || coughHowLong == "GTE14" || difficultyInBreathing == "GTE14")){
-            foundResult="PNEUMONIA";
+        if (chestIndrawing == "YES" ) {
+            results.put(PNEUMONIA, PNEUMONIA_DESC);
         }
 
-        return foundResult;
+        if(wheezing == "YES" && recurrentWheezing == "YES")
+            results.put(PNEUMONIA, PNEUMONIA_DESC);
+        if(coughHowLong == "GTE14")
+            results.put(PNEUMONIA, PNEUMONIA_DESC);
+        if(difficultyInBreathing == "GTE14")
+            results.put(PNEUMONIA, PNEUMONIA_DESC);
+
+
         //WHEEZING = YES
         //AND
         //CHEST INDRAWING AND NOT HIV EXPOSED
@@ -82,7 +87,8 @@ public class TriagingServiceImpl implements TriagingService {
         //NOT HIV EXPOSED/INFECTED
 
         // FAST BREATHING
-        }
+    }
+
     private static void forCoughOrCold(Map<Integer, String> mapOfAnswers) {
         //WHEEZING
 
@@ -90,19 +96,21 @@ public class TriagingServiceImpl implements TriagingService {
         //AND
         //(NO FAST BREATHING AND NO CHEST INDRAWING)
     }
+
     private static void forDiarrhoeaWithSevereDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
         //AND
         //TWO SIGNS OR MORE OF ANY OF THE FOLLOWING:
-            // LETHARGIC OR UNCONSCIOUS / SUNKEN EYES /SKIN PINCH GOES BACK VERY SLOWLY
+        // LETHARGIC OR UNCONSCIOUS / SUNKEN EYES /SKIN PINCH GOES BACK VERY SLOWLY
         //AND
         //     ORAL FLUID TEST =
-            // COMPLETELY UNABLE TO DRINK
-            // OR
-            // VOMITS IMMEDIATELY/EVERYTHING
-            // OR
-            // DRINKS POORLY
+        // COMPLETELY UNABLE TO DRINK
+        // OR
+        // VOMITS IMMEDIATELY/EVERYTHING
+        // OR
+        // DRINKS POORLY
     }
+
     private static void forDiarrhoeaWithSomeDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
         //AND
@@ -110,12 +118,13 @@ public class TriagingServiceImpl implements TriagingService {
         // LETHARGIC OR UNCONSCIOUS OR RESTLESS and IRRITABLE  / SUNKEN EYES /SKIN PINCH GOES BACK VERY SLOWLY/SKIN PINCH GOES BACK SLOWLY
         //OR
         //     ORAL FLUID TEST =
-            // DRINK EAGERLY,THIRSTILY
-            // OR
-            // DRINKS POORLY
-            // OR
-            //  COMPLETELY UNABLE TO DRINK
+        // DRINK EAGERLY,THIRSTILY
+        // OR
+        // DRINKS POORLY
+        // OR
+        //  COMPLETELY UNABLE TO DRINK
     }
+
     private static void forDiarrhoeaWithNoDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
         //AND
@@ -123,11 +132,13 @@ public class TriagingServiceImpl implements TriagingService {
         //OR
         //SEVERE DEHYDRATION
     }
+
     private static void forVerySevereFebrileDisease(Map<Integer, String> mapOfAnswers) {
         //DANGER SIGN
         //AND/OR
         //STIFF NECK
     }
+
     private static void forMalaria(Map<Integer, String> mapOfAnswers) {
         //MALARIA STATUS UNKNOWN/UNAVAILABLE/INVALID/NOT FEASIBLE
         //OR
@@ -139,6 +150,7 @@ public class TriagingServiceImpl implements TriagingService {
 
         //MALARIA POSITIVE
     }
+
     private static void forSevereComplicatedMeasles(Map<Integer, String> mapOfAnswers) {
         //MEASLES NOW
         //OR
@@ -151,8 +163,9 @@ public class TriagingServiceImpl implements TriagingService {
         //MOUTH SORES or MOUTH ULCERS- DEEP AND EXTENSIVE
         //AND
         //ONE OR MORE OF THE FOLLOWING:
-            // COUGH/RUNNY NOSE/RED EYES
+        // COUGH/RUNNY NOSE/RED EYES
     }
+
     private static void forMeaslesWithEyeOrMouthComplication(Map<Integer, String> mapOfAnswers) {
         //MEASLES NOW
         //OR
