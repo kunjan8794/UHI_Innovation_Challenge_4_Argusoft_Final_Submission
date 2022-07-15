@@ -26,8 +26,8 @@ public class FlowController {
     private FlowService flowService;
 
     @GetMapping("next-question")
-    public QuestionDto getNextQuestion(@RequestParam Integer questionId,
-                                       @RequestParam String answer,
+    public QuestionDto getNextQuestion(@RequestParam(required = false) Integer questionId,
+                                       @RequestParam(required = false) String answer,
                                        @RequestParam String preferredLanguage) {
         return flowService.getNextQuestion(questionId, answer, preferredLanguage);
     }
