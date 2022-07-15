@@ -18,12 +18,16 @@ public class TriagingServiceImpl implements TriagingService {
     private static String PNEUMONIA_DESC = "The child has chest indrawing. We suggest checking exposure of HIV or conduct Inhaled broncholar trial.";
     private static String PNEUMONIA_DESC_WHEEZING = "";
 
+    private static String COUGHORCOLD = "Cough Or Cold";
+    private static String COUGHORCOLD_DESC = "";
+
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers) {
         Map<String, String> results = new LinkedHashMap<>();
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         removeMultipleClassifications(results);
+        forCoughOrCold(mapOfAnswers,results);
         return results;
     }
 
@@ -90,12 +94,25 @@ public class TriagingServiceImpl implements TriagingService {
         // FAST BREATHING
     }
 
-    private static void forCoughOrCold(Map<Integer, String> mapOfAnswers) {
+    private static void forCoughOrCold(Map<Integer, String> mapOfAnswers,Map<String, String> results) {
         //WHEEZING
 
         //(COUGH =YES OR  DIFFICULTY BREATHING = YES)
         //AND
         //(NO FAST BREATHING AND NO CHEST INDRAWING)
+        String foundResult = null;
+        String wheezing = mapOfAnswers.get(10);
+        String cough = mapOfAnswers.get(3);
+        String difficultyInBreathing = mapOfAnswers.get(13);
+        String noFastBreathing = mapOfAnswers.get(6);
+        String noChestIndrawing = mapOfAnswers.get(7);
+        if (wheezing != null && wheezing.equals("YES")){
+            results.put(COUGHORCOLD, COUGHORCOLD_DESC);
+        }
+        if(((cough != null && cough.equals("YES") ) || (difficultyInBreathing != null && difficultyInBreathing.equals("YES"))) &&
+                ((noFastBreathing != null && !noFastBreathing.equals("GTE16") ) && (noChestIndrawing != null && !noChestIndrawing.equals("YES")))) {
+            results.put(COUGHORCOLD, COUGHORCOLD_DESC);
+        }
     }
 
     private static void forDiarrhoeaWithSevereDehydration(Map<Integer, String> mapOfAnswers) {
