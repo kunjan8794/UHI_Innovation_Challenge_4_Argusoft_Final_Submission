@@ -37,7 +37,7 @@ public class TriagingServiceImpl implements TriagingService {
     private static String POSSIBLE_BONE_INFECTION = "Possible Bone/Joint Infection";
     private static String POSSIBLE_BONE_INFECTION_DESC = "";
     private static String FEVER = "Fever ";
-    private static String FEVER_DESC = "Fever ";
+    private static String FEVER_DESC = "Fever";
     private static String POSSIBLE_URINE_INFECTION = "Possible Urine Infection ";
     private static String POSSIBLE_URINE_INFECTION_DESC = "Fever ";
     private static String SEVERE_COMPLICATED_MEASLES = "Severe Complicated Measles";
@@ -54,6 +54,7 @@ public class TriagingServiceImpl implements TriagingService {
         checkForCoughSymptoms(mapOfAnswers, results);
         checkForDiarrhoea(mapOfAnswers, results);
         checkForFeverSymptoms(mapOfAnswers, results);
+        checkForMeaslesSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
         checkForCoughOrCold(mapOfAnswers, results);
@@ -116,7 +117,7 @@ public class TriagingServiceImpl implements TriagingService {
             symptomsList.add("RESTLESS_IRRITABLE");
             symptomsList.add("SKIN_PINCH_SLOWLY");
             Integer symptomCount = 0;
-            for (String s:symptomsList) {
+            for (String s : symptomsList) {
                 if (symptoms.contains(s)) {
                     symptomCount++;
                 }
@@ -304,7 +305,7 @@ public class TriagingServiceImpl implements TriagingService {
     }
 
     private static void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
-        String feverResults = mapOfAnswers.get(24);
+        String feverResults = mapOfAnswers.get(24).replace(" ", "");
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
             return;
