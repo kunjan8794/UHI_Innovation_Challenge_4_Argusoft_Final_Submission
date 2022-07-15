@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface TriagingService {
 
-    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers);
+    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications);
 }

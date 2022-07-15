@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -19,11 +20,12 @@ public class TriagingServiceImpl implements TriagingService {
     private static String PNEUMONIA_DESC_WHEEZING = "";
 
     @Override
-    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers) {
+    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
         Map<String, String> results = new LinkedHashMap<>();
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         removeMultipleClassifications(results);
+        removePreviousClassifications(results, previousClassifications);
         return results;
     }
 
@@ -183,5 +185,11 @@ public class TriagingServiceImpl implements TriagingService {
     private static void removeMultipleClassifications(Map<String, String> results) {
         if (results.containsKey(SEVERE_PNEUMONIA) && results.containsKey(PNEUMONIA))
             results.remove(SEVERE_PNEUMONIA);
+    }
+
+    private static void removePreviousClassifications(Map<String, String> mapOfAnswers, Map<String, String> previousClassifications) {
+        for (String previousClassification : previousClassifications.keySet()) {
+            mapOfAnswers.remove(previousClassification);
+        }
     }
 }
