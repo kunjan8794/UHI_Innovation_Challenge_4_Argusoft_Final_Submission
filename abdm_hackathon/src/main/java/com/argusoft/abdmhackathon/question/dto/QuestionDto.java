@@ -2,6 +2,8 @@ package com.argusoft.abdmhackathon.question.dto;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * <p>
  * Add description here
@@ -19,6 +21,6 @@ public class QuestionDto {
     private String image;
     private String question;
     private String type;
-    private String[] options;
+    private Map<String, String> options;
 
 }
