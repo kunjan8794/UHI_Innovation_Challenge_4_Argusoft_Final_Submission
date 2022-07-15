@@ -21,10 +21,12 @@ public class TriagingServiceImpl implements TriagingService {
     private static String SEVERE_PNEUMONIA_DESC = "The child seems to have STRIDORS & the " +
             "Oxygen saturation levels are below 90%. There is a very high possibility of the child having severe Pneumonitis.";
     private static String PNEUMONIA = "Probable Pneumonia";
-    private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing. \nWe suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
-    private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing. \nWe suggest checking exposure of HIV \nor \nconduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing.";
+
+    private static String PNEUMONIA_DESC = "\nWe suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing.";
     private static String PNEUMONIA_COUGH_GTE14_DESC = "The child has prolonged coughing. It can be a probable case of Pneumonia.";
-    private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing. \n We suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing.";
 
     private static String COUGHORCOLD = "Cough Or Cold";
     private static String COUGHORCOLD_DESC = "";
@@ -58,20 +60,25 @@ public class TriagingServiceImpl implements TriagingService {
         String symptoms = mapOfAnswers.get(23);
 
         if (symptoms != null) {
+
+            if (symptoms.contains("COUGH_GT14")) {
+                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+            }
+
             if (symptoms.contains("CHEST_INDRAWING")) {
                 results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);
             }
 
             if (symptoms.contains("RECURRENT_WHEEZING")) {
-                results.put(PNEUMONIA, PNEUMONIA_DESC_WHEEZING);
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC_WHEEZING);
             }
 
             if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                results.put(PNEUMONIA, PNEUMONIA_DIFFICULTY_BREATHING_DESC);
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DIFFICULTY_BREATHING_DESC);
             }
 
-            if (symptoms.contains("COUGH_GT14")) {
-                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+            if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC);
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
@@ -95,7 +102,7 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        
+
         if (Objects.equals(ifForStriderInCalmChild, "YES")) {
             results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
         }
@@ -246,19 +253,19 @@ public class TriagingServiceImpl implements TriagingService {
 
     private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         String feverResults = mapOfAnswers.get(24);
-        if(feverResults == null){
+        if (feverResults == null) {
             return;
         }
 //        boolean oralSoresMouthUlcers=Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
 
-        if(feverResults.contains("TEMP_GTE_37_5")){
-            results.put(FEVER,FEVER_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5")) {
+            results.put(FEVER, FEVER_DESC);
         }
-        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")){
-            results.put(POSSIBLE_BONE_INFECTION,POSSIBLE_BONE_INFECTION_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
+            results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);
         }
-        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")){
-            results.put(POSSIBLE_URINE_INFECTION,POSSIBLE_URINE_INFECTION_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
+            results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);
         }
 
     }
@@ -271,7 +278,7 @@ public class TriagingServiceImpl implements TriagingService {
         }
         boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
         boolean measlesInLast3Months = Arrays.stream(feverResultsArray).anyMatch("MEASLES_IN_LAST_3MONTHS"::equals);
-        boolean pusDrainingFromEye   = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
+        boolean pusDrainingFromEye = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
         boolean mouthUlcersNotDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_NOT_DEEP"::equals);
         boolean mouthUlcersDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_DEEP"::equals);
         boolean cough = Arrays.stream(feverResultsArray).anyMatch("COUGH"::equals);
@@ -279,7 +286,7 @@ public class TriagingServiceImpl implements TriagingService {
         boolean redEyes = Arrays.stream(feverResultsArray).anyMatch("RED_EYES"::equals);
         boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
         List<Boolean> checkList = new ArrayList<>();
-        Integer signCounts=0;
+        Integer signCounts = 0;
         checkList.add(cough);
         checkList.add(runnyNose);
         checkList.add(redEyes);
@@ -287,11 +294,11 @@ public class TriagingServiceImpl implements TriagingService {
             if (Boolean.TRUE.equals(value)) {
                 signCounts++;
             }
-            if (signCounts >=1) {
+            if (signCounts >= 1) {
                 break;
             }
         }
-        if (hasFever && measlesInLast3Months && cloudingOfCornea && signCounts>=1) {
+        if (hasFever && measlesInLast3Months && cloudingOfCornea && signCounts >= 1) {
             results.put(FEVER, FEVER_DESC);
         }
     }
