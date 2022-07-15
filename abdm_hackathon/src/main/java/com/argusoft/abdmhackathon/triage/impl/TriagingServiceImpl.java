@@ -33,7 +33,7 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        if (ifForStriderInCalmChild == "YES" || oxygenSaturation == "LT90") {
+        if (ifForStriderInCalmChild != null && oxygenSaturation != null && (ifForStriderInCalmChild.equals("YES") || oxygenSaturation.equals("LT90"))) {
             results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
         }
     }
@@ -58,15 +58,15 @@ public class TriagingServiceImpl implements TriagingService {
         String coughHowLong = mapOfAnswers.get(4);
         String difficultyInBreathing = mapOfAnswers.get(14);
 
-        if (chestIndrawing == "YES" ) {
+        if (chestIndrawing != null && chestIndrawing.equals("YES")) {
             results.put(PNEUMONIA, PNEUMONIA_DESC);
         }
 
-        if(wheezing == "YES" && recurrentWheezing == "YES")
+        if (wheezing != null && recurrentWheezing != null && wheezing.equals("YES") && recurrentWheezing.equals("YES"))
             results.put(PNEUMONIA, PNEUMONIA_DESC);
-        if(coughHowLong == "GTE14")
+        if (coughHowLong != null && coughHowLong.equals("GTE14"))
             results.put(PNEUMONIA, PNEUMONIA_DESC);
-        if(difficultyInBreathing == "GTE14")
+        if (difficultyInBreathing != null && difficultyInBreathing.equals("GTE14"))
             results.put(PNEUMONIA, PNEUMONIA_DESC);
 
 
