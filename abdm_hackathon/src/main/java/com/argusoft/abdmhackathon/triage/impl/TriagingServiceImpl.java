@@ -4,10 +4,7 @@ import com.argusoft.abdmhackathon.triage.TriagingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -22,6 +19,10 @@ public class TriagingServiceImpl implements TriagingService {
 
     private static String COUGHORCOLD = "Cough Or Cold";
     private static String COUGHORCOLD_DESC = "";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION = "Oral Fluid Test Recommendation";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Some Dehydration.";
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -29,8 +30,10 @@ public class TriagingServiceImpl implements TriagingService {
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         removeMultipleClassifications(results);
-        forCoughOrCold(mapOfAnswers,results);
         removePreviousClassifications(results, previousClassifications);
+        checkForCoughOrCold(mapOfAnswers,results);
+        checkForDiarrhoeaWithSevereDehydration(mapOfAnswers,results);
+        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers,results);
         return results;
     }
 
@@ -97,7 +100,7 @@ public class TriagingServiceImpl implements TriagingService {
         // FAST BREATHING
     }
 
-    private static void forCoughOrCold(Map<Integer, String> mapOfAnswers,Map<String, String> results) {
+    private static void checkForCoughOrCold(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         //WHEEZING
 
         //(COUGH =YES OR  DIFFICULTY BREATHING = YES)
@@ -118,7 +121,7 @@ public class TriagingServiceImpl implements TriagingService {
         }
     }
 
-    private static void forDiarrhoeaWithSevereDehydration(Map<Integer, String> mapOfAnswers) {
+    private static void checkForDiarrhoeaWithSevereDehydration(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         //DIARRHOEA
         //AND
         //TWO SIGNS OR MORE OF ANY OF THE FOLLOWING:
@@ -130,9 +133,16 @@ public class TriagingServiceImpl implements TriagingService {
         // VOMITS IMMEDIATELY/EVERYTHING
         // OR
         // DRINKS POORLY
+        String diarrhoea = mapOfAnswers.get(15);
+        String sunkenEyes = mapOfAnswers.get(18);
+        String skinPinchAbdomen = mapOfAnswers.get(19);
+        if((diarrhoea != null && diarrhoea.equals("YES") ) &&
+                (sunkenEyes != null && !sunkenEyes.equals("YES") ) && (skinPinchAbdomen != null && !skinPinchAbdomen.equals("VERY_SLOWLY"))) {
+            results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);
+        }
     }
 
-    private static void forDiarrhoeaWithSomeDehydration(Map<Integer, String> mapOfAnswers) {
+    private static void checkForDiarrhoeaWithSomeDehydration(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         //DIARRHOEA
         //AND
         //TWO SIGNS OR MORE OF ANY OF THE FOLLOWING:
@@ -144,8 +154,40 @@ public class TriagingServiceImpl implements TriagingService {
         // DRINKS POORLY
         // OR
         //  COMPLETELY UNABLE TO DRINK
-    }
+        Integer signCounts=0;
+        String diarrhoea = mapOfAnswers.get(15);
+        boolean isDiarrhoea=diarrhoea != null && diarrhoea.equals("YES");
+        String sunkenEyes = mapOfAnswers.get(18);
+        boolean isSunkenEyes=sunkenEyes != null && !sunkenEyes.equals("YES");
+        String skinPinchVeryslowly = mapOfAnswers.get(19);
+        boolean isSkinPinchVeryslowly= skinPinchVeryslowly != null && skinPinchVeryslowly.equals("VERY_SLOWLY");
+        String skinPinchSlowly = mapOfAnswers.get(19);
+        boolean isSkinPinchSlowly= skinPinchSlowly != null && skinPinchSlowly.equals("SLOWLY");
+        String restlessAndIrritable = mapOfAnswers.get(20);
+        boolean isRestlessAndIrritable=restlessAndIrritable != null && restlessAndIrritable.equals("YES");
+        List<Boolean> checkList = new ArrayList<>();
+        checkList.add(isRestlessAndIrritable);
+        checkList.add(isSkinPinchSlowly);
+        checkList.add(isSkinPinchVeryslowly);
+        checkList.add(isSunkenEyes);
+        for (Boolean value : checkList) {
+            if(Boolean.TRUE.equals(value)){
+                signCounts++;
+            }
+            if (signCounts >=2){
+                results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                break;
+            }
+        }
 
+    }
+    private static void checkForFever(Map<Integer, String> mapOfAnswers,Map<String,String> results) {
+        //DIARRHOEA
+        //AND
+        //NOT ENOUGH SIGNS TO CLASSIFY AS SOME DEHYDRATION
+        //OR
+        //SEVERE DEHYDRATION
+    }
     private static void forDiarrhoeaWithNoDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
         //AND
