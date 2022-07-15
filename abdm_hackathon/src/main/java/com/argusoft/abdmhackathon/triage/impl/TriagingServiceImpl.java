@@ -32,12 +32,12 @@ public class TriagingServiceImpl implements TriagingService {
     private static String ORAL_FLUID_TEST_RECOMMENDATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Some Dehydration.";
-    private  static String POSSIBLE_BONE_INFECTION="Possible Bone/Joint Infection";
-    private  static String POSSIBLE_BONE_INFECTION_DESC="";
-    private  static String FEVER="Fever ";
-    private  static String FEVER_DESC="Fever ";
-    private  static String POSSIBLE_URINE_INFECTION="Possible Urine Infection ";
-    private  static String POSSIBLE_URINE_INFECTION_DESC="Fever ";
+    private static String POSSIBLE_BONE_INFECTION = "Possible Bone/Joint Infection";
+    private static String POSSIBLE_BONE_INFECTION_DESC = "";
+    private static String FEVER = "Fever ";
+    private static String FEVER_DESC = "Fever ";
+    private static String POSSIBLE_URINE_INFECTION = "Possible Urine Infection ";
+    private static String POSSIBLE_URINE_INFECTION_DESC = "Fever ";
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -48,9 +48,9 @@ public class TriagingServiceImpl implements TriagingService {
         checkForFeverSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
-        checkForCoughOrCold(mapOfAnswers,results);
-        checkForDiarrhoeaWithSevereDehydration(mapOfAnswers,results);
-        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers,results);
+        checkForCoughOrCold(mapOfAnswers, results);
+        checkForDiarrhoeaWithSevereDehydration(mapOfAnswers, results);
+        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers, results);
         return results;
     }
 
@@ -120,7 +120,7 @@ public class TriagingServiceImpl implements TriagingService {
         //COUGH FOR HOW LONG?  >=14
         //OR
         //DIFFICULTY BREATHING FOR HOW LONG? >=14
-        if(!(mapOfAnswers.containsKey(7) && mapOfAnswers.containsKey(10) && mapOfAnswers.containsKey(4)) && mapOfAnswers.containsKey(11) && mapOfAnswers.containsKey(14)) {
+        if (!(mapOfAnswers.containsKey(7) && mapOfAnswers.containsKey(10) && mapOfAnswers.containsKey(4)) && mapOfAnswers.containsKey(11) && mapOfAnswers.containsKey(14)) {
             return;
         }
         String foundResult = null;
@@ -174,11 +174,11 @@ public class TriagingServiceImpl implements TriagingService {
         String difficultyInBreathing = mapOfAnswers.get(13);
         String noFastBreathing = mapOfAnswers.get(6);
         String noChestIndrawing = mapOfAnswers.get(7);
-        if (wheezing != null && wheezing.equals("YES")){
+        if (wheezing != null && wheezing.equals("YES")) {
             results.put(COUGHORCOLD, COUGHORCOLD_DESC);
         }
-        if(((cough != null && cough.equals("YES") ) || (difficultyInBreathing != null && difficultyInBreathing.equals("YES"))) &&
-                ((noFastBreathing != null && !noFastBreathing.equals("GTE16") ) && (noChestIndrawing != null && !noChestIndrawing.equals("YES")))) {
+        if (((cough != null && cough.equals("YES")) || (difficultyInBreathing != null && difficultyInBreathing.equals("YES"))) &&
+                ((noFastBreathing != null && !noFastBreathing.equals("GTE16")) && (noChestIndrawing != null && !noChestIndrawing.equals("YES")))) {
             results.put(COUGHORCOLD, COUGHORCOLD_DESC);
         }
     }
@@ -198,8 +198,8 @@ public class TriagingServiceImpl implements TriagingService {
         String diarrhoea = mapOfAnswers.get(15);
         String sunkenEyes = mapOfAnswers.get(18);
         String skinPinchAbdomen = mapOfAnswers.get(19);
-        if((diarrhoea != null && diarrhoea.equals("YES") ) &&
-                (sunkenEyes != null && !sunkenEyes.equals("YES") ) && (skinPinchAbdomen != null && !skinPinchAbdomen.equals("VERY_SLOWLY"))) {
+        if ((diarrhoea != null && diarrhoea.equals("YES")) &&
+                (sunkenEyes != null && !sunkenEyes.equals("YES")) && (skinPinchAbdomen != null && !skinPinchAbdomen.equals("VERY_SLOWLY"))) {
             results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);
         }
     }
@@ -216,34 +216,35 @@ public class TriagingServiceImpl implements TriagingService {
         // DRINKS POORLY
         // OR
         //  COMPLETELY UNABLE TO DRINK
-        Integer signCounts=0;
+        Integer signCounts = 0;
         String diarrhoea = mapOfAnswers.get(15);
-        boolean isDiarrhoea=diarrhoea != null && diarrhoea.equals("YES");
+        boolean isDiarrhoea = diarrhoea != null && diarrhoea.equals("YES");
         String sunkenEyes = mapOfAnswers.get(18);
-        boolean isSunkenEyes=sunkenEyes != null && !sunkenEyes.equals("YES");
+        boolean isSunkenEyes = sunkenEyes != null && !sunkenEyes.equals("YES");
         String skinPinchVeryslowly = mapOfAnswers.get(19);
-        boolean isSkinPinchVeryslowly= skinPinchVeryslowly != null && skinPinchVeryslowly.equals("VERY_SLOWLY");
+        boolean isSkinPinchVeryslowly = skinPinchVeryslowly != null && skinPinchVeryslowly.equals("VERY_SLOWLY");
         String skinPinchSlowly = mapOfAnswers.get(19);
-        boolean isSkinPinchSlowly= skinPinchSlowly != null && skinPinchSlowly.equals("SLOWLY");
+        boolean isSkinPinchSlowly = skinPinchSlowly != null && skinPinchSlowly.equals("SLOWLY");
         String restlessAndIrritable = mapOfAnswers.get(20);
-        boolean isRestlessAndIrritable=restlessAndIrritable != null && restlessAndIrritable.equals("YES");
+        boolean isRestlessAndIrritable = restlessAndIrritable != null && restlessAndIrritable.equals("YES");
         List<Boolean> checkList = new ArrayList<>();
         checkList.add(isRestlessAndIrritable);
         checkList.add(isSkinPinchSlowly);
         checkList.add(isSkinPinchVeryslowly);
         checkList.add(isSunkenEyes);
         for (Boolean value : checkList) {
-            if(Boolean.TRUE.equals(value)){
+            if (Boolean.TRUE.equals(value)) {
                 signCounts++;
             }
-            if (signCounts >=2){
+            if (signCounts >= 2) {
                 results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
                 break;
             }
         }
 
     }
-    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers,Map<String,String> results) {
+
+    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         String feverResults = mapOfAnswers.get(24);
         if(feverResults == null){
             return;
@@ -261,6 +262,40 @@ public class TriagingServiceImpl implements TriagingService {
         }
 
     }
+
+    private static void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+        String feverResults = mapOfAnswers.get(24);
+        String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
+        if (feverResultsArray.length == 0) {
+            return;
+        }
+        boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
+        boolean measlesInLast3Months = Arrays.stream(feverResultsArray).anyMatch("MEASLES_IN_LAST_3MONTHS"::equals);
+        boolean pusDrainingFromEye   = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
+        boolean mouthUlcersNotDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_NOT_DEEP"::equals);
+        boolean mouthUlcersDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_DEEP"::equals);
+        boolean cough = Arrays.stream(feverResultsArray).anyMatch("COUGH"::equals);
+        boolean runnyNose = Arrays.stream(feverResultsArray).anyMatch("RUNNY_NOSE"::equals);
+        boolean redEyes = Arrays.stream(feverResultsArray).anyMatch("RED_EYES"::equals);
+        boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
+        List<Boolean> checkList = new ArrayList<>();
+        Integer signCounts=0;
+        checkList.add(cough);
+        checkList.add(runnyNose);
+        checkList.add(redEyes);
+        for (Boolean value : checkList) {
+            if (Boolean.TRUE.equals(value)) {
+                signCounts++;
+            }
+            if (signCounts >=1) {
+                break;
+            }
+        }
+        if (hasFever && measlesInLast3Months && cloudingOfCornea && signCounts>=1) {
+            results.put(FEVER, FEVER_DESC);
+        }
+    }
+
     private static void forDiarrhoeaWithNoDehydration(Map<Integer, String> mapOfAnswers) {
         //DIARRHOEA
         //AND
