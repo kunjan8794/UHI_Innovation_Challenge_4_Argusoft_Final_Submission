@@ -3,6 +3,7 @@ package com.uhi.ui.dashboard.quetion
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uhi.data.local.pref.Preference
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiResponse
 import com.uhi.ui.common.model.Album
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
-    private val api: Api
+    private val api: Api,
+    private val preference: Preference
 ) : ViewModel() {
 
     private val _apiState = SingleLiveEvent<ApiResponse<Question>>()
@@ -37,7 +39,7 @@ class QuestionViewModel @Inject constructor(
     fun getQuestion(questionId: Int? = null, answer: String? = null, isRefresh: Boolean = false) {
         _apiState.value = ApiResponse.Loading(isRefresh)
         val map = HashMap<String, Any?>()
-        map["preferredLanguage"] = "EN"
+        map["preferredLanguage"] = preference.getAppLanguage()
         questionId?.let { map["questionId"] = it }
         answer?.let { map["answer"] = it }
         job = viewModelScope.launch {
