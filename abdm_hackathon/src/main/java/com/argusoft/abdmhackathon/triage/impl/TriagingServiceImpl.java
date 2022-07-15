@@ -50,6 +50,7 @@ public class TriagingServiceImpl implements TriagingService {
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         checkForCoughSymptoms(mapOfAnswers, results);
+        checkForFeverSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
         checkForCoughOrCold(mapOfAnswers, results);
@@ -79,16 +80,15 @@ public class TriagingServiceImpl implements TriagingService {
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
-                System.out.println("+++++++");
                 results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
             }
 
             if (symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_OXY_SAT_DESC);
+                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_OXY_SAT_DESC);
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD") && symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_DESC);
+                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
             }
         }
     }
@@ -109,7 +109,7 @@ public class TriagingServiceImpl implements TriagingService {
         }
 
         if (Objects.equals(oxygenSaturation, "LT90") && Objects.equals(ifForStriderInCalmChild, "YES")) {
-            results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_DESC);
+            results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
         }
     }
 
@@ -251,24 +251,19 @@ public class TriagingServiceImpl implements TriagingService {
 
     private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         String feverResults = mapOfAnswers.get(24);
-        String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
-        if (feverResultsArray.length == 0) {
+        if(feverResults == null){
             return;
         }
-        boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
-        boolean refusalUseLimb = Arrays.stream(feverResultsArray).anyMatch("REFUSAL_USE_LIMB"::equals);
-        boolean warmTenderSwollenJointBone = Arrays.stream(feverResultsArray).anyMatch("WARM_TENDER_SWOLLEN_JOINT_BONE"::equals);
-        boolean difficultyPassingUrine = Arrays.stream(feverResultsArray).anyMatch("DIFFICULTY_PASSING_URINE"::equals);
-        boolean oralSoresMouthUlcers = Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
+//        boolean oralSoresMouthUlcers=Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
 
-        if (hasFever) {
-            results.put(FEVER, FEVER_DESC);
+        if(feverResults.contains("TEMP_GTE_37_5")){
+            results.put(FEVER,FEVER_DESC);
         }
-        if (hasFever && refusalUseLimb && warmTenderSwollenJointBone) {
-            results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);
+        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")){
+            results.put(POSSIBLE_BONE_INFECTION,POSSIBLE_BONE_INFECTION_DESC);
         }
-        if (hasFever && difficultyPassingUrine) {
-            results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);
+        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")){
+            results.put(POSSIBLE_URINE_INFECTION,POSSIBLE_URINE_INFECTION_DESC);
         }
 
     }
