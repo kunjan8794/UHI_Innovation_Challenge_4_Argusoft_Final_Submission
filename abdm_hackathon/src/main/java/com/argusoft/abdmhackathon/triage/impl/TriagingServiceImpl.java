@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -22,12 +24,13 @@ public class TriagingServiceImpl implements TriagingService {
     private static String COUGHORCOLD_DESC = "";
 
     @Override
-    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers) {
+    public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
         Map<String, String> results = new LinkedHashMap<>();
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
         removeMultipleClassifications(results);
         forCoughOrCold(mapOfAnswers,results);
+        removePreviousClassifications(results, previousClassifications);
         return results;
     }
 
@@ -38,7 +41,7 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        if (ifForStriderInCalmChild != null && oxygenSaturation != null && (ifForStriderInCalmChild.equals("YES") || oxygenSaturation.equals("LT90"))) {
+        if (Objects.equals(ifForStriderInCalmChild, "YES") || Objects.equals(oxygenSaturation, "LT90")) {
             results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
         }
     }
@@ -198,7 +201,13 @@ public class TriagingServiceImpl implements TriagingService {
     }
 
     private static void removeMultipleClassifications(Map<String, String> results) {
-        if (results.containsKey(SEVERE_PNEUMONIA) && results.containsKey(PNEUMONIA))
-            results.remove(SEVERE_PNEUMONIA);
+        if (results.containsKey(SEVERE_PNEUMONIA))
+            results.remove(PNEUMONIA);
+    }
+
+    private static void removePreviousClassifications(Map<String, String> mapOfAnswers, Map<String, String> previousClassifications) {
+        for (String previousClassification : previousClassifications.keySet()) {
+            mapOfAnswers.remove(previousClassification);
+        }
     }
 }
