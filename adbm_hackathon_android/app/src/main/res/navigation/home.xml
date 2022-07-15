@@ -2,13 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home.xml"
+    android:id="@+id/home"
     app:startDestination="@+id/dashboardFragment">
 
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.uhi.ui.dashboard.DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_questionsFragment"
+            app:destination="@id/questionsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/questionsFragment"
+        android:name="com.uhi.ui.dashboard.quetion.QuestionsFragment"
+        tools:layout="@layout/fragment_quetions">
 
     </fragment>
 

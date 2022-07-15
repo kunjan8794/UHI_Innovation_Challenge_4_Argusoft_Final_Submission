@@ -1,5 +1,6 @@
 package com.uhi.ui.common.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.uhi.utils.localization.LocaleHelperActivityDelegateImpl
 import com.uhi.data.local.pref.Preference
 import com.uhi.ui.common.MY_UPDATE_REQUEST_CODE
 import com.uhi.utils.extention.hideKeyboard
@@ -19,6 +21,11 @@ import com.uhi.utils.extention.onViewBinding
 import javax.inject.Inject
 
 abstract class BaseActivity<B : ViewBinding> : AppCompatActivity(), View.OnClickListener {
+    private val localeDelegate = LocaleHelperActivityDelegateImpl()
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(localeDelegate.attachBaseContext(newBase))
+    }
 
     @Inject
     lateinit var preference: Preference

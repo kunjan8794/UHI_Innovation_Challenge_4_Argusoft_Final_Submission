@@ -28,7 +28,6 @@ class AppModule {
         return EncPref.Builder()
             .serPrefName(context.packageName)
             .setContext(context)
-            .setDebuggable(BuildConfig.DEBUG)
             .build()
     }
 
