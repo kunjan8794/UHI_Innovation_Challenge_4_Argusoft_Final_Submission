@@ -23,6 +23,7 @@ public class TriagingServiceImpl implements TriagingService {
         Map<String, String> results = new LinkedHashMap<>();
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
+        removeMultipleClassifications(results);
         return results;
     }
 
@@ -177,5 +178,10 @@ public class TriagingServiceImpl implements TriagingService {
         //AND
         //ONE OR MORE OF THE FOLLOWING:
         // COUGH/RUNNY NOSE/RED EYES
+    }
+
+    private static void removeMultipleClassifications(Map<String, String> results) {
+        if (results.containsKey(SEVERE_PNEUMONIA) && results.containsKey(PNEUMONIA))
+            results.remove(SEVERE_PNEUMONIA);
     }
 }
