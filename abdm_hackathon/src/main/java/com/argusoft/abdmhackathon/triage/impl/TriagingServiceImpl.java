@@ -21,10 +21,12 @@ public class TriagingServiceImpl implements TriagingService {
     private static String SEVERE_PNEUMONIA_DESC = "The child seems to have STRIDORS & the " +
             "Oxygen saturation levels are below 90%. There is a very high possibility of the child having severe Pneumonitis.";
     private static String PNEUMONIA = "Probable Pneumonia";
-    private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing. \nWe suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
-    private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing. \nWe suggest checking exposure of HIV \nor \nconduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing.";
+
+    private static String PNEUMONIA_DESC = "We suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing.";
     private static String PNEUMONIA_COUGH_GTE14_DESC = "The child has prolonged coughing. It can be a probable case of Pneumonia.";
-    private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing. \n We suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing.";
 
     private static String COUGHORCOLD = "Cough Or Cold";
     private static String COUGHORCOLD_DESC = "";
@@ -63,20 +65,25 @@ public class TriagingServiceImpl implements TriagingService {
         String symptoms = mapOfAnswers.get(23);
 
         if (symptoms != null) {
+
+            if (symptoms.contains("COUGH_GT14")) {
+                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+            }
+
             if (symptoms.contains("CHEST_INDRAWING")) {
                 results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);
             }
 
             if (symptoms.contains("RECURRENT_WHEEZING")) {
-                results.put(PNEUMONIA, PNEUMONIA_DESC_WHEEZING);
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC_WHEEZING);
             }
 
             if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                results.put(PNEUMONIA, PNEUMONIA_DIFFICULTY_BREATHING_DESC);
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DIFFICULTY_BREATHING_DESC);
             }
 
-            if (symptoms.contains("COUGH_GT14")) {
-                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+            if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
+                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC);
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
@@ -251,19 +258,19 @@ public class TriagingServiceImpl implements TriagingService {
 
     private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
         String feverResults = mapOfAnswers.get(24);
-        if(feverResults == null){
+        if (feverResults == null) {
             return;
         }
 //        boolean oralSoresMouthUlcers=Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
 
-        if(feverResults.contains("TEMP_GTE_37_5")){
-            results.put(FEVER,FEVER_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5")) {
+            results.put(FEVER, FEVER_DESC);
         }
-        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")){
-            results.put(POSSIBLE_BONE_INFECTION,POSSIBLE_BONE_INFECTION_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
+            results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);
         }
-        if(feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")){
-            results.put(POSSIBLE_URINE_INFECTION,POSSIBLE_URINE_INFECTION_DESC);
+        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
+            results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);
         }
 
     }
