@@ -7,18 +7,26 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 @Transactional
 public class TriagingServiceImpl implements TriagingService {
 
     private static String SEVERE_PNEUMONIA = "Severe Pneumonia";
+    private static String SEVERE_PNEUMONIA_ALL = "Very Severe Pneumonia";
+
+    private static String SEVERE_PNEUMONIA_STRIDOR_DESC = "The child seems to have STRIDORS." +
+            "We recommend checking Oxygen saturation levels as well. There is a very high possibility of the child having severe Pneumonitis.";
+    private static String SEVERE_PNEUMONIA_OXY_SAT_DESC = "The child has Oxygen saturation level below 90%. " +
+            "There is a very high possibility of the child having severe Pneumonitis.";
+
     private static String SEVERE_PNEUMONIA_DESC = "The child seems to have STRIDORS & the " +
             "Oxygen saturation levels are below 90%. There is a very high possibility of the child having severe Pneumonitis.";
-    private static String PNEUMONIA = "Pneumonia";
-    private static String PNEUMONIA_DESC = "The child has chest indrawing. We suggest checking exposure of HIV or conduct Inhaled broncholar trial.";
-    private static String PNEUMONIA_DESC_WHEEZING = "";
+    private static String PNEUMONIA = "Probable Pneumonia";
+    private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing. \nWe suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_DESC_WHEEZING = "The child has recurrent wheezing. \nWe suggest checking exposure of HIV \nor \nconduct Inhaled broncholar trial.";
+    private static String PNEUMONIA_COUGH_GTE14_DESC = "The child has prolonged coughing. It can be a probable case of Pneumonia.";
+    private static String PNEUMONIA_DIFFICULTY_BREATHING_DESC = "The child faces difficulty while breathing. \n We suggest checking exposure of HIV \nor\n conduct Inhaled broncholar trial.";
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
@@ -37,8 +45,21 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        if (Objects.equals(ifForStriderInCalmChild, "YES") || Objects.equals(oxygenSaturation, "LT90")) {
-            results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
+        String systoms = mapOfAnswers.get(23);
+        
+        if (systoms != null) {
+            
+        }
+        
+        if (Objects.equals(ifForStriderInCalmChild, "YES")) {
+            results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
+        }
+        if (Objects.equals(oxygenSaturation, "LT90")) {
+            results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_OXY_SAT_DESC);
+        }
+
+        if (Objects.equals(oxygenSaturation, "LT90") && Objects.equals(ifForStriderInCalmChild, "YES")) {
+            results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_DESC);
         }
     }
 
@@ -54,24 +75,27 @@ public class TriagingServiceImpl implements TriagingService {
         //COUGH FOR HOW LONG?  >=14
         //OR
         //DIFFICULTY BREATHING FOR HOW LONG? >=14
+        if(!(mapOfAnswers.containsKey(7) && mapOfAnswers.containsKey(10) && mapOfAnswers.containsKey(4)) && mapOfAnswers.containsKey(11) && mapOfAnswers.containsKey(14)) {
+            return;
+        }
         String foundResult = null;
 
         String chestIndrawing = mapOfAnswers.get(7);
         String wheezing = mapOfAnswers.get(10);
         String recurrentWheezing = mapOfAnswers.get(11);
-        String coughHowLong = mapOfAnswers.get(4);
+//        String coughHowLong = mapOfAnswers.get(4);
         String difficultyInBreathing = mapOfAnswers.get(14);
 
         if (chestIndrawing != null && chestIndrawing.equals("YES")) {
-            results.put(PNEUMONIA, PNEUMONIA_DESC);
+            results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);
         }
 
         if (wheezing != null && recurrentWheezing != null && wheezing.equals("YES") && recurrentWheezing.equals("YES"))
-            results.put(PNEUMONIA, PNEUMONIA_DESC);
-        if (coughHowLong != null && coughHowLong.equals("GTE14"))
-            results.put(PNEUMONIA, PNEUMONIA_DESC);
+            results.put(PNEUMONIA, PNEUMONIA_DESC_WHEEZING);
+//        if (coughHowLong != null && coughHowLong.equals("GTE14"))
+//            results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
         if (difficultyInBreathing != null && difficultyInBreathing.equals("GTE14"))
-            results.put(PNEUMONIA, PNEUMONIA_DESC);
+            results.put(PNEUMONIA, PNEUMONIA_DIFFICULTY_BREATHING_DESC);
 
 
         //WHEEZING = YES
