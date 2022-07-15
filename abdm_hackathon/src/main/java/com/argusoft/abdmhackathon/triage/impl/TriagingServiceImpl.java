@@ -38,12 +38,48 @@ public class TriagingServiceImpl implements TriagingService {
         Map<String, String> results = new LinkedHashMap<>();
         checkForSeverePneumonia(mapOfAnswers, results);
         checkForPneumonia(mapOfAnswers, results);
+        checkForCoughSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
         checkForCoughOrCold(mapOfAnswers,results);
         checkForDiarrhoeaWithSevereDehydration(mapOfAnswers,results);
         checkForDiarrhoeaWithSomeDehydration(mapOfAnswers,results);
         return results;
+    }
+
+    public static void checkForCoughSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+        String symptoms = mapOfAnswers.get(23);
+
+        if (symptoms != null) {
+            if (symptoms.contains("CHEST_INDRAWING")) {
+                results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);
+            }
+
+            if (symptoms.contains("RECURRENT_WHEEZING")) {
+                results.put(PNEUMONIA, PNEUMONIA_DESC_WHEEZING);
+            }
+
+            if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
+                results.put(PNEUMONIA, PNEUMONIA_DIFFICULTY_BREATHING_DESC);
+            }
+
+            if (symptoms.contains("COUGH_GT14")) {
+                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+            }
+
+            if (symptoms.contains("STRIDOR_IN_CHILD")) {
+                System.out.println("+++++++");
+                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
+            }
+
+            if (symptoms.contains("OXYGEN_SATURATION_LT90")) {
+                results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_OXY_SAT_DESC);
+            }
+
+            if (symptoms.contains("STRIDOR_IN_CHILD") && symptoms.contains("OXYGEN_SATURATION_LT90")) {
+                results.put(SEVERE_PNEUMONIA_ALL, SEVERE_PNEUMONIA_DESC);
+            }
+        }
     }
 
     private static void checkForSeverePneumonia(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
@@ -53,11 +89,6 @@ public class TriagingServiceImpl implements TriagingService {
         String foundResult = null;
         String ifForStriderInCalmChild = mapOfAnswers.get(9);
         String oxygenSaturation = mapOfAnswers.get(12);
-        String systoms = mapOfAnswers.get(23);
-        
-        if (systoms != null) {
-            
-        }
         
         if (Objects.equals(ifForStriderInCalmChild, "YES")) {
             results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
