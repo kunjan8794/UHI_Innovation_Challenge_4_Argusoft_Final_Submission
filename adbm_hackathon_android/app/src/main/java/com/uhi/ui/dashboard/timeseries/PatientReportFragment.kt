@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
 
-    private lateinit var triagingAdapter: PatientReportAdapter
+    private lateinit var patientReportAdapter: PatientReportAdapter
     private lateinit var glideRequests: GlideRequests
     private val dashboardViewModel: DashboardViewModel by viewModels()
 
@@ -26,7 +26,8 @@ class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
 
     override fun initView() {
         glideRequests = GlideApp.with(this)
-        triagingAdapter = PatientReportAdapter(arrayListOf(), glideRequests, this)
+        patientReportAdapter = PatientReportAdapter(arrayListOf(), glideRequests, this)
+        binding.recyclerView.adapter = patientReportAdapter
     }
 
     override fun initListener() {
@@ -38,7 +39,7 @@ class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
             apiResponse.handleListApiView(binding.progressLayout, onClickListener = {
                 dashboardViewModel.getQuestion()
             }) {
-                it?.let { it1 -> triagingAdapter.addAll(it1) }
+                it?.let { it1 -> patientReportAdapter.addAll(it1) }
                 it.timber()
             }
         }

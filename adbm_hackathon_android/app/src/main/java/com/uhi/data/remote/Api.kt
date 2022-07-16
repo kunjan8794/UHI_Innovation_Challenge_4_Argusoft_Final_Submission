@@ -9,5 +9,5 @@ interface Api {
 
     suspend fun getResults(request: Map<String, Any?>,previousClassifications: Map<String, Any?>): ApiResponse<Map<String, String>?>
 
-    suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<String, Float>>>?>
+    suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<Date, Float>>>?>
 }

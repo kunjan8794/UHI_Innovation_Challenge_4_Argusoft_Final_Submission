@@ -3,7 +3,7 @@ spring:
         livereload:
             enabled: true
     datasource:
-        url: jdbc:postgresql://localhost:5434/abdm_hackathon
+        url: jdbc:postgresql://localhost:5432/abdm_hackathon
         username: postgres
         password: argusadmin
     jpa:
