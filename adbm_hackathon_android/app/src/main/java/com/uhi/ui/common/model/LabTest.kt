@@ -14,7 +14,7 @@ data class LabTest(
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class LabTestData(
-        var date: String? = null,
+        var date: Date? = null,
         var value: Float? = null,
     ) : Parcelable
 }

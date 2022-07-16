@@ -18,6 +18,6 @@ interface ApiService {
     suspend fun getResults(@Body since: TriagingRequest?): Response<Map<String, String>?>
 
     @GET("mobile/get-lab-data")
-    suspend fun getLabData(): Response<Map<Int, Map<String, Map<String, Float>>>?>
+    suspend fun getLabData(): Response<Map<Int, Map<String, Map<Date, Float>>>?>
 
 }
