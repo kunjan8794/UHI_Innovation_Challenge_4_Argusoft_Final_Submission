@@ -13,12 +13,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/positiveRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/negativeRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

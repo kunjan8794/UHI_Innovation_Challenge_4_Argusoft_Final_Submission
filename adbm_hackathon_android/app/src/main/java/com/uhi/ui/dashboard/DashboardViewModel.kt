@@ -1,4 +1,4 @@
-package com.uhi.ui.dashboard.quetion
+package com.uhi.ui.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,18 +6,21 @@ import androidx.lifecycle.viewModelScope
 import com.uhi.data.local.pref.Preference
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiResponse
-import com.uhi.ui.common.model.Album
+import com.uhi.ui.common.model.LabTest
 import com.uhi.ui.common.model.Question
+import com.uhi.utils.extention.whenFailed
 import com.uhi.utils.extention.whenSuccess
 import com.uhi.utils.listener.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @HiltViewModel
-class QuestionViewModel @Inject constructor(
+class DashboardViewModel @Inject constructor(
     private val api: Api,
     private val preference: Preference
 ) : ViewModel() {
@@ -29,12 +32,16 @@ class QuestionViewModel @Inject constructor(
     private val _resultApiState = SingleLiveEvent<ApiResponse<Map<String, String>?>>()
     val resultApiState: LiveData<ApiResponse<Map<String, String>?>>
         get() = _resultApiState
+
+    private val _labDataApiState = SingleLiveEvent<ApiResponse<List<LabTest>>>()
+    val labDataApiState: LiveData<ApiResponse<List<LabTest>>>
+        get() = _labDataApiState
+
     private var job: Job? = null
+
     val previousClassifications = HashMap<String, String?>()
 
-    init {
-        getQuestion()
-    }
+
 
     fun getQuestion(questionId: Int? = null, answer: String? = null, isRefresh: Boolean = false) {
         _apiState.value = ApiResponse.Loading(isRefresh)
@@ -56,6 +63,35 @@ class QuestionViewModel @Inject constructor(
         job = viewModelScope.launch {
             _resultApiState.value = api.getResults(map, previousClassifications).whenSuccess {
                 it?.let { it1 -> previousClassifications.putAll(it1) }
+            }
+        }
+    }
+
+    fun getLabData(patientId: Int) {
+        _labDataApiState.value = ApiResponse.Loading()
+        job = viewModelScope.launch {
+            val response = api.getLabData()
+            response.whenSuccess { map ->
+                val testData = ArrayList<LabTest>()
+                map?.get(patientId)?.forEach {
+                    val labTest = LabTest()
+                    labTest.title = it.key
+                    val labTestData = ArrayList<LabTest.LabTestData>()
+                    it.value.forEach { (t, u) ->
+                        labTestData.add(LabTest.LabTestData(t, u))
+                    }
+                    labTest.labTestData = labTestData
+                    testData.add(labTest)
+                }
+                _labDataApiState.value=ApiResponse.Success(testData)
+            }
+            response.whenFailed {
+                _labDataApiState.value = when (response) {
+                    is ApiResponse.ApiError -> ApiResponse.ApiError(response.apiErrorMessage)
+                    is ApiResponse.NoInternetConnection -> ApiResponse.NoInternetConnection
+                    is ApiResponse.ServerError -> ApiResponse.ServerError(response.errorMessage)
+                    else -> ApiResponse.ServerError("")
+                }
             }
         }
     }

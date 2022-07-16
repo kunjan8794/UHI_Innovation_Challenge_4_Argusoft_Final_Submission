@@ -21,8 +21,8 @@ public class TriagingServiceImpl implements TriagingService {
         List<TriagingResultsDto> results = new LinkedList<>();
         checkForCoughSymptoms(mapOfAnswers, results,preferredLanguage);
         checkForDiarrhoea(mapOfAnswers, results,preferredLanguage);
-//        checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
-//        checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
+        checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
+        checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
         return results;
     }
 
