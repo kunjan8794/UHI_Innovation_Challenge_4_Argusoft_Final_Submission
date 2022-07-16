@@ -32,15 +32,13 @@ public class MedicinesMasterServiceImpl implements MedicinesMasterService {
     public  List<MedicinesMasterDto> getMedicineByCodes(List<String> codes){
         return MedicinesMasterMapper.convertModelListToDto(medicinesMasterDao.getMedicinesbyCodes(codes));
     }
-    public Map<String, List<MedicineList>>  getMedicineByCode(String codes){
+    public List<MedicineList> getMedicineByCode(String codes){
         List<String> codeList = Arrays.asList(codes.replace(" ", "").split(","));
         System.out.println(codeList);
         Gson gson = new Gson();
-        Map<String, List<MedicineList>> result = new HashMap<>();
         List<MedicineList> medicineAllLists= new LinkedList<>();
         for (String code : codeList) {
             List<MedicinesMaster> medicinesMasterList = medicinesMasterDao.getAllByCode(code);
-            System.out.println(medicinesMasterList);
             if (medicinesMasterList.size() > 0) {
                 for (MedicinesMaster medicine : medicinesMasterList) {
                     System.out.println(medicine.getMedicine());
@@ -49,8 +47,8 @@ public class MedicinesMasterServiceImpl implements MedicinesMasterService {
                 }
             }
             /*List<String> medicines = medicinesMasterList.stream().map(value -> value.getMedicine()).collect(Collectors.toList());*/
-            result.put(code, medicineAllLists);
+            /*result.put(code, medicineAllLists);*/
         };
-        return result;
+        return medicineAllLists;
     }
 }

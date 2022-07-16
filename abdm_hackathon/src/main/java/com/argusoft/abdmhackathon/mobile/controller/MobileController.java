@@ -62,7 +62,7 @@ public class MobileController {
         return medicinesMasterService.getMedicineByCodes(codes);
     }
     @RequestMapping(value = "medicines-by-code", method = RequestMethod.POST)
-    public Map<String, List<MedicineList>>  getMedicinesByCodes(@RequestParam String codes) {
+    public List<MedicineList>  getMedicinesByCodes(@RequestParam String codes) {
         System.out.println(codes);
         return medicinesMasterService.getMedicineByCode(codes);
     }

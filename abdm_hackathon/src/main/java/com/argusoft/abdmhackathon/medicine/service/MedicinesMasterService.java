@@ -13,5 +13,5 @@ public interface MedicinesMasterService {
 
     List<MedicinesMasterDto> getMedicineByCodes(List<String> codes);
 
-    Map<String, List<MedicineList>> getMedicineByCode(String codes);
+    List<MedicineList> getMedicineByCode(String codes);
 }
