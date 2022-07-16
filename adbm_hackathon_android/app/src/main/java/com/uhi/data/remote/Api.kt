@@ -11,7 +11,7 @@ interface Api {
 
     suspend fun getResults(request: Map<String, Any?>, previousClassifications: Map<String, Any?>): ApiResponse<List<TriagingResults>?>
 
-    suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<String, Float>>>?>
+    suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<Date, Float>>>?>
 
     suspend fun getMedicine(code: String): ApiResponse<List<MedicineList>>
 

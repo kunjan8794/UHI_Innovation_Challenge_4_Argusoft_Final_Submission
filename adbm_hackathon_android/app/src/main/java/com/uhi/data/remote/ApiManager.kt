@@ -1,5 +1,6 @@
 package com.uhi.data.remote
 
+import com.squareup.moshi.Moshi
 import com.uhi.BuildConfig
 import com.uhi.data.local.pref.Preference
 import com.uhi.ui.common.model.MedicineList
@@ -33,7 +34,7 @@ class ApiManager(
         return@lazy Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient.build())
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(CustomDateAdapter()).build()))
             .build()
             .create(ApiService::class.java)
     }
@@ -46,7 +47,7 @@ class ApiManager(
         return executeApiHelper(networkHelper) { apiService.getResults(TriagingRequest(request, previousClassifications, preference.getAppLanguage())) }
     }
 
-    override suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<String, Float>>>?> {
+    override suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<Date, Float>>>?> {
         return executeApiHelper(networkHelper) { apiService.getLabData() }
     }
 

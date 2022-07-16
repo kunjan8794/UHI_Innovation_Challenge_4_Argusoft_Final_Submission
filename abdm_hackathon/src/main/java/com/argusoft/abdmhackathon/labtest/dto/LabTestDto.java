@@ -11,6 +11,7 @@ package com.argusoft.abdmhackathon.labtest.dto;
 public class LabTestDto {
     private String name;
     private Integer code;
+    private String desc;
 
     public String getName() {
         return name;
@@ -26,5 +27,13 @@ public class LabTestDto {
 
     public void setCode(Integer code) {
         this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

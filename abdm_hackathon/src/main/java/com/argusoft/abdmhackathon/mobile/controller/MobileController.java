@@ -29,7 +29,7 @@ public class MobileController {
     @Autowired
     LabTestService labTestService;
 
-    @RequestMapping(value = "/lab-tests-by-codes", method = RequestMethod.GET)
+    @RequestMapping(value = "lab-tests-by-codes", method = RequestMethod.GET)
     public List<LabTestDto> getLabTestsByCodes(@RequestParam String codes) {
         return labTestService.getLabTestsByCodes(codes);
     }
@@ -62,7 +62,7 @@ public class MobileController {
         System.out.println(codes);
         return medicinesMasterService.getMedicineByCodes(codes);
     }
-    @RequestMapping(value = "medicines-by-code", method = RequestMethod.POST)
+    @RequestMapping(value = "medicines-by-code", method = RequestMethod.GET)
     public List<MedicineList>  getMedicinesByCodes(@RequestParam String codes) {
         System.out.println(codes);
         return medicinesMasterService.getMedicineByCode(codes);

@@ -17,7 +17,7 @@ interface ApiService {
     suspend fun getResults(@Body since: TriagingRequest?): Response<List<TriagingResults>?>
 
     @GET("mobile/get-lab-data")
-    suspend fun getLabData(): Response<Map<Int, Map<String, Map<String, Float>>>?>
+    suspend fun getLabData(): Response<Map<Int, Map<String, Map<Date, Float>>>?>
 
     @GET("mobile/medicines-by-code")
     suspend fun getMedicines(@Query("codes") codes:String): Response<List<MedicineList>>

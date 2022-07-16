@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,6 +24,7 @@ public class TriagingServiceImpl implements TriagingService {
         checkForDiarrhoea(mapOfAnswers, results,preferredLanguage);
         checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
         checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
+        removeMultipleClassificationsForAllTraige(results);
         return results;
     }
 
@@ -140,6 +142,7 @@ public class TriagingServiceImpl implements TriagingService {
                 severeDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SEVERE_DEHYDRATION);
                 severeDehydrationResult.setSymptoms(severeDehydrationSymptoms);
                 severeDehydrationResult.setSuggestions(severeDehydrationSuggestions);
+                severeDehydrationResult.setCode("DIARRHOEA");
                 results.add(severeDehydrationResult);
             } else {
                 List<String> symptomsList = new ArrayList<>();
@@ -166,6 +169,7 @@ public class TriagingServiceImpl implements TriagingService {
                     someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
                     someDehydrationResult.setSymptoms(someDehydrationSymptoms);
 //                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+                    someDehydrationResult.setCode("DIARRHOEA");
                     results.add(someDehydrationResult);
                 }
             }
@@ -360,6 +364,7 @@ public class TriagingServiceImpl implements TriagingService {
             boneInfectionSuggestions.add(ConstantUtil.POSSIBLE_BONE_INFECTION_DESC);
             boneInfectionResult.setSymptoms(boneInfectionSymptoms);
             boneInfectionResult.setSuggestions(boneInfectionSuggestions);
+            boneInfectionResult.setCode("BONE_INFECTION");
             results.add(boneInfectionResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
@@ -373,13 +378,14 @@ public class TriagingServiceImpl implements TriagingService {
             urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_DESC);
             urineInfectionResult.setSymptoms(urineInfectionSymptoms);
             urineInfectionResult.setSuggestions(urineInfectionSuggestions);
+            urineInfectionResult.setCode("URINE_INFECTION");
             results.add(urineInfectionResult);
         }
 
     }
 
     private void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
-        String feverResults = mapOfAnswers.get(24).replace(" ", "");
+        String feverResults = mapOfAnswers.get(24) != null ? mapOfAnswers.get(24).replace(" ", "") : null;
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
             return;
@@ -422,6 +428,7 @@ public class TriagingServiceImpl implements TriagingService {
             }
             severeMeaslesResult.setSymptoms(severeMeaslesSymptoms);
             severeMeaslesResult.setSuggestions(severeMeaslesSuggestions);
+            severeMeaslesResult.setCode("MEASLES");
             results.add(severeMeaslesResult);
         }
         if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
@@ -447,6 +454,7 @@ public class TriagingServiceImpl implements TriagingService {
             }
             measlesWithEyeorMouthInfectionResult.setSymptoms(severeMeaslesSymptoms);
             measlesWithEyeorMouthInfectionResult.setSuggestions(severeMeaslesSuggestions);
+            measlesWithEyeorMouthInfectionResult.setCode("MEASLES");
             results.add(measlesWithEyeorMouthInfectionResult);
         }
     }
@@ -504,7 +512,20 @@ public class TriagingServiceImpl implements TriagingService {
         //ONE OR MORE OF THE FOLLOWING:
         // COUGH/RUNNY NOSE/RED EYES
     }
-
+    private static void removeMultipleClassificationsForAllTraige(List<TriagingResultsDto> results) {
+        List<TriagingResultsDto>  severeMeaslesResult=results.stream().filter(data -> data.getDisease().equals(ConstantUtil.SEVERE_COMPLICATED_MEASLES)).collect(Collectors.toList());
+            if(severeMeaslesResult.size() >0){
+                List<TriagingResultsDto>  measlesWithComplicationResult=results.stream().filter(data -> data.getDisease().equals(ConstantUtil.MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION)).collect(Collectors.toList());
+                if(measlesWithComplicationResult.size()>0){
+                    results.stream()
+                            .filter(data-> data.getDisease().equals(ConstantUtil.SEVERE_COMPLICATED_MEASLES))
+                            .forEach(d -> {
+                                d.getSuggestions().addAll(measlesWithComplicationResult.get(0).getSymptoms());
+                            });
+                    results.remove(ConstantUtil.MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION);
+                }
+            }
+    }
     private static void removeMultipleClassifications(Map<String, String> results) {
         if (results.containsKey(ConstantUtil.SEVERE_PNEUMONIA))
             results.remove(ConstantUtil.PNEUMONIA);
