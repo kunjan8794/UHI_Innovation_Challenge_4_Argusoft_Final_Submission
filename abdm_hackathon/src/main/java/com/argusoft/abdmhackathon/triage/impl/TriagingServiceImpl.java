@@ -379,7 +379,7 @@ public class TriagingServiceImpl implements TriagingService {
     }
 
     private void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
-        String feverResults = mapOfAnswers.get(24).replace(" ", "");
+        String feverResults = mapOfAnswers.get(24) != null ? mapOfAnswers.get(24).replace(" ", "") : null;
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
             return;
