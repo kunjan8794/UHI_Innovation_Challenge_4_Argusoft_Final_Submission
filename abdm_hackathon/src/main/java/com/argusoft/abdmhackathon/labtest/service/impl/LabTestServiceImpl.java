@@ -2,14 +2,15 @@ package com.argusoft.abdmhackathon.labtest.service.impl;
 
 import com.argusoft.abdmhackathon.labtest.dao.LabTestDao;
 import com.argusoft.abdmhackathon.labtest.dto.LabDataDto;
+import com.argusoft.abdmhackathon.labtest.dto.LabTestDto;
 import com.argusoft.abdmhackathon.labtest.model.LabTest;
 import com.argusoft.abdmhackathon.labtest.service.LabTestService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -27,17 +28,20 @@ public class LabTestServiceImpl implements LabTestService {
     private LabTestDao labTestDao;
 
     @Override
-    public Map<String, List<String>> getLabTestsByCodes(String codes) {
+    public List<LabTestDto> getLabTestsByCodes(String codes) {
         List<String> codeList = Arrays.asList(codes.replace(" ", "").split(","));
-        Map<String, List<String>> result = new HashMap<>();
+        Gson gson = new Gson();
+        List<LabTestDto> list = new ArrayList<>();
         codeList.forEach(code -> {
             List<LabTest> labTestList = labTestDao.getAllByCode(code);
             if (labTestList.size() > 0) {
-                List<String> tests = labTestList.stream().map(value -> value.getTest()).collect(Collectors.toList());
-                result.put(code, tests);
+                for (LabTest labTest : labTestList) {
+                    System.out.println(labTest.getTest());
+                    list.add(gson.fromJson(labTest.getTest(), LabTestDto.class));
+                }
             }
         });
-        return result;
+        return list;
     }
 
     public Map<Integer, Map<String, Map<Date, Float>>> getLabReportDateForEachPatient() {

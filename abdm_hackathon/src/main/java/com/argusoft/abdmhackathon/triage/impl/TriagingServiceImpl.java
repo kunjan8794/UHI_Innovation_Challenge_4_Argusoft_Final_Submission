@@ -68,6 +68,7 @@ public class TriagingServiceImpl implements TriagingService {
                 severePneumoniaResult.setDisease(ConstantUtil.SEVERE_PNEUMONIA);
                 severePneumoniaResult.setSymptoms(severePneumoniaSymptoms);
                 severePneumoniaResult.setSuggestions(severePneumoniaSuggestions);
+                severePneumoniaResult.setCode("PNEUMONIA");
                 results.add(severePneumoniaResult);
             } else {
                 if (symptoms.contains("COUGH_GT14")) {
@@ -97,6 +98,7 @@ public class TriagingServiceImpl implements TriagingService {
 
                 if (pneumoniaSymptoms.size() > 0) {
                     pneumoniaResult.setDisease(ConstantUtil.PNEUMONIA);
+                    pneumoniaResult.setCode("PNEUMONIA");
                     pneumoniaResult.setSymptoms(pneumoniaSymptoms);
                     pneumoniaResult.setSuggestions(pneumoniaSuggestions);
                     results.add(pneumoniaResult);
@@ -115,11 +117,23 @@ public class TriagingServiceImpl implements TriagingService {
         List<String> severeDehydrationSymptoms=new ArrayList<>();
 
         if (symptoms != null) {
+            Boolean isUnableToDrinkWater = symptoms.contains("COMPLETELY_UNABLE_TO_DRINK_WATER");
+            Boolean isVomitsImmediately = symptoms.contains("VOMITS_IMMEDIATELY_OR_EVERYTHING");
+            Boolean isDrinksPoorly = symptoms.contains("DRINKS_POORLY");
+            Boolean isDrinksEagerly = symptoms.contains("DRINKS_EAGERLY_OR_THIRSTILY");
 
-            if (symptoms.contains("SUNKEN_EYES") && symptoms.contains("SKIN_PINCH_VERY_SLOWLY")) {
+            if (symptoms.contains("SUNKEN_EYES") && symptoms.contains("SKIN_PINCH_VERY_SLOWLY") &&
+                    (isUnableToDrinkWater || isVomitsImmediately || isDrinksPoorly)) {
+                if (isUnableToDrinkWater)
+                    severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "COMPLETELY_UNABLE_TO_DRINK_WATER", preferredLanguage));
+                if (isVomitsImmediately)
+                    severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "VOMITS_IMMEDIATELY_OR_EVERYTHING", preferredLanguage));
+                if (isDrinksPoorly)
+                    severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "DRINKS_POORLY", preferredLanguage));
+
                 severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SUNKEN_EYES",preferredLanguage));
                 severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SKIN_PINCH_VERY_SLOWLY",preferredLanguage));
-                severeDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
+//                severeDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
             }
 
             if (severeDehydrationSymptoms.size() > 0) {
@@ -140,11 +154,18 @@ public class TriagingServiceImpl implements TriagingService {
                         someDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, s, preferredLanguage));
                     }
                 }
-                if (symptomCount >= 2) {
+                if (symptomCount >= 2 && (isUnableToDrinkWater || isDrinksEagerly || isDrinksPoorly)) {
+                    if (isUnableToDrinkWater)
+                        severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "COMPLETELY_UNABLE_TO_DRINK_WATER", preferredLanguage));
+                    if (isDrinksEagerly)
+                        severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "DRINKS_EAGERLY_OR_THIRSTILY", preferredLanguage));
+                    if (isDrinksPoorly)
+                        severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, "DRINKS_POORLY", preferredLanguage));
+
                     someDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
                     someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
                     someDehydrationResult.setSymptoms(someDehydrationSymptoms);
-                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+//                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
                     results.add(someDehydrationResult);
                 }
             }
@@ -358,7 +379,7 @@ public class TriagingServiceImpl implements TriagingService {
     }
 
     private void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
-        String feverResults = mapOfAnswers.get(24).replace(" ", "");
+        String feverResults = mapOfAnswers.get(24) != null ? mapOfAnswers.get(24).replace(" ", "") : null;
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
             return;
@@ -487,6 +508,8 @@ public class TriagingServiceImpl implements TriagingService {
     private static void removeMultipleClassifications(Map<String, String> results) {
         if (results.containsKey(ConstantUtil.SEVERE_PNEUMONIA))
             results.remove(ConstantUtil.PNEUMONIA);
+        if (results.containsKey(ConstantUtil.DIARRHOEA_SEVERE_DEHYDRATION))
+            results.remove(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
     }
 
     private static void removePreviousClassifications(Map<String, String> mapOfAnswers, Map<String, String> previousClassifications) {
