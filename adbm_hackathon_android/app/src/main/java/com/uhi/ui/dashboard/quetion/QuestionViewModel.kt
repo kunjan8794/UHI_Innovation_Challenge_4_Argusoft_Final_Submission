@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.uhi.data.local.pref.Preference
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiResponse
-import com.uhi.ui.common.model.Album
 import com.uhi.ui.common.model.Question
 import com.uhi.utils.extention.whenSuccess
 import com.uhi.utils.listener.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

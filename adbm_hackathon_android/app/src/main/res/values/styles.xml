@@ -47,6 +47,7 @@
 
     <style name="MaterialCardView" parent="Widget.Material3.CardView.Elevated">
         <item name="cornerRadius">@dimen/_8sdp</item>
+        <item name="cardBackgroundColor">@color/colorWhite</item>
     </style>
 
     <style name="MaterialCardView.Filled" parent="Widget.Material3.CardView.Filled">
@@ -60,6 +61,9 @@
     </style>
 
     <style name="TextView.Title" parent="TextAppearance.Material3.TitleLarge"/>
+    <style name="TextView.Title.Bold" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="TextView.Medium" parent="TextAppearance.Material3.TitleMedium"/>
 

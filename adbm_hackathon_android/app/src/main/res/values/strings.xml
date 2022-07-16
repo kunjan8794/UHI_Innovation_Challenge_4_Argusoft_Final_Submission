@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UHI</string>
+    <string name="app_name">Clinical Support Systems</string>
 
     <!--Label Text-->
     <string name="label_open_gallery">Open Gallery</string>
@@ -36,8 +36,5 @@
     <string name="title_attention">Attention</string>
     <string name="button_continue">" Continue Consultation"</string>
     <string name="button_go_to">Go to Treatment</string>
-    <string name="disease_title">Title</string>
-    <string name="disease_value">37.4</string>
-    <string name="disease_unit">mg/dl</string>
-    <string name="parameter_history_graph">Parameter History Graph</string>
+    <string name="select_triaging">Select Triaging</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.uhi.data.remote
 
 import com.uhi.BuildConfig
-import com.uhi.ui.common.model.Album
 import com.uhi.ui.common.model.Question
 import com.uhi.ui.common.model.TriagingRequest
 import okhttp3.OkHttpClient
@@ -29,10 +28,6 @@ class ApiManager : Api {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(ApiService::class.java)
-    }
-
-    override suspend fun getRepository(request: Any): ApiResponse<List<Album>> {
-        return executeApiHelper { apiService.getRepositories(request) }
     }
 
     override suspend fun getQuestion(request: Map<String, Any?>): ApiResponse<Question> {

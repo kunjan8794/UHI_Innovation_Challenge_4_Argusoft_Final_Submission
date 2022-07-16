@@ -31,7 +31,7 @@ class AppModule {
             .build()
     }
 
-    @Singleton
+ /*   @Singleton
     @Provides
     fun provideAppRoomDatabase(@ApplicationContext context: Context): RoomDatabase {
         return Room.databaseBuilder(
@@ -39,7 +39,7 @@ class AppModule {
             RoomDatabase::class.java,
             "app.db"
         ).build()
-    }
+    }*/
 
     @Singleton
     @Provides

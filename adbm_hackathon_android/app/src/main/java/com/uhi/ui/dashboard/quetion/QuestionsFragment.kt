@@ -62,6 +62,7 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
                     map?.forEach {
                         index += 1
                         stringBuilder.append("$index. ${it.key}: ${it.value}")
+                        stringBuilder.append("\n")
                     }
                     context?.alertDialog {
                         setTitle(R.string.title_attention)
@@ -88,6 +89,7 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
                     showSnackBar(binding.progressLayout, getString(R.string.error_msg_select_answer))
                 } else {
                     questionViewModel.getResult(questionAdapter.getItemsList())
+//                    questionViewModel.getQuestion(question?.id, question?.answer, true)
                 }
             }
             R.id.previousImageView -> {
