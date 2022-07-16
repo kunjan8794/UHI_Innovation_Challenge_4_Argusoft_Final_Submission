@@ -55,54 +55,60 @@ public class TriagingServiceImpl implements TriagingService {
 
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
                 severePneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "STRIDOR_IN_CHILD", preferredLanguage));
-                severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_STRIDOR_DESC", preferredLanguage));
+                /*severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_STRIDOR_DESC", preferredLanguage));*/
             }
 
             if (symptoms.contains("OXYGEN_SATURATION_LT90")) {
                 severePneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "OXYGEN_SATURATION_LT90", preferredLanguage));
-                severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_OXY_SAT_DESC", preferredLanguage));
+                /*severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_OXY_SAT_DESC", preferredLanguage));*/
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD") || symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_DESC", preferredLanguage));
+                /*severePneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA_DESC", preferredLanguage));*/
             }
 
             if (severePneumoniaSymptoms.size() > 0) {
                 severePneumoniaResult.setDisease(ConstantUtil.getKeyByLanguage("SEVERE_PNEUMONIA", preferredLanguage));
                 severePneumoniaResult.setSymptoms(severePneumoniaSymptoms);
+                severePneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION1);
+                severePneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION2);
+                severePneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION3);
                 severePneumoniaResult.setSuggestions(severePneumoniaSuggestions);
                 severePneumoniaResult.setCode("PNEUMONIA");
                 results.add(severePneumoniaResult);
             } else {
                 if (symptoms.contains("COUGH_GT14")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "COUGH_GT14", preferredLanguage));
-                    pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_COUGH_GTE14_DESC", preferredLanguage));
+                    /*pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_COUGH_GTE14_DESC", preferredLanguage));*/
                 }
 
 
                 if (symptoms.contains("CHEST_INDRAWING")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "CHEST_INDRAWING", preferredLanguage));
-                    pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_CHEST_INDRAWING_DESC", preferredLanguage));
+                    /*pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_CHEST_INDRAWING_DESC", preferredLanguage));*/
                 }
 
                 if (symptoms.contains("RECURRENT_WHEEZING")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "RECURRENT_WHEEZING", preferredLanguage));
-                    pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DESC_WHEEZING", preferredLanguage));
+                    /*pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DESC_WHEEZING", preferredLanguage));*/
                 }
 
                 if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "DIFFICULTY_BREATHING_GT14", preferredLanguage));
-                    pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DIFFICULTY_BREATHING_DESC", preferredLanguage));
+                    /*pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DIFFICULTY_BREATHING_DESC", preferredLanguage));*/
                 }
 
                 if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                    pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DESC", preferredLanguage));
+                    /*pneumoniaSuggestions.add(ConstantUtil.getKeyByLanguage("PNEUMONIA_DESC", preferredLanguage));*/
                 }
 
                 if (pneumoniaSymptoms.size() > 0) {
                     pneumoniaResult.setDisease(ConstantUtil.getKeyByLanguage("PNEUMONIA", preferredLanguage));
                     pneumoniaResult.setCode("PNEUMONIA");
                     pneumoniaResult.setSymptoms(pneumoniaSymptoms);
+                    pneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION1);
+                    pneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION2);
+                    pneumoniaSuggestions.add(ConstantUtil.SEVERE_PNEUMONIA_SUGGESTION3);
                     pneumoniaResult.setSuggestions(pneumoniaSuggestions);
                     results.add(pneumoniaResult);
                 }
@@ -142,6 +148,10 @@ public class TriagingServiceImpl implements TriagingService {
             if (severeDehydrationSymptoms.size() > 0) {
                 severeDehydrationResult.setDisease(ConstantUtil.getKeyByLanguage("DIARRHOEA_SEVERE_DEHYDRATION", preferredLanguage));
                 severeDehydrationResult.setSymptoms(severeDehydrationSymptoms);
+                severeDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION1);
+                severeDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION2);
+                severeDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION3);
+                severeDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION4);
                 severeDehydrationResult.setSuggestions(severeDehydrationSuggestions);
                 severeDehydrationResult.setCode("DIARRHOEA");
                 results.add(severeDehydrationResult);
@@ -169,7 +179,11 @@ public class TriagingServiceImpl implements TriagingService {
                     someDehydrationSuggestions.add(ConstantUtil.getKeyByLanguage("ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC", preferredLanguage));
                     someDehydrationResult.setDisease(ConstantUtil.getKeyByLanguage("DIARRHOEA_SOME_DEHYDRATION", preferredLanguage));
                     someDehydrationResult.setSymptoms(someDehydrationSymptoms);
-//                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+                    someDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION1);
+                    someDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION2);
+                    someDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION3);
+                    someDehydrationSuggestions.add(ConstantUtil.DIARRHOEA_SUGGESSION4);
+                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
                     someDehydrationResult.setCode("DIARRHOEA");
                     results.add(someDehydrationResult);
                 }
@@ -348,7 +362,8 @@ public class TriagingServiceImpl implements TriagingService {
             List<String> feverSymptoms = new ArrayList<>();
             feverResult.setDisease(ConstantUtil.getKeyByLanguage("FEVER", preferredLanguage));
             feverSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
-            feverSuggestions.add(ConstantUtil.getKeyByLanguage("FEVER_DESC", preferredLanguage));
+            feverSuggestions.add(ConstantUtil.FEVER_SUGGESTION1);
+            feverSuggestions.add(ConstantUtil.FEVER_SUGGESTION2);
             feverResult.setSymptoms(feverSymptoms);
             feverResult.setSuggestions(feverSuggestions);
             results.add(feverResult);
@@ -362,7 +377,8 @@ public class TriagingServiceImpl implements TriagingService {
             boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
             boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "REFUSAL_USE_LIMB", preferredLanguage));
             boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "WARM_TENDER_SWOLLEN_JOINT_BONE", preferredLanguage));
-            boneInfectionSuggestions.add(ConstantUtil.getKeyByLanguage("POSSIBLE_BONE_INFECTION_DESC", preferredLanguage));
+            boneInfectionSuggestions.add(ConstantUtil.POSSIBLE_BONE_INFECTION_SUGGESTION1);
+            boneInfectionSuggestions.add(ConstantUtil.POSSIBLE_BONE_INFECTION_SUGGESTION2);
             boneInfectionResult.setSymptoms(boneInfectionSymptoms);
             boneInfectionResult.setSuggestions(boneInfectionSuggestions);
             boneInfectionResult.setCode("BONE_INFECTION");
@@ -376,7 +392,11 @@ public class TriagingServiceImpl implements TriagingService {
             urineInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("POSSIBLE_URINE_INFECTION", preferredLanguage));
             urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
             urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "DIFFICULTY_PASSING_URINE", preferredLanguage));
-            urineInfectionSuggestions.add(ConstantUtil.getKeyByLanguage("POSSIBLE_URINE_INFECTION_DESC", preferredLanguage));
+            urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_SUGGESTION1);
+            urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_SUGGESTION2);
+            urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_SUGGESTION3);
+            urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_SUGGESTION4);
+            urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_SUGGESTION5);
             urineInfectionResult.setSymptoms(urineInfectionSymptoms);
             urineInfectionResult.setSuggestions(urineInfectionSuggestions);
             urineInfectionResult.setCode("URINE_INFECTION");
@@ -408,7 +428,6 @@ public class TriagingServiceImpl implements TriagingService {
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             severeMeaslesResult.setDisease(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
-            severeMeaslesSuggestions.add(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES_DESC", preferredLanguage));
             if (cough) {
                 severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "COUGH", preferredLanguage));
             }
@@ -428,6 +447,11 @@ public class TriagingServiceImpl implements TriagingService {
                 severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MOUTH_SORES_ULCERS_DEEP", preferredLanguage));
             }
             severeMeaslesResult.setSymptoms(severeMeaslesSymptoms);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION1);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION2);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION3);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION4);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION5);
             severeMeaslesResult.setSuggestions(severeMeaslesSuggestions);
             severeMeaslesResult.setCode("MEASLES");
             results.add(severeMeaslesResult);
@@ -439,7 +463,6 @@ public class TriagingServiceImpl implements TriagingService {
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             measlesWithEyeorMouthInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
-            severeMeaslesSuggestions.add(ConstantUtil.getKeyByLanguage("MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MOUTH_SORES_ULCERS_NOT_DEEP", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "PUS_DRAINING_FROM_EYE", preferredLanguage));
@@ -454,6 +477,11 @@ public class TriagingServiceImpl implements TriagingService {
                 severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "RED_EYES", preferredLanguage));
             }
             measlesWithEyeorMouthInfectionResult.setSymptoms(severeMeaslesSymptoms);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION1);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION2);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION3);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION4);
+            severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION5);
             measlesWithEyeorMouthInfectionResult.setSuggestions(severeMeaslesSuggestions);
             measlesWithEyeorMouthInfectionResult.setCode("MEASLES");
             results.add(measlesWithEyeorMouthInfectionResult);

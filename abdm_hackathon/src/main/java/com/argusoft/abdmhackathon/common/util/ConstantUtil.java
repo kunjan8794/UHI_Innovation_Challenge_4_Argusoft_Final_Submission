@@ -92,6 +92,32 @@ public class ConstantUtil {
         }
         return lan.get(key);
     }
+    public static String SEVERE_PNEUMONIA_SUGGESTION1="Get plenty of rest.";
+    public static String SEVERE_PNEUMONIA_SUGGESTION2="Don't go back to school/work until after your temperature returns to normal and you stop coughing up mucus";
+    public static String SEVERE_PNEUMONIA_SUGGESTION3="Stay hydrated. Drink plenty of fluids, especially water, to help loosen mucus in your lungs.";
+
+    public static String DIARRHOEA_SUGGESSION1="Drink plenty of liquids, including water, broths and juices.";
+    public static String DIARRHOEA_SUGGESSION2="Avoid caffeine and alcohol. ";
+    public static String DIARRHOEA_SUGGESSION3="Add semisolid and low-fiber foods gradually as your bowel movements return to normal.";
+    public static String DIARRHOEA_SUGGESSION4="Try soda crackers, toast, eggs, rice or chicken.";
+
+    public static String FEVER_SUGGESTION1="Rest and drink plenty of fluids.";
+    public static String FEVER_SUGGESTION2="In case symptoms worsen, visit again to the hospital.";
+
+    public static String POSSIBLE_BONE_INFECTION_SUGGESTION1="Be careful not to injure the area where you have the infection.";
+    public static String POSSIBLE_BONE_INFECTION_SUGGESTION2="Use a splint, sling, or brace if needed.";
+
+    public static String POSSIBLE_URINE_INFECTION_SUGGESTION1="Take your antibiotics as directed.";
+    public static String POSSIBLE_URINE_INFECTION_SUGGESTION2="Drink extra water and other fluids for the next day or two.";
+    public static String POSSIBLE_URINE_INFECTION_SUGGESTION3="Avoid drinks that are carbonated or have caffeine.";
+    public static String POSSIBLE_URINE_INFECTION_SUGGESTION4="Urinate often.";
+    public static String POSSIBLE_URINE_INFECTION_SUGGESTION5="To relieve pain, take a hot bath or lay a heating pad set on low over your lower belly or genital area.";
+
+    public static String MEASLES_SUGGESTION1="Take it easy. Get rest and avoid busy activities.";
+    public static String MEASLES_SUGGESTION2="Drink plenty of fluids.";
+    public static String MEASLES_SUGGESTION3="Moisten the air.";
+    public static String MEASLES_SUGGESTION4="Moisten your nose.";
+    public static String MEASLES_SUGGESTION5="Rest your eyes.";
 
 //    public static String SEVERE_PNEUMONIA = "Severe Pneumonia";
 //    public static String SEVERE_PNEUMONIA_ALL = "Very Severe Pneumonia";
