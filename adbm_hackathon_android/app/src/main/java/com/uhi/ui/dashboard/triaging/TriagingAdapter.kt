@@ -52,7 +52,6 @@ class TriagingAdapter(
 
         fun bind(question: Question) = with(question) {
             binding.titleTextView.text = title
-            binding.descriptionTextView.text = description
         }
     }
 }

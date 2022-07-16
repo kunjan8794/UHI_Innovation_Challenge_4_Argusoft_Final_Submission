@@ -2,34 +2,103 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="@style/MaterialCardView"
-    android:layout_marginTop="@dimen/default_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
-    android:layout_height="wrap_content">
+    android:layout_marginTop="@dimen/default_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/testReportImageView"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:padding="@dimen/_4sdp"
+            android:backgroundTint="@color/colorGray"
+            android:background="@drawable/drawable_circle"
+            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titleTextView"
+            app:srcCompat="@drawable/ic_medical" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/medicineImageview"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:padding="@dimen/_4sdp"
+            android:backgroundTint="@color/colorGray"
+            android:background="@drawable/drawable_circle"
+            android:layout_marginEnd="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintEnd_toStartOf="@+id/testReportImageView"
+            app:layout_constraintTop_toTopOf="@+id/titleTextView"
+            app:srcCompat="@drawable/ic_medicine" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/titleTextView"
             style="@style/TextView.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/medicineImageview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="55" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/descriptionTextView"
+            android:id="@+id/symptomsLabelTextView"
             style="@style/TextView.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/label_symptoms"
             app:layout_constraintStart_toStartOf="@id/titleTextView"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            tools:text="55" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/symptomsTextView"
+            style="@style/TextView.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/label_symptoms"
+            app:layout_constraintStart_toStartOf="@id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@id/symptomsLabelTextView" />
+
+
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/ic_divider"
+            app:layout_constraintTop_toBottomOf="@+id/symptomsTextView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/suggestionsLabelTextView"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/label_suggestions"
+            app:layout_constraintStart_toStartOf="@id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@id/dividerView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/suggestionsTextView"
+            style="@style/TextView.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/label_symptoms"
+            app:layout_constraintStart_toStartOf="@id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@id/suggestionsLabelTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

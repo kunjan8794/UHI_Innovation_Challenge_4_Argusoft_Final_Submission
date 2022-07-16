@@ -67,6 +67,8 @@
 
     <style name="TextView.Medium" parent="TextAppearance.Material3.TitleMedium"/>
 
+    <style name="TextView.Small" parent="TextAppearance.Material3.TitleSmall"/>
+
     <style name="TextView.Title.ColoPrimary" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
