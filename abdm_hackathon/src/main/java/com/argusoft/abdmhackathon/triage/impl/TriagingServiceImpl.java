@@ -18,13 +18,10 @@ public class TriagingServiceImpl implements TriagingService {
     private static String SEVERE_PNEUMONIA = "Severe Pneumonia";
     private static String SEVERE_PNEUMONIA_ALL = "Very Severe Pneumonia";
 
-    private static String SEVERE_PNEUMONIA_STRIDOR_DESC = "The child seems to have STRIDORS." +
-            "We recommend checking Oxygen saturation levels as well. There is a very high possibility of the child having severe Pneumonitis.";
-    private static String SEVERE_PNEUMONIA_OXY_SAT_DESC = "The child has Oxygen saturation level below 90%. " +
-            "There is a very high possibility of the child having severe Pneumonitis.";
+    private static String SEVERE_PNEUMONIA_STRIDOR_DESC = "The child seems to have STRIDORS.";
+    private static String SEVERE_PNEUMONIA_OXY_SAT_DESC = "The child has Oxygen saturation level below 90%.";
 
-    private static String SEVERE_PNEUMONIA_DESC = "The child seems to have STRIDORS & the " +
-            "Oxygen saturation levels are below 90%. There is a very high possibility of the child having severe Pneumonitis.";
+    private static String SEVERE_PNEUMONIA_DESC = "There is a very high possibility of the child having severe Pneumonitis.";
     private static String PNEUMONIA = "Probable Pneumonia";
     private static String PNEUMONIA_CHEST_INDRAWING_DESC = "The child has chest indrawing.";
 
@@ -35,9 +32,9 @@ public class TriagingServiceImpl implements TriagingService {
 
     private static String COUGHORCOLD = "Cough Or Cold";
     private static String COUGHORCOLD_DESC = "";
-    private static String ORAL_FLUID_TEST_RECOMMENDATION = "Oral Fluid Test Recommendation";
-    private static String ORAL_FLUID_TEST_RECOMMENDATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
-    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION = "Oral Fluid Test Recommendation  ";
+    private static String DIARRHOEA_SEVERE_DEHYDRATION = "Diarrhoea with Severe Dehydration";
+    private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Severe Dehydration.";
+    private static String DIARRHOEA_SOME_DEHYDRATION = "Diarrhoea with Some Dehydration";
     private static String ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC = "We recommend you to do an Oral Fluid Test as this can be Diarrhoea with Some Dehydration.";
     private static String POSSIBLE_BONE_INFECTION = "Possible Bone/Joint Infection";
     private static String POSSIBLE_BONE_INFECTION_DESC = "";
@@ -57,8 +54,8 @@ public class TriagingServiceImpl implements TriagingService {
         List<TriagingResultsDto> results = new LinkedList<>();
         checkForCoughSymptoms(mapOfAnswers, results,preferredLanguage);
         checkForDiarrhoea(mapOfAnswers, results,preferredLanguage);
-        checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
-        checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
+//        checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
+//        checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
         return results;
     }
 
@@ -81,59 +78,88 @@ public class TriagingServiceImpl implements TriagingService {
         TriagingResultsDto severePneumoniaResult= new TriagingResultsDto();
         List<String> pneumoniaSuggestions=new ArrayList<>();
         List<String> pneumoniaSymptoms=new ArrayList<>();
+        List<String> severePneumoniaSuggestions=new ArrayList<>();
+        List<String> severePneumoniaSymptoms=new ArrayList<>();
 
         if (symptoms != null) {
 
-            if (symptoms.contains("COUGH_GT14")) {
-              /*  results.add(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);*/
-                pneumoniaResult.setDisease(PNEUMONIA);
-                pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"COUGH_GT14",preferredLanguage));
-                pneumoniaSuggestions.add(PNEUMONIA_COUGH_GTE14_DESC);
-                pneumoniaResult.setSymptoms(pneumoniaSymptoms);
-                pneumoniaResult.setSuggestions(pneumoniaSuggestions);
-            }
-
-            if (symptoms.contains("CHEST_INDRAWING")) {
-                /*results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);*/
-                pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"CHEST_INDRAWING",preferredLanguage));
-                pneumoniaSuggestions.add(PNEUMONIA_CHEST_INDRAWING_DESC);
-                pneumoniaResult.setSymptoms(pneumoniaSymptoms);
-                pneumoniaResult.setSuggestions(pneumoniaSuggestions);
-            }
-
-            if (symptoms.contains("RECURRENT_WHEEZING")) {
-                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC_WHEEZING);*/
-            }
-
-            if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DIFFICULTY_BREATHING_DESC);*/
-            }
-
-            if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC);*/
-            }
-
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
-                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);*/
+                severePneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "STRIDOR_IN_CHILD", preferredLanguage));
+                severePneumoniaSuggestions.add(SEVERE_PNEUMONIA_STRIDOR_DESC);
             }
 
             if (symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_OXY_SAT_DESC);*/
+                severePneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "OXYGEN_SATURATION_LT90", preferredLanguage));
+                severePneumoniaSuggestions.add(SEVERE_PNEUMONIA_OXY_SAT_DESC);
             }
 
-            if (symptoms.contains("STRIDOR_IN_CHILD") && symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);*/
+            if (symptoms.contains("STRIDOR_IN_CHILD") || symptoms.contains("OXYGEN_SATURATION_LT90")) {
+                severePneumoniaSuggestions.add(SEVERE_PNEUMONIA_DESC);
+            }
+
+            if (severePneumoniaSymptoms.size() > 0) {
+                severePneumoniaResult.setDisease(SEVERE_PNEUMONIA);
+                severePneumoniaResult.setSymptoms(severePneumoniaSymptoms);
+                severePneumoniaResult.setSuggestions(severePneumoniaSuggestions);
+                results.add(severePneumoniaResult);
+            } else {
+                if (symptoms.contains("COUGH_GT14")) {
+                    pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"COUGH_GT14",preferredLanguage));
+                    pneumoniaSuggestions.add(PNEUMONIA_COUGH_GTE14_DESC);
+                }
+
+
+                if (symptoms.contains("CHEST_INDRAWING")) {
+                    pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"CHEST_INDRAWING",preferredLanguage));
+                    pneumoniaSuggestions.add(PNEUMONIA_CHEST_INDRAWING_DESC);
+                }
+
+                if (symptoms.contains("RECURRENT_WHEEZING")) {
+                    pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "RECURRENT_WHEEZING", preferredLanguage));
+                    pneumoniaSuggestions.add(PNEUMONIA_DESC_WHEEZING);
+                }
+
+                if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
+                    pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "DIFFICULTY_BREATHING_GT14", preferredLanguage));
+                    pneumoniaSuggestions.add(PNEUMONIA_DIFFICULTY_BREATHING_DESC);
+                }
+
+                if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
+                    pneumoniaSuggestions.add(PNEUMONIA_DESC);
+                }
+
+                if (pneumoniaSymptoms.size() > 0) {
+                    pneumoniaResult.setDisease(PNEUMONIA);
+                    pneumoniaResult.setSymptoms(pneumoniaSymptoms);
+                    pneumoniaResult.setSuggestions(pneumoniaSuggestions);
+                    results.add(pneumoniaResult);
+                }
             }
         }
     }
 
-    public static void checkForDiarrhoea(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
+    public void checkForDiarrhoea(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String symptoms = mapOfAnswers.get(25);
+        TriagingResultsDto someDehydrationResult= new TriagingResultsDto();
+        TriagingResultsDto severeDehydrationResult= new TriagingResultsDto();
+        List<String> someDehydrationSuggestions=new ArrayList<>();
+        List<String> someDehydrationSymptoms=new ArrayList<>();
+        List<String> severeDehydrationSuggestions=new ArrayList<>();
+        List<String> severeDehydrationSymptoms=new ArrayList<>();
 
         if (symptoms != null) {
 
             if (symptoms.contains("SUNKEN_EYES") && symptoms.contains("SKIN_PINCH_VERY_SLOWLY")) {
-                /*results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);*/
+                severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SUNKEN_EYES",preferredLanguage));
+                severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SKIN_PINCH_VERY_SLOWLY",preferredLanguage));
+                severeDehydrationSuggestions.add(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
+            }
+
+            if (severeDehydrationSymptoms.size() > 0) {
+                severeDehydrationResult.setDisease(DIARRHOEA_SEVERE_DEHYDRATION);
+                severeDehydrationResult.setSymptoms(severeDehydrationSymptoms);
+                severeDehydrationResult.setSuggestions(severeDehydrationSuggestions);
+                results.add(severeDehydrationResult);
             }
 
             List<String> symptomsList = new ArrayList<>();
@@ -145,11 +171,15 @@ public class TriagingServiceImpl implements TriagingService {
             for (String s : symptomsList) {
                 if (symptoms.contains(s)) {
                     symptomCount++;
+                    someDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, s, preferredLanguage));
                 }
-                if (symptomCount >= 2) {
-                    /*results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);*/
-                    break;
-                }
+            }
+            if (symptomCount >= 2) {
+                someDehydrationSuggestions.add(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                someDehydrationResult.setDisease(DIARRHOEA_SOME_DEHYDRATION);
+                someDehydrationResult.setSymptoms(someDehydrationSymptoms);
+                someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+                results.add(someDehydrationResult);
             }
         }
     }
@@ -266,7 +296,7 @@ public class TriagingServiceImpl implements TriagingService {
         String skinPinchAbdomen = mapOfAnswers.get(19);
         if ((diarrhoea != null && diarrhoea.equals("YES")) &&
                 (sunkenEyes != null && !sunkenEyes.equals("YES")) && (skinPinchAbdomen != null && !skinPinchAbdomen.equals("VERY_SLOWLY"))) {
-            results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);
+            results.put(DIARRHOEA_SEVERE_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
         }
     }
 
@@ -303,7 +333,7 @@ public class TriagingServiceImpl implements TriagingService {
                 signCounts++;
             }
             if (signCounts >= 2) {
-                results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                results.put(DIARRHOEA_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
                 break;
             }
         }
