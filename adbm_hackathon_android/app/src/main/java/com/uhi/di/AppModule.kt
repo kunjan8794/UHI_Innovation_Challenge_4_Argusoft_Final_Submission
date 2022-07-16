@@ -1,8 +1,7 @@
 package com.uhi.di
 
 import android.content.Context
-import androidx.room.Room
-import com.uhi.BuildConfig
+import com.uhi.Application
 import com.uhi.data.local.database.Database
 import com.uhi.data.local.database.DatabaseManager
 import com.uhi.data.local.database.RoomDatabase
@@ -11,6 +10,7 @@ import com.uhi.data.local.pref.Preference
 import com.uhi.data.local.pref.PreferenceManager
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiManager
+import com.uhi.utils.common.NetworkHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +31,7 @@ class AppModule {
             .build()
     }
 
-    @Singleton
+ /*   @Singleton
     @Provides
     fun provideAppRoomDatabase(@ApplicationContext context: Context): RoomDatabase {
         return Room.databaseBuilder(
@@ -39,7 +39,7 @@ class AppModule {
             RoomDatabase::class.java,
             "app.db"
         ).build()
-    }
+    }*/
 
     @Singleton
     @Provides
@@ -55,7 +55,13 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppApi(): Api {
-        return ApiManager()
+    fun provideNetworkHelper(application: android.app.Application): NetworkHelper {
+        return NetworkHelper(application)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppApi(networkHelper: NetworkHelper): Api {
+        return ApiManager(networkHelper)
     }
 }

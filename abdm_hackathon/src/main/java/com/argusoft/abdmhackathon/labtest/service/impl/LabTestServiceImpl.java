@@ -1,16 +1,14 @@
 package com.argusoft.abdmhackathon.labtest.service.impl;
 
 import com.argusoft.abdmhackathon.labtest.dao.LabTestDao;
+import com.argusoft.abdmhackathon.labtest.dto.LabDataDto;
 import com.argusoft.abdmhackathon.labtest.model.LabTest;
 import com.argusoft.abdmhackathon.labtest.service.LabTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,5 +38,59 @@ public class LabTestServiceImpl implements LabTestService {
             }
         });
         return result;
+    }
+
+    public Map<Integer, Map<String, Map<Date, Float>>> getLabReportDateForEachPatient() {
+        Map<Date, Float> dateWiseData;
+        Map<String, Map<Date, Float>> parameterWiseDate;
+        Map<Integer, Map<String, Map<Date, Float>>> patientData = new HashMap<>();
+
+        List<LabDataDto> all = labTestDao.getAllLabData();
+        for (LabDataDto labData : all) {
+
+            parameterWiseDate = patientData.get(labData.getPatientId());
+            if (parameterWiseDate == null) {
+                parameterWiseDate = new HashMap<>();
+            }
+
+            dateWiseData = parameterWiseDate.get("LDL/HDL Ratio");
+            if (dateWiseData == null) {
+                dateWiseData = new HashMap<>();
+            }
+            dateWiseData.put(labData.getOnDate(), labData.getRatio());
+            parameterWiseDate.put("LDL/HDL Ratio", dateWiseData);
+
+            dateWiseData = parameterWiseDate.get("VLDL Cholesterol");
+            if (dateWiseData == null) {
+                dateWiseData = new HashMap<>();
+            }
+            dateWiseData.put(labData.getOnDate(), labData.getVldl());
+            parameterWiseDate.put("VLDL Cholesterol", dateWiseData);
+
+            dateWiseData = parameterWiseDate.get("Non HDL Cholesterol");
+            if (dateWiseData == null) {
+                dateWiseData = new HashMap<>();
+            }
+            dateWiseData.put(labData.getOnDate(), labData.getNonHdl());
+            parameterWiseDate.put("Non HDL Cholesterol", dateWiseData);
+
+            dateWiseData = parameterWiseDate.get("Triglycerides");
+            if (dateWiseData == null) {
+                dateWiseData = new HashMap<>();
+            }
+            dateWiseData.put(labData.getOnDate(), labData.getTri());
+            parameterWiseDate.put("Triglycerides", dateWiseData);
+
+            dateWiseData = parameterWiseDate.get("Total Cholesterol");
+            if (dateWiseData == null) {
+                dateWiseData = new HashMap<>();
+            }
+            dateWiseData.put(labData.getOnDate(), labData.getTotal());
+            parameterWiseDate.put("Total Cholesterol", dateWiseData);
+
+            patientData.put(labData.getPatientId(), parameterWiseDate);
+        }
+
+        return patientData;
     }
 }

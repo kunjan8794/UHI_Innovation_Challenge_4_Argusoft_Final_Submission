@@ -20,12 +20,12 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            buildConfigField "String", "BASE_URL", "\"http://192.168.2.170:8080/api/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://192.168.2.170:8080/api/document/get-image?name=\""
+            buildConfigField "String", "BASE_URL", "\"http://192.168.2.137:8080/api/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://192.168.2.137:8080/api/document/get-image?name=\""
         }
         release {
-            buildConfigField "String", "BASE_URL", "\"http://192.168.1.11:8080/api/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://192.168.1.11:8080/api/document/get-image?name=\""
+            buildConfigField "String", "BASE_URL", "\"http://192.168.2.137:8080/api/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://192.168.2.137:8080/api/document/get-image?name=\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
