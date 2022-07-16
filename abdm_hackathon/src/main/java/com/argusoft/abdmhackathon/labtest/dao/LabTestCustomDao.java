@@ -1,5 +1,6 @@
 package com.argusoft.abdmhackathon.labtest.dao;
 
+import com.argusoft.abdmhackathon.labtest.dto.LabDataDto;
 import com.argusoft.abdmhackathon.labtest.model.LabTest;
 
 import java.util.List;
@@ -15,4 +16,6 @@ import java.util.List;
 public interface LabTestCustomDao {
 
     List<LabTest> getAllByCode(String code);
+
+    List<LabDataDto> getAllLabData();
 }

@@ -10,6 +10,7 @@ import com.argusoft.abdmhackathon.triage.dto.TriagingResultsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,9 @@ public class MobileController {
 
     @Autowired
     MedicinesMasterService medicinesMasterService;
-    
-    private LabTestService labTestService;
+
+    @Autowired
+    LabTestService labTestService;
 
     @RequestMapping(value = "/lab-tests-by-codes", method = RequestMethod.GET)
     public Map<String, List<String>> getLabTestsByCodes(@RequestParam String codes) {
@@ -62,5 +64,10 @@ public class MobileController {
     public Map<String, List<String>>  getMedicinesByCodes(@RequestParam String codes) {
         System.out.println(codes);
         return medicinesMasterService.getMedicineByCode(codes);
+    }
+
+    @RequestMapping(value = "get-lab-data", method = RequestMethod.GET)
+    public Map<Integer, Map<String, Map<Date, Float>>> getLabData() {
+        return labTestService.getLabReportDateForEachPatient();
     }
 }
