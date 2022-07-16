@@ -1,13 +1,16 @@
 package com.uhi.ui.dashboard
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uhi.data.local.pref.Preference
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiResponse
 import com.uhi.ui.common.model.LabTest
+import com.uhi.ui.common.model.MedicineList
 import com.uhi.ui.common.model.Question
+import com.uhi.ui.common.model.TriagingResults
 import com.uhi.utils.extention.whenFailed
 import com.uhi.utils.extention.whenSuccess
 import com.uhi.utils.listener.SingleLiveEvent
@@ -25,23 +28,25 @@ class DashboardViewModel @Inject constructor(
     private val preference: Preference
 ) : ViewModel() {
 
-    private val _apiState = SingleLiveEvent<ApiResponse<Question>>()
-    val apiState: LiveData<ApiResponse<Question>>
+    private val _apiState = MutableLiveData<ApiResponse<Question?>>()
+    val apiState: LiveData<ApiResponse<Question?>>
         get() = _apiState
 
-    private val _resultApiState = SingleLiveEvent<ApiResponse<Map<String, String>?>>()
-    val resultApiState: LiveData<ApiResponse<Map<String, String>?>>
+    private val _resultApiState = MutableLiveData<ApiResponse<List<TriagingResults>?>>()
+    val resultApiState: LiveData<ApiResponse<List<TriagingResults>?>>
         get() = _resultApiState
 
-    private val _labDataApiState = SingleLiveEvent<ApiResponse<List<LabTest>>>()
+    private val _labDataApiState = MutableLiveData<ApiResponse<List<LabTest>>>()
     val labDataApiState: LiveData<ApiResponse<List<LabTest>>>
         get() = _labDataApiState
+
+    private val _medicineApiState = MutableLiveData<ApiResponse<List<MedicineList>>>()
+    val medicineApiState: LiveData<ApiResponse<List<MedicineList>>>
+        get() = _medicineApiState
 
     private var job: Job? = null
 
     val previousClassifications = HashMap<String, String?>()
-
-
 
     fun getQuestion(questionId: Int? = null, answer: String? = null, isRefresh: Boolean = false) {
         _apiState.value = ApiResponse.Loading(isRefresh)
@@ -55,15 +60,13 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun getResult(list: List<Question?>) {
-        _resultApiState.value = ApiResponse.Loading(isRefresh = true)
+        _resultApiState.value = ApiResponse.Loading()
         val map = HashMap<String, String?>()
         list.forEach {
             map[it?.id.toString()] = it?.answer
         }
         job = viewModelScope.launch {
-            _resultApiState.value = api.getResults(map, previousClassifications).whenSuccess {
-                it?.let { it1 -> previousClassifications.putAll(it1) }
-            }
+            _resultApiState.value = api.getResults(map, previousClassifications)
         }
     }
 
@@ -83,7 +86,7 @@ class DashboardViewModel @Inject constructor(
                     labTest.labTestData = labTestData
                     testData.add(labTest)
                 }
-                _labDataApiState.value=ApiResponse.Success(testData)
+                _labDataApiState.value = ApiResponse.Success(testData)
             }
             response.whenFailed {
                 _labDataApiState.value = when (response) {
@@ -93,6 +96,14 @@ class DashboardViewModel @Inject constructor(
                     else -> ApiResponse.ServerError("")
                 }
             }
+        }
+    }
+
+
+    fun getMedicine(code: String, isMedicine: Boolean) {
+        _medicineApiState.value = ApiResponse.Loading()
+        job = viewModelScope.launch {
+            _medicineApiState.value = if (isMedicine) api.getMedicine(code) else api.getTestReport(code)
         }
     }
 }

@@ -2,12 +2,14 @@ package com.uhi.ui.dashboard.quetion
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.uhi.R
 import com.uhi.data.local.pref.PreferenceManager.Companion.EN
 import com.uhi.data.local.pref.PreferenceManager.Companion.GU
 import com.uhi.data.local.pref.PreferenceManager.Companion.HN
 import com.uhi.databinding.FragmentQuestionBinding
+import com.uhi.ui.common.INTENT_EXTRA_QUESTIONS
 import com.uhi.ui.common.base.BaseFragment
 import com.uhi.ui.common.languageList
 import com.uhi.ui.dashboard.DashboardViewModel
@@ -42,15 +44,21 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
     }
 
     override fun initObserver() {
-        observeNotNull(dashboardViewModel.apiState) {
-            it.handleListApiView(binding.progressLayout, onClickListener = {
+        observeNotNull(dashboardViewModel.apiState) { apiResponse ->
+            apiResponse.handleListApiView(binding.progressLayout, onClickListener = {
                 dashboardViewModel.getQuestion()
             }) {
-                questionAdapter.add(it)
-                binding.viewPager.setCurrentItem(questionAdapter.getItemsList().lastIndex, false)
+                if (it?.id == null) {
+                    navigate(R.id.action_questionsFragment_to_triagingFragment){
+                        putParcelableArrayList(INTENT_EXTRA_QUESTIONS,questionAdapter.getItemsList())
+                    }
+                } else {
+                    questionAdapter.add(it)
+                    binding.viewPager.setCurrentItem(questionAdapter.getItemsList().lastIndex, false)
+                }
             }
         }
-        observeNotNull(dashboardViewModel.resultApiState) { apiResponse ->
+        /*observeNotNull(dashboardViewModel.resultApiState) { apiResponse ->
             apiResponse.handleApiView(binding.progressLayout, onClickListener = {
                 dashboardViewModel.getQuestion()
             }) { map ->
@@ -78,7 +86,7 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
                     }?.show()
                 }
             }
-        }
+        }*/
     }
 
     override fun onClick(view: View?) {
@@ -89,8 +97,8 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
                 if (question?.answer.isNullOrEmpty()) {
                     showSnackBar(binding.progressLayout, getString(R.string.error_msg_select_answer))
                 } else {
-                    dashboardViewModel.getResult(questionAdapter.getItemsList())
-//                    questionViewModel.getQuestion(question?.id, question?.answer, true)
+//                    dashboardViewModel.getResult(questionAdapter.getItemsList())
+                    dashboardViewModel.getQuestion(question?.id, question?.answer, true)
                 }
             }
             R.id.previousImageView -> {

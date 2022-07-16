@@ -31,15 +31,15 @@ class AppModule {
             .build()
     }
 
- /*   @Singleton
-    @Provides
-    fun provideAppRoomDatabase(@ApplicationContext context: Context): RoomDatabase {
-        return Room.databaseBuilder(
-            context,
-            RoomDatabase::class.java,
-            "app.db"
-        ).build()
-    }*/
+    /*   @Singleton
+       @Provides
+       fun provideAppRoomDatabase(@ApplicationContext context: Context): RoomDatabase {
+           return Room.databaseBuilder(
+               context,
+               RoomDatabase::class.java,
+               "app.db"
+           ).build()
+       }*/
 
     @Singleton
     @Provides
@@ -61,7 +61,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppApi(networkHelper: NetworkHelper): Api {
-        return ApiManager(networkHelper)
+    fun provideAppApi(networkHelper: NetworkHelper, preference: Preference): Api {
+        return ApiManager(networkHelper, preference)
     }
 }

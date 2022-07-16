@@ -36,11 +36,13 @@
     <string name="title_attention">Attention</string>
     <string name="button_continue">" Continue Consultation"</string>
     <string name="button_go_to">Go to Treatment</string>
-    <string name="select_triaging">Select Triaging</string>
+    <string name="select_triaging">Triaging</string>
     <string name="label_symptoms">Symptoms:</string>
     <string name="label_suggestions">Suggestions</string>
     <string name="parameter_history_graph">History Graph</string>
     <string name="label_symptoms_triaging">Symptoms based Triaging</string>
     <string name="label_time_series">Time Series\nData Visualization</string>
     <string name="report">Report</string>
+    <string name="title_medicine">Medicines</string>
+    <string name="title_test_report">Test Reports</string>
 </resources>

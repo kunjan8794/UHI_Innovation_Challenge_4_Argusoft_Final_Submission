@@ -15,32 +15,30 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/testReportImageView"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
             android:background="@drawable/drawable_circle"
             android:backgroundTint="@color/colorGray"
             android:padding="@dimen/_4sdp"
-            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/titleTextView"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_medical" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/medicineImageview"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:background="@drawable/drawable_circle"
             android:backgroundTint="@color/colorGray"
             android:padding="@dimen/_4sdp"
-            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
             app:layout_constraintEnd_toStartOf="@+id/testReportImageView"
-            app:layout_constraintTop_toTopOf="@+id/titleTextView"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_medicine" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/titleTextView"
-            style="@style/TextView.Title"
+            style="@style/TextView.Title.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/medicineImageview"

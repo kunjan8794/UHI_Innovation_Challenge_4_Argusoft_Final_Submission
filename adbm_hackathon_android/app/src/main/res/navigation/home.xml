@@ -23,6 +23,24 @@
         android:name="com.uhi.ui.dashboard.quetion.QuestionsFragment"
         tools:layout="@layout/fragment_question">
 
+        <action
+            android:id="@+id/action_questionsFragment_to_triagingFragment"
+            app:destination="@id/triagingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/triagingFragment"
+        android:name="com.uhi.ui.dashboard.triaging.TriagingFragment"
+        tools:layout="@layout/fragment_triaging">
+
+        <action
+            android:id="@+id/action_triagingFragment_to_triagingReportFragment"
+            app:destination="@id/triagingReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/triagingReportFragment"
+        android:name="com.uhi.ui.dashboard.triaging.report.TriagingReportFragment"
+        tools:layout="@layout/fragment_triaging">
+
     </fragment>
 
     <fragment

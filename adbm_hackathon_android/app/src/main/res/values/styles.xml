@@ -61,7 +61,7 @@
     </style>
 
     <style name="TextView.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textSize">@dimen/_16ssp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="TextView.Title.Bold" >
         <item name="android:textStyle">bold</item>

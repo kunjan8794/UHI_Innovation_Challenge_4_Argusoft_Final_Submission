@@ -1,28 +1,21 @@
 package com.uhi.ui.dashboard.triaging
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.uhi.BuildConfig
 import com.uhi.R
-import com.uhi.databinding.AnswerRadioButtonBinding
-import com.uhi.databinding.ListItemQuestionBinding
 import com.uhi.databinding.ListItemTriagingBinding
+import com.uhi.ui.common.INTENT_EXTRA_CODE
+import com.uhi.ui.common.INTENT_EXTRA_IS_MEDICINE
 import com.uhi.ui.common.base.BaseAdapter
-import com.uhi.ui.common.model.Question
-import com.uhi.utils.extention.*
-import com.uhi.utils.glide.GlideRequests
-import com.uhi.utils.glide.loadUrl
+import com.uhi.ui.common.model.TriagingResults
+import com.uhi.utils.extention.navigate
+import com.uhi.utils.extention.toBinding
 
 
 class TriagingAdapter(
-    private val list: ArrayList<Question?> = arrayListOf(),
-    private val glideRequests: GlideRequests,
-    private val onClickListener: View.OnClickListener
-) : BaseAdapter<Question>(list) {
+    private val list: ArrayList<TriagingResults?> = arrayListOf()
+) : BaseAdapter<TriagingResults>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType != LIST_ITEM_PROGRESS) {
@@ -40,20 +33,39 @@ class TriagingAdapter(
         }
     }
 
-    fun add(question: Question?) {
-        list.add(question)
-        notifyDataSetChanged()
-    }
-
     inner class ViewHolder(val binding: ListItemTriagingBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
+            binding.medicineImageview.setOnClickListener {
+                it.navigate(R.id.action_triagingFragment_to_triagingReportFragment) {
+                    putBoolean(INTENT_EXTRA_IS_MEDICINE, true)
+                    putString(INTENT_EXTRA_CODE, list[bindingAdapterPosition]?.code)
+                }
+            }
+            binding.testReportImageView.setOnClickListener {
+                it.navigate(R.id.action_triagingFragment_to_triagingReportFragment) {
+                    putBoolean(INTENT_EXTRA_IS_MEDICINE, false)
+                    putString(INTENT_EXTRA_CODE, list[bindingAdapterPosition]?.code)
+                }
+            }
         }
 
-        fun bind(question: Question) = with(question) {
-            binding.titleTextView.text = title
+        fun bind(triagingResults: TriagingResults) = with(triagingResults) {
+            binding.titleTextView.text = disease
+            binding.symptomsTextView.text = symptoms?.getString()
+            binding.suggestionsTextView.isVisible = suggestions?.isNotEmpty() == true
+            binding.suggestionsTextView.text = suggestions?.getString()
         }
     }
 }
 
+private fun <E> List<E>?.getString(): String {
+    val stringBuilder = StringBuilder()
+    this?.forEachIndexed { index, e ->
+        stringBuilder.append("\u2022 $e")
+        if (index != lastIndex)
+            stringBuilder.append("\n")
+    }
+    return stringBuilder.toString()
+}
 

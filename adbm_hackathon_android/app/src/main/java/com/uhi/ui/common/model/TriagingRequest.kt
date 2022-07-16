@@ -6,4 +6,5 @@ import com.squareup.moshi.JsonClass
 data class TriagingRequest(
     var data: Map<String, Any?>? = null,
     var classification: Map<String, Any?>? = null,
+    var preferredLanguage: String? = null,
 )

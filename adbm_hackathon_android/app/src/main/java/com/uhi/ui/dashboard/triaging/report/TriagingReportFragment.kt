@@ -1,9 +1,12 @@
-package com.uhi.ui.dashboard.triaging
+package com.uhi.ui.dashboard.triaging.report
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.uhi.R
 import com.uhi.databinding.FragmentTriagingBinding
+import com.uhi.ui.common.INTENT_EXTRA_CODE
+import com.uhi.ui.common.INTENT_EXTRA_IS_MEDICINE
 import com.uhi.ui.common.INTENT_EXTRA_QUESTIONS
 import com.uhi.ui.common.base.BaseFragment
 import com.uhi.ui.common.model.Question
@@ -14,21 +17,26 @@ import com.uhi.utils.glide.GlideRequests
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TriagingFragment : BaseFragment<FragmentTriagingBinding>() {
+class TriagingReportFragment : BaseFragment<FragmentTriagingBinding>() {
 
-    private lateinit var triagingAdapter: TriagingAdapter
+    private lateinit var triagingReportAdapter: TriagingReportAdapter
     private lateinit var glideRequests: GlideRequests
     private val dashboardViewModel: DashboardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireArguments().getParcelableArrayList<Question?>(INTENT_EXTRA_QUESTIONS)?.let { dashboardViewModel.getResult(it) }
+        dashboardViewModel.getMedicine(requireArguments().getString(INTENT_EXTRA_CODE, ""), requireArguments().getBoolean(INTENT_EXTRA_IS_MEDICINE))
     }
 
     override fun initView() {
         glideRequests = GlideApp.with(this)
-        triagingAdapter = TriagingAdapter(arrayListOf())
-        binding.recyclerView.adapter = triagingAdapter
+        if (requireArguments().getBoolean(INTENT_EXTRA_IS_MEDICINE, false)) {
+            binding.titleTextView.setText(R.string.title_medicine)
+        } else {
+            binding.titleTextView.setText(R.string.title_test_report)
+        }
+        triagingReportAdapter = TriagingReportAdapter(arrayListOf())
+        binding.recyclerView.adapter = triagingReportAdapter
     }
 
     override fun initListener() {
@@ -36,11 +44,11 @@ class TriagingFragment : BaseFragment<FragmentTriagingBinding>() {
     }
 
     override fun initObserver() {
-        observeNotNull(dashboardViewModel.resultApiState) { apiResponse ->
+        observeNotNull(dashboardViewModel.medicineApiState) { apiResponse ->
             apiResponse.handleListApiView(binding.progressLayout, onClickListener = {
-                requireArguments().getParcelableArrayList<Question?>(INTENT_EXTRA_QUESTIONS)?.let { dashboardViewModel.getResult(it) }
+                dashboardViewModel.getMedicine(requireArguments().getString(INTENT_EXTRA_CODE, ""), requireArguments().getBoolean(INTENT_EXTRA_IS_MEDICINE))
             }) {
-                it?.let { it1 -> triagingAdapter.addAll(it1) }
+                it?.let { it1 -> triagingReportAdapter.addAll(it1) }
             }
         }
 
