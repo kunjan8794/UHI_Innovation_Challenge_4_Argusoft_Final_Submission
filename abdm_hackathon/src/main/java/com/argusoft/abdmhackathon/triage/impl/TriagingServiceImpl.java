@@ -49,17 +49,17 @@ public class TriagingServiceImpl implements TriagingService {
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
         Map<String, String> results = new LinkedHashMap<>();
-        checkForSeverePneumonia(mapOfAnswers, results);
-        checkForPneumonia(mapOfAnswers, results);
+        /*checkForSeverePneumonia(mapOfAnswers, results);
+        checkForPneumonia(mapOfAnswers, results);*/
         checkForCoughSymptoms(mapOfAnswers, results);
         checkForDiarrhoea(mapOfAnswers, results);
         checkForFeverSymptoms(mapOfAnswers, results);
         checkForMeaslesSymptoms(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
-        checkForCoughOrCold(mapOfAnswers, results);
+        /*checkForCoughOrCold(mapOfAnswers, results);
         checkForDiarrhoeaWithSevereDehydration(mapOfAnswers, results);
-        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers, results);
+        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers, results);*/
         return results;
     }
 
@@ -319,23 +319,11 @@ public class TriagingServiceImpl implements TriagingService {
         boolean runnyNose = Arrays.stream(feverResultsArray).anyMatch("RUNNY_NOSE"::equals);
         boolean redEyes = Arrays.stream(feverResultsArray).anyMatch("RED_EYES"::equals);
         boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
-        List<Boolean> checkList = new ArrayList<>();
-        Integer signCounts = 0;
-        checkList.add(cough);
-        checkList.add(runnyNose);
-        checkList.add(redEyes);
-        for (Boolean value : checkList) {
-            if (Boolean.TRUE.equals(value)) {
-                signCounts++;
-            }
-            if (signCounts >= 1) {
-                break;
-            }
-        }
-        if (hasFever && signCounts >= 1 && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
+
+        if (hasFever && (cough || runnyNose || redEyes) && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
             results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);
         }
-        if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && signCounts >= 1) {
+        if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
             results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);
         }
     }
