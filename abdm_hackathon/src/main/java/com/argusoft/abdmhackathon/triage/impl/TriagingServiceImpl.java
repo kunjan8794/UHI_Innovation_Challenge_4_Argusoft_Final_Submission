@@ -310,7 +310,7 @@ public class TriagingServiceImpl implements TriagingService {
 
     }
 
-    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
+    private void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String feverResults = mapOfAnswers.get(24);
         if (feverResults == null) {
             return;
@@ -319,17 +319,47 @@ public class TriagingServiceImpl implements TriagingService {
 
         if (feverResults.contains("TEMP_GTE_37_5")) {
             /*results.put(FEVER, FEVER_DESC);*/
+            TriagingResultsDto feverResult= new TriagingResultsDto();
+            List<String> feverSuggestions=new ArrayList<>();
+            List<String> feverSymptoms=new ArrayList<>();
+            feverResult.setDisease(FEVER);
+            feverSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"TEMP_GTE_37_5",preferredLanguage));
+            feverSuggestions.add(FEVER_DESC);
+            feverResult.setSymptoms(feverSymptoms);
+            feverResult.setSuggestions(feverSuggestions);
+            results.add(feverResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
             /*results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);*/
+            TriagingResultsDto boneInfectionResult= new TriagingResultsDto();
+            List<String> boneInfectionSuggestions=new ArrayList<>();
+            List<String> boneInfectionSymptoms=new ArrayList<>();
+            boneInfectionResult.setDisease(POSSIBLE_BONE_INFECTION);
+            boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"TEMP_GTE_37_5",preferredLanguage));
+            boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"REFUSAL_USE_LIMB",preferredLanguage));
+            boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"WARM_TENDER_SWOLLEN_JOINT_BONE",preferredLanguage));
+            boneInfectionSuggestions.add(POSSIBLE_BONE_INFECTION_DESC);
+            boneInfectionResult.setSymptoms(boneInfectionSymptoms);
+            boneInfectionResult.setSuggestions(boneInfectionSuggestions);
+            results.add(boneInfectionResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
             /*results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);*/
+            TriagingResultsDto urineInfectionResult= new TriagingResultsDto();
+            List<String> urineInfectionSuggestions=new ArrayList<>();
+            List<String> urineInfectionSymptoms=new ArrayList<>();
+            urineInfectionResult.setDisease(POSSIBLE_URINE_INFECTION);
+            urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"TEMP_GTE_37_5",preferredLanguage));
+            urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"DIFFICULTY_PASSING_URINE",preferredLanguage));
+            urineInfectionSuggestions.add(POSSIBLE_URINE_INFECTION_DESC);
+            urineInfectionResult.setSymptoms(urineInfectionSymptoms);
+            urineInfectionResult.setSuggestions(urineInfectionSuggestions);
+            results.add(urineInfectionResult);
         }
 
     }
 
-    private static void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
+    private void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String feverResults = mapOfAnswers.get(24).replace(" ", "");
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
@@ -347,9 +377,58 @@ public class TriagingServiceImpl implements TriagingService {
 
         if (hasFever && (cough || runnyNose || redEyes) && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
             /*results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);*/
+            TriagingResultsDto severeMeaslesResult= new TriagingResultsDto();
+            List<String> severeMeaslesSuggestions=new ArrayList<>();
+            List<String> severeMeaslesSymptoms=new ArrayList<>();
+            severeMeaslesResult.setDisease(SEVERE_COMPLICATED_MEASLES);
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"TEMP_GTE_37_5",preferredLanguage));
+            severeMeaslesSuggestions.add(SEVERE_COMPLICATED_MEASLES_DESC);
+            if(cough){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"COUGH",preferredLanguage));
+            }
+            if(runnyNose){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"RUNNY_NOSE",preferredLanguage));
+            }
+            if(redEyes){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"RED_EYES",preferredLanguage));
+            }
+            if(measlesInLast3Months){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"MEASLES_IN_LAST_3MONTHS",preferredLanguage));
+            }
+            if(cloudingOfCornea){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"CLOUDING_OF_CORNEA",preferredLanguage));
+            }
+            if(mouthUlcersDeep){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"MOUTH_SORES_ULCERS_DEEP",preferredLanguage));
+            }
+            severeMeaslesResult.setSymptoms(severeMeaslesSymptoms);
+            severeMeaslesResult.setSuggestions(severeMeaslesSuggestions);
+            results.add(severeMeaslesResult);
         }
         if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
             /*results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);*/
+            TriagingResultsDto measlesWithEyeorMouthInfectionResult= new TriagingResultsDto();
+            List<String> severeMeaslesSuggestions=new ArrayList<>();
+            List<String> severeMeaslesSymptoms=new ArrayList<>();
+            measlesWithEyeorMouthInfectionResult.setDisease(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION);
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"TEMP_GTE_37_5",preferredLanguage));
+            severeMeaslesSuggestions.add(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"MEASLES_IN_LAST_3MONTHS",preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"MOUTH_SORES_ULCERS_NOT_DEEP",preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"PUS_DRAINING_FROM_EYE",preferredLanguage));
+
+            if(cough){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"COUGH",preferredLanguage));
+            }
+            if(runnyNose){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"RUNNY_NOSE",preferredLanguage));
+            }
+            if(redEyes){
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24,"RED_EYES",preferredLanguage));
+            }
+            measlesWithEyeorMouthInfectionResult.setSymptoms(severeMeaslesSymptoms);
+            measlesWithEyeorMouthInfectionResult.setSuggestions(severeMeaslesSuggestions);
+            results.add(measlesWithEyeorMouthInfectionResult);
         }
     }
 
