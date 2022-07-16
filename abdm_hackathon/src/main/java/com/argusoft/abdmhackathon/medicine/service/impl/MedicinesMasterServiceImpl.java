@@ -36,19 +36,19 @@ public class MedicinesMasterServiceImpl implements MedicinesMasterService {
         List<String> codeList = Arrays.asList(codes.replace(" ", "").split(","));
         System.out.println(codeList);
         Gson gson = new Gson();
-        List<MedicineList> medicineAllLists= new LinkedList<>();
+        List<MedicineList> listOfAllMedicines= new LinkedList<>();
         for (String code : codeList) {
             List<MedicinesMaster> medicinesMasterList = medicinesMasterDao.getAllByCode(code);
             if (medicinesMasterList.size() > 0) {
                 for (MedicinesMaster medicine : medicinesMasterList) {
-                    System.out.println(medicine.getMedicine());
                     MedicineList[] medicineLists = gson.fromJson(medicine.getMedicine(), MedicineList[].class);
-                    medicineAllLists = Arrays.asList(medicineLists);
+                    List<MedicineList> lists = Arrays.asList(medicineLists);
+                    listOfAllMedicines.addAll(lists);
                 }
             }
             /*List<String> medicines = medicinesMasterList.stream().map(value -> value.getMedicine()).collect(Collectors.toList());*/
-            /*result.put(code, medicineAllLists);*/
+            /*result.put(code, listOfAllMedicines);*/
         };
-        return medicineAllLists;
+        return listOfAllMedicines;
     }
 }
