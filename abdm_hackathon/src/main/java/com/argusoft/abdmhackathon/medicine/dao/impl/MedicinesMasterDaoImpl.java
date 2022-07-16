@@ -24,4 +24,14 @@ public class MedicinesMasterDaoImpl extends GenericRepositoryImpl implements Med
       cq.where(cb.in(root.get(MedicinesMaster.Fields.CODE)).value(codes));
       return session.createQuery(cq).list();
   }
+    @Override
+    public List<MedicinesMaster> getAllByCode(String code){
+        Session session = getSession();
+        CriteriaBuilder cb= session.getCriteriaBuilder();
+        CriteriaQuery<MedicinesMaster> cq = cb.createQuery(MedicinesMaster.class);
+        Root<MedicinesMaster> root = cq.from(MedicinesMaster.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get(MedicinesMaster.Fields.CODE),code));
+        return session.createQuery(cq).list();
+    }
 }

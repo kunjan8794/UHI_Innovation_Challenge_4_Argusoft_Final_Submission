@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MedicinesMasterCustomDao {
     List<MedicinesMaster> getMedicinesbyCodes(List<String> codes);
+    List<MedicinesMaster> getAllByCode (String codes);
 }
