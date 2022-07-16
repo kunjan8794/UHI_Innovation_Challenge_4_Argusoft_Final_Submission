@@ -1,5 +1,6 @@
 package com.argusoft.abdmhackathon.mobile.controller;
 
+import com.argusoft.abdmhackathon.medicine.dto.MedicineList;
 import com.argusoft.abdmhackathon.medicine.dto.MedicinesMasterDto;
 import com.argusoft.abdmhackathon.medicine.model.MedicinesMaster;
 import com.argusoft.abdmhackathon.medicine.service.MedicinesMasterService;
@@ -61,7 +62,7 @@ public class MobileController {
         return medicinesMasterService.getMedicineByCodes(codes);
     }
     @RequestMapping(value = "medicines-by-code", method = RequestMethod.POST)
-    public Map<String, List<String>>  getMedicinesByCodes(@RequestParam String codes) {
+    public Map<String, List<MedicineList>>  getMedicinesByCodes(@RequestParam String codes) {
         System.out.println(codes);
         return medicinesMasterService.getMedicineByCode(codes);
     }
