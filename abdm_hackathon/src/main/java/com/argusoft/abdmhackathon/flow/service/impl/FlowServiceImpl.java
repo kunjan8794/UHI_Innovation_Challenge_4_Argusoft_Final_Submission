@@ -42,7 +42,7 @@ public class FlowServiceImpl implements FlowService {
             }
             // For last question
             if (nextQuestionId == null) {
-                return null;
+                return new QuestionDto();
             }
         }
         return QuestionModelToDtoMapper.convertQuestionModelToDto(questionService.getQuestionByQuestionId(nextQuestionId), preferredLanguage);

@@ -127,27 +127,28 @@ public class TriagingServiceImpl implements TriagingService {
                 severeDehydrationResult.setSymptoms(severeDehydrationSymptoms);
                 severeDehydrationResult.setSuggestions(severeDehydrationSuggestions);
                 results.add(severeDehydrationResult);
-            }
-
-            List<String> symptomsList = new ArrayList<>();
-            symptomsList.add("SUNKEN_EYES");
-            symptomsList.add("SKIN_PINCH_VERY_SLOWLY");
-            symptomsList.add("RESTLESS_IRRITABLE");
-            symptomsList.add("SKIN_PINCH_SLOWLY");
-            Integer symptomCount = 0;
-            for (String s : symptomsList) {
-                if (symptoms.contains(s)) {
-                    symptomCount++;
-                    someDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, s, preferredLanguage));
+            } else {
+                List<String> symptomsList = new ArrayList<>();
+                symptomsList.add("SUNKEN_EYES");
+                symptomsList.add("SKIN_PINCH_VERY_SLOWLY");
+                symptomsList.add("RESTLESS_IRRITABLE");
+                symptomsList.add("SKIN_PINCH_SLOWLY");
+                Integer symptomCount = 0;
+                for (String s : symptomsList) {
+                    if (symptoms.contains(s)) {
+                        symptomCount++;
+                        someDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25, s, preferredLanguage));
+                    }
+                }
+                if (symptomCount >= 2) {
+                    someDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                    someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
+                    someDehydrationResult.setSymptoms(someDehydrationSymptoms);
+                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+                    results.add(someDehydrationResult);
                 }
             }
-            if (symptomCount >= 2) {
-                someDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
-                someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
-                someDehydrationResult.setSymptoms(someDehydrationSymptoms);
-                someDehydrationResult.setSuggestions(someDehydrationSuggestions);
-                results.add(someDehydrationResult);
-            }
+
         }
     }
 
