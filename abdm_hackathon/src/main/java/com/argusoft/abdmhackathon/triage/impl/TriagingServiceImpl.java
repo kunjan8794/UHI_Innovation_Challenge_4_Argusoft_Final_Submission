@@ -140,6 +140,7 @@ public class TriagingServiceImpl implements TriagingService {
                 severeDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SEVERE_DEHYDRATION);
                 severeDehydrationResult.setSymptoms(severeDehydrationSymptoms);
                 severeDehydrationResult.setSuggestions(severeDehydrationSuggestions);
+                severeDehydrationResult.setCode("DIARRHOEA");
                 results.add(severeDehydrationResult);
             } else {
                 List<String> symptomsList = new ArrayList<>();
@@ -166,6 +167,7 @@ public class TriagingServiceImpl implements TriagingService {
                     someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
                     someDehydrationResult.setSymptoms(someDehydrationSymptoms);
 //                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+                    someDehydrationResult.setCode("DIARRHOEA");
                     results.add(someDehydrationResult);
                 }
             }
@@ -360,6 +362,7 @@ public class TriagingServiceImpl implements TriagingService {
             boneInfectionSuggestions.add(ConstantUtil.POSSIBLE_BONE_INFECTION_DESC);
             boneInfectionResult.setSymptoms(boneInfectionSymptoms);
             boneInfectionResult.setSuggestions(boneInfectionSuggestions);
+            boneInfectionResult.setCode("BONE_INFECTION");
             results.add(boneInfectionResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
@@ -373,6 +376,7 @@ public class TriagingServiceImpl implements TriagingService {
             urineInfectionSuggestions.add(ConstantUtil.POSSIBLE_URINE_INFECTION_DESC);
             urineInfectionResult.setSymptoms(urineInfectionSymptoms);
             urineInfectionResult.setSuggestions(urineInfectionSuggestions);
+            urineInfectionResult.setCode("URINE_INFECTION");
             results.add(urineInfectionResult);
         }
 
@@ -422,6 +426,7 @@ public class TriagingServiceImpl implements TriagingService {
             }
             severeMeaslesResult.setSymptoms(severeMeaslesSymptoms);
             severeMeaslesResult.setSuggestions(severeMeaslesSuggestions);
+            severeMeaslesResult.setCode("MEASLES");
             results.add(severeMeaslesResult);
         }
         if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
@@ -447,6 +452,7 @@ public class TriagingServiceImpl implements TriagingService {
             }
             measlesWithEyeorMouthInfectionResult.setSymptoms(severeMeaslesSymptoms);
             measlesWithEyeorMouthInfectionResult.setSuggestions(severeMeaslesSuggestions);
+            measlesWithEyeorMouthInfectionResult.setCode("MEASLES");
             results.add(measlesWithEyeorMouthInfectionResult);
         }
     }
