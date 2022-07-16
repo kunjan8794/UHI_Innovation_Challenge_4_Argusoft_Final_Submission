@@ -5,6 +5,7 @@ import java.util.List;
 public class TriagingResultsDto {
 
     private String disease;
+    private String code;
     private List<String> symptoms;
     private List<String> suggestions;
 
@@ -30,5 +31,13 @@ public class TriagingResultsDto {
 
     public void setSuggestions(List<String> suggestions) {
         this.suggestions = suggestions;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
