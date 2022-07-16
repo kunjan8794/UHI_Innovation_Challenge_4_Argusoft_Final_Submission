@@ -1,6 +1,9 @@
 package com.argusoft.abdmhackathon.triage.impl;
 
+import com.argusoft.abdmhackathon.question.dao.QuestionMasterDao;
 import com.argusoft.abdmhackathon.triage.TriagingService;
+import com.argusoft.abdmhackathon.triage.dto.TriagingResultsDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +12,8 @@ import java.util.*;
 @Service
 @Transactional
 public class TriagingServiceImpl implements TriagingService {
+
+
 
     private static String SEVERE_PNEUMONIA = "Severe Pneumonia";
     private static String SEVERE_PNEUMONIA_ALL = "Very Severe Pneumonia";
@@ -45,70 +50,90 @@ public class TriagingServiceImpl implements TriagingService {
     private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION = "Measles with Eye or Mouth Complication";
     private static String MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC = "Measles with Eye or Mouth Complication";
 
+    @Autowired
+    QuestionMasterDao questionMasterDao;
+    @Override
+    public List<TriagingResultsDto> doAllTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications,String preferredLanguage) {
+        List<TriagingResultsDto> results = new LinkedList<>();
+        checkForCoughSymptoms(mapOfAnswers, results,preferredLanguage);
+        checkForDiarrhoea(mapOfAnswers, results,preferredLanguage);
+        checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
+        checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
+        return results;
+    }
 
     @Override
     public Map<String, String> doTriage(Map<Integer, String> mapOfAnswers, Map<String, String> previousClassifications) {
         Map<String, String> results = new LinkedHashMap<>();
-        /*checkForSeverePneumonia(mapOfAnswers, results);
-        checkForPneumonia(mapOfAnswers, results);*/
-        checkForCoughSymptoms(mapOfAnswers, results);
-        checkForDiarrhoea(mapOfAnswers, results);
-        checkForFeverSymptoms(mapOfAnswers, results);
-        checkForMeaslesSymptoms(mapOfAnswers, results);
+        checkForSeverePneumonia(mapOfAnswers, results);
+        checkForPneumonia(mapOfAnswers, results);
         removeMultipleClassifications(results);
         removePreviousClassifications(results, previousClassifications);
-        /*checkForCoughOrCold(mapOfAnswers, results);
+        checkForCoughOrCold(mapOfAnswers, results);
         checkForDiarrhoeaWithSevereDehydration(mapOfAnswers, results);
-        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers, results);*/
+        checkForDiarrhoeaWithSomeDehydration(mapOfAnswers, results);
         return results;
     }
 
-    public static void checkForCoughSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+    public void checkForCoughSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results, String preferredLanguage) {
         String symptoms = mapOfAnswers.get(23);
+        TriagingResultsDto pneumoniaResult= new TriagingResultsDto();
+        TriagingResultsDto severePneumoniaResult= new TriagingResultsDto();
+        List<String> pneumoniaSuggestions=new ArrayList<>();
+        List<String> pneumoniaSymptoms=new ArrayList<>();
 
         if (symptoms != null) {
 
             if (symptoms.contains("COUGH_GT14")) {
-                results.put(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);
+              /*  results.add(PNEUMONIA, PNEUMONIA_COUGH_GTE14_DESC);*/
+                pneumoniaResult.setDisease(PNEUMONIA);
+                pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"COUGH_GT14",preferredLanguage));
+                pneumoniaSuggestions.add(PNEUMONIA_COUGH_GTE14_DESC);
+                pneumoniaResult.setSymptoms(pneumoniaSymptoms);
+                pneumoniaResult.setSuggestions(pneumoniaSuggestions);
             }
 
             if (symptoms.contains("CHEST_INDRAWING")) {
-                results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);
+                /*results.put(PNEUMONIA, PNEUMONIA_CHEST_INDRAWING_DESC);*/
+                pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23,"CHEST_INDRAWING",preferredLanguage));
+                pneumoniaSuggestions.add(PNEUMONIA_CHEST_INDRAWING_DESC);
+                pneumoniaResult.setSymptoms(pneumoniaSymptoms);
+                pneumoniaResult.setSuggestions(pneumoniaSuggestions);
             }
 
             if (symptoms.contains("RECURRENT_WHEEZING")) {
-                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC_WHEEZING);
+                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC_WHEEZING);*/
             }
 
             if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DIFFICULTY_BREATHING_DESC);
+                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DIFFICULTY_BREATHING_DESC);*/
             }
 
             if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
-                results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC);
+                /*results.put(PNEUMONIA, results.get(PNEUMONIA) + PNEUMONIA_DESC);*/
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD")) {
-                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);
+                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_STRIDOR_DESC);*/
             }
 
             if (symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_OXY_SAT_DESC);
+                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_OXY_SAT_DESC);*/
             }
 
             if (symptoms.contains("STRIDOR_IN_CHILD") && symptoms.contains("OXYGEN_SATURATION_LT90")) {
-                results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);
+                /*results.put(SEVERE_PNEUMONIA, SEVERE_PNEUMONIA_DESC);*/
             }
         }
     }
 
-    public static void checkForDiarrhoea(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+    public static void checkForDiarrhoea(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String symptoms = mapOfAnswers.get(25);
 
         if (symptoms != null) {
 
             if (symptoms.contains("SUNKEN_EYES") && symptoms.contains("SKIN_PINCH_VERY_SLOWLY")) {
-                results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);
+                /*results.put(ORAL_FLUID_TEST_RECOMMENDATION, ORAL_FLUID_TEST_RECOMMENDATION_DESC);*/
             }
 
             List<String> symptomsList = new ArrayList<>();
@@ -122,7 +147,7 @@ public class TriagingServiceImpl implements TriagingService {
                     symptomCount++;
                 }
                 if (symptomCount >= 2) {
-                    results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
+                    /*results.put(ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION, ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);*/
                     break;
                 }
             }
@@ -285,7 +310,7 @@ public class TriagingServiceImpl implements TriagingService {
 
     }
 
-    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+    private static void checkForFeverSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String feverResults = mapOfAnswers.get(24);
         if (feverResults == null) {
             return;
@@ -293,18 +318,18 @@ public class TriagingServiceImpl implements TriagingService {
 //        boolean oralSoresMouthUlcers=Arrays.stream(feverResultsArray).anyMatch("ORAL_SORES_MOUTH_ULCERS"::equals);
 
         if (feverResults.contains("TEMP_GTE_37_5")) {
-            results.put(FEVER, FEVER_DESC);
+            /*results.put(FEVER, FEVER_DESC);*/
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
-            results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);
+            /*results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);*/
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
-            results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);
+            /*results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);*/
         }
 
     }
 
-    private static void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, Map<String, String> results) {
+    private static void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results,String preferredLanguage) {
         String feverResults = mapOfAnswers.get(24).replace(" ", "");
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
@@ -321,10 +346,10 @@ public class TriagingServiceImpl implements TriagingService {
         boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
 
         if (hasFever && (cough || runnyNose || redEyes) && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
-            results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);
+            /*results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);*/
         }
         if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
-            results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);
+            /*results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);*/
         }
     }
 

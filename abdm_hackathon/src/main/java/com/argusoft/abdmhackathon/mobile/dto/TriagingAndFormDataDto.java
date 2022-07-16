@@ -13,6 +13,16 @@ public class TriagingAndFormDataDto {
     private Map<Integer, String> data;
     private Map<String, String> classification;
 
+    public String getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(String preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
+    }
+
+    private String preferredLanguage;
+
     public Map<Integer, String> getData() {
         return data;
     }
