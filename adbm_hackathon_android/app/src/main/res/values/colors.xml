@@ -16,5 +16,8 @@
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorGreen">#00ff00</color>
+    <color name="colorLightBlue">#d5e9f5</color>
 
 </resources>
