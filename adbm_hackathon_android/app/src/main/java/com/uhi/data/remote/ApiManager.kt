@@ -1,5 +1,6 @@
 package com.uhi.data.remote
 
+import com.squareup.moshi.Moshi
 import com.uhi.BuildConfig
 import com.uhi.ui.common.model.Question
 import com.uhi.ui.common.model.TriagingRequest
@@ -27,7 +28,7 @@ class ApiManager(private val networkHelper: NetworkHelper) : Api {
         return@lazy Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient.build())
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(CustomDateAdapter()).build()))
             .build()
             .create(ApiService::class.java)
     }
@@ -40,7 +41,7 @@ class ApiManager(private val networkHelper: NetworkHelper) : Api {
         return executeApiHelper(networkHelper) { apiService.getResults(TriagingRequest(request,previousClassifications)) }
     }
 
-    override suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<String, Float>>>?> {
+    override suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<Date, Float>>>?> {
         return executeApiHelper(networkHelper) { apiService.getLabData() }
     }
 }

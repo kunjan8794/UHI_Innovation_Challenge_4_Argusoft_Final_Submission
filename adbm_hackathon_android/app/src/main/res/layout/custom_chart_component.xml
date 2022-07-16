@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
+    android:layout_margin="@dimen/_10sdp"
     android:elevation="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_5sdp">
 
@@ -28,7 +28,7 @@
 
                 <TextView
                     android:id="@+id/disease_title"
-                    style="@style/TextView.Medium"
+                    style="@style/MaterialAlertDialog.Material3.Body.Text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center" />
@@ -71,7 +71,7 @@
 
                 <TextView
                     android:id="@+id/disease_unit"
-                    style="@style/TextView.Medium"
+                    style="@style/MaterialAlertDialog.Material3.Body.Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />
@@ -91,11 +91,12 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/range_slider"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:enabled="false"
                     android:valueFrom="0.0"
-                    android:valueTo="100.0"
+                    android:valueTo="200.0"
                     app:labelBehavior="visible"
                     app:thumbColor="@color/colorAccent"
                     app:thumbRadius="0dp"
@@ -104,21 +105,24 @@
                     app:values="@array/initial_slider_values" />
 
                 <com.google.android.material.slider.Slider
+                    android:id="@+id/main_slider"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/colorTransparent"
                     android:enabled="false"
                     android:value="50"
                     android:valueFrom="0.0"
-                    android:valueTo="100.0"
+                    android:valueTo="200.0"
                     app:labelBehavior="visible"
                     app:thumbColor="@color/colorAccent"
+                    app:thumbRadius="@dimen/_5sdp"
                     app:trackColor="@color/colorTransparent" />
 
             </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/graph_click_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorLightBlue"
@@ -135,7 +139,7 @@
                 android:src="@drawable/bar_chart" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Small"
+                style="@style/TextAppearance.Material3.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
@@ -155,12 +159,14 @@
             android:id="@+id/graphView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
             android:visibility="gone">
 
             <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graph"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/_180sdp" />
 
         </LinearLayout>
 

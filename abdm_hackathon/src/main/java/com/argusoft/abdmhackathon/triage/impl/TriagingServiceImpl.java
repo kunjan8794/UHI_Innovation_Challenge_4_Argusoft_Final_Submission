@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,6 +24,7 @@ public class TriagingServiceImpl implements TriagingService {
         checkForDiarrhoea(mapOfAnswers, results,preferredLanguage);
         checkForFeverSymptoms(mapOfAnswers, results,preferredLanguage);
         checkForMeaslesSymptoms(mapOfAnswers, results,preferredLanguage);
+        removeMultipleClassificationsForAllTraige(results);
         return results;
     }
 
@@ -510,7 +512,20 @@ public class TriagingServiceImpl implements TriagingService {
         //ONE OR MORE OF THE FOLLOWING:
         // COUGH/RUNNY NOSE/RED EYES
     }
-
+    private static void removeMultipleClassificationsForAllTraige(List<TriagingResultsDto> results) {
+        List<TriagingResultsDto>  severeMeaslesResult=results.stream().filter(data -> data.getDisease().equals(ConstantUtil.SEVERE_COMPLICATED_MEASLES)).collect(Collectors.toList());
+            if(severeMeaslesResult.size() >0){
+                List<TriagingResultsDto>  measlesWithComplicationResult=results.stream().filter(data -> data.getDisease().equals(ConstantUtil.MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION)).collect(Collectors.toList());
+                if(measlesWithComplicationResult.size()>0){
+                    results.stream()
+                            .filter(data-> data.getDisease().equals(ConstantUtil.SEVERE_COMPLICATED_MEASLES))
+                            .forEach(d -> {
+                                d.getSuggestions().addAll(measlesWithComplicationResult.get(0).getSymptoms());
+                            });
+                    results.remove(ConstantUtil.MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION);
+                }
+            }
+    }
     private static void removeMultipleClassifications(Map<String, String> results) {
         if (results.containsKey(ConstantUtil.SEVERE_PNEUMONIA))
             results.remove(ConstantUtil.PNEUMONIA);

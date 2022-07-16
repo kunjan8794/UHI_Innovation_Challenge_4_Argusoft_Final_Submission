@@ -39,8 +39,9 @@
     <string name="select_triaging">Select Triaging</string>
     <string name="label_symptoms">Symptoms:</string>
     <string name="label_suggestions">Suggestions</string>
-    <string name="parameter_history_graph">History Graph</string>
+    <string name="parameter_history_graph">Parameter History Graph</string>
     <string name="label_symptoms_triaging">Symptoms based Triaging</string>
     <string name="label_time_series">Time Series\nData Visualization</string>
     <string name="report">Report</string>
+    <string name="mgdl">mg/dl</string>
 </resources>
