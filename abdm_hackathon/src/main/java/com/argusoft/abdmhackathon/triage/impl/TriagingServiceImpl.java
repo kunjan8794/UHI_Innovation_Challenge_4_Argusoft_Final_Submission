@@ -68,6 +68,7 @@ public class TriagingServiceImpl implements TriagingService {
                 severePneumoniaResult.setDisease(ConstantUtil.SEVERE_PNEUMONIA);
                 severePneumoniaResult.setSymptoms(severePneumoniaSymptoms);
                 severePneumoniaResult.setSuggestions(severePneumoniaSuggestions);
+                severePneumoniaResult.setCode("PNEUMONIA");
                 results.add(severePneumoniaResult);
             } else {
                 if (symptoms.contains("COUGH_GT14")) {
@@ -97,6 +98,7 @@ public class TriagingServiceImpl implements TriagingService {
 
                 if (pneumoniaSymptoms.size() > 0) {
                     pneumoniaResult.setDisease(ConstantUtil.PNEUMONIA);
+                    pneumoniaResult.setCode("PNEUMONIA");
                     pneumoniaResult.setSymptoms(pneumoniaSymptoms);
                     pneumoniaResult.setSuggestions(pneumoniaSuggestions);
                     results.add(pneumoniaResult);
@@ -131,7 +133,7 @@ public class TriagingServiceImpl implements TriagingService {
 
                 severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SUNKEN_EYES",preferredLanguage));
                 severeDehydrationSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(25,"SKIN_PINCH_VERY_SLOWLY",preferredLanguage));
-                severeDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
+//                severeDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SEVERE_DEHYDRATION_DESC);
             }
 
             if (severeDehydrationSymptoms.size() > 0) {
@@ -163,7 +165,7 @@ public class TriagingServiceImpl implements TriagingService {
                     someDehydrationSuggestions.add(ConstantUtil.ORAL_FLUID_TEST_RECOMMENDATION_FOR_SOME_DEHYDRATION_DESC);
                     someDehydrationResult.setDisease(ConstantUtil.DIARRHOEA_SOME_DEHYDRATION);
                     someDehydrationResult.setSymptoms(someDehydrationSymptoms);
-                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
+//                    someDehydrationResult.setSuggestions(someDehydrationSuggestions);
                     results.add(someDehydrationResult);
                 }
             }

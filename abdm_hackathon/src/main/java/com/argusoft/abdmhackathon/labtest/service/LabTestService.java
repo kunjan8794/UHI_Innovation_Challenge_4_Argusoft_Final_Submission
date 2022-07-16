@@ -1,5 +1,7 @@
 package com.argusoft.abdmhackathon.labtest.service;
 
+import com.argusoft.abdmhackathon.labtest.dto.LabTestDto;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 public interface LabTestService {
 
-    Map<String, List<String>> getLabTestsByCodes(String codes);
+    List<LabTestDto> getLabTestsByCodes(String codes);
 
     Map<Integer, Map<String, Map<Date, Float>>> getLabReportDateForEachPatient();
 }
