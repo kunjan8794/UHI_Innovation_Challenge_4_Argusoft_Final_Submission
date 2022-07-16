@@ -8,9 +8,9 @@ class PreferenceManager(private val sharedPreferences: EncPref) : Preference {
     companion object {
         private const val IS_LOGIN = "pref_is_login"
         const val APP_LANGUAGE = "APP_LANGUAGE"
-        const val EN = "en"
-        const val HN = "hn"
-        const val GU = "gu"
+        const val EN = "EN"
+        const val HN = "HN"
+        const val GU = "GU"
     }
 
     override fun setLogin() {

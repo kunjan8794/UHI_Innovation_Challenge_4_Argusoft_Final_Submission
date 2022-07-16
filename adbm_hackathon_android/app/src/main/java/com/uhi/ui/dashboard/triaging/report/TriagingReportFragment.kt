@@ -37,6 +37,7 @@ class TriagingReportFragment : BaseFragment<FragmentTriagingBinding>() {
         }
         triagingReportAdapter = TriagingReportAdapter(arrayListOf())
         binding.recyclerView.adapter = triagingReportAdapter
+        binding.progressLayout.recyclerView = binding.recyclerView
     }
 
     override fun initListener() {

@@ -22,12 +22,14 @@ class TriagingFragment : BaseFragment<FragmentTriagingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireArguments().getParcelableArrayList<Question?>(INTENT_EXTRA_QUESTIONS)?.let { dashboardViewModel.getResult(it) }
+
     }
 
     override fun initView() {
+        requireArguments().getParcelableArrayList<Question?>(INTENT_EXTRA_QUESTIONS)?.let { dashboardViewModel.getResult(it) }
         glideRequests = GlideApp.with(this)
         triagingAdapter = TriagingAdapter(arrayListOf())
+        binding.progressLayout.recyclerView = binding.recyclerView
         binding.recyclerView.adapter = triagingAdapter
     }
 

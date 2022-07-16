@@ -19,10 +19,10 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     override fun initView() {
         binding.autoCompleteTextView.setSimpleItems(languageList)
         binding.autoCompleteTextView.setText(
-            when (preference.getAppLanguage()) {
+            when (preference.getAppLanguage().toUpperCase()) {
                 EN -> languageList[0]
                 HN -> languageList[1]
-                GU -> languageList[3]
+                GU -> languageList[2]
                 else -> ""
             }, false
         )

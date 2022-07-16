@@ -53,7 +53,7 @@ class TriagingAdapter(
         fun bind(triagingResults: TriagingResults) = with(triagingResults) {
             binding.titleTextView.text = disease
             binding.symptomsTextView.text = symptoms?.getString()
-            binding.suggestionsTextView.isVisible = suggestions?.isNotEmpty() == true
+            binding.suggestionsGroup.isVisible = suggestions?.isNotEmpty() == true
             binding.suggestionsTextView.text = suggestions?.getString()
         }
     }

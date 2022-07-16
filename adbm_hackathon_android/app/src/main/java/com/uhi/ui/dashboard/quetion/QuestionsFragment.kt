@@ -28,11 +28,11 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dashboardViewModel.getQuestion()
+        glideRequests = GlideApp.with(this)
+        questionAdapter = QuestionAdapter(arrayListOf(), glideRequests, this)
     }
 
     override fun initView() {
-        glideRequests = GlideApp.with(this)
-        questionAdapter = QuestionAdapter(arrayListOf(), glideRequests, this)
         binding.viewPager.adapter = questionAdapter
         binding.viewPager.isUserInputEnabled = false
     }
@@ -94,12 +94,12 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
         when (view?.id) {
             R.id.nextImageView -> {
                 val question = questionAdapter.getSingleItem(binding.viewPager.currentItem)
-                if (question?.answer.isNullOrEmpty()) {
+               /* if (question?.answer.isNullOrEmpty()) {
                     showSnackBar(binding.progressLayout, getString(R.string.error_msg_select_answer))
-                } else {
+                } else {*/
 //                    dashboardViewModel.getResult(questionAdapter.getItemsList())
                     dashboardViewModel.getQuestion(question?.id, question?.answer, true)
-                }
+//                }
             }
             R.id.previousImageView -> {
                 if (binding.viewPager.currentItem >= 1) {

@@ -28,7 +28,7 @@ class DashboardViewModel @Inject constructor(
     private val preference: Preference
 ) : ViewModel() {
 
-    private val _apiState = MutableLiveData<ApiResponse<Question?>>()
+    private val _apiState = SingleLiveEvent<ApiResponse<Question?>>()
     val apiState: LiveData<ApiResponse<Question?>>
         get() = _apiState
 

@@ -30,6 +30,7 @@ open class BaseAdapter<T>(private val dataList: ArrayList<T?>) : RecyclerView.Ad
     }
 
     fun addAll(list: List<T?>) {
+        clearAllItems()
         dataList.addAll(list)
         notifyItemChanged(
             dataList.lastIndex - list.lastIndex,
