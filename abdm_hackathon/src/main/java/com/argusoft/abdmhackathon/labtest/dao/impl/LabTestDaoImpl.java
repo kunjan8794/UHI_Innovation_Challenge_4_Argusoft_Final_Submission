@@ -1,6 +1,5 @@
 package com.argusoft.abdmhackathon.labtest.dao.impl;
 
-import com.argusoft.abdmhackathon.flow.model.FlowMaster;
 import com.argusoft.abdmhackathon.labtest.dao.LabTestCustomDao;
 import com.argusoft.abdmhackathon.labtest.model.LabTest;
 import org.hibernate.Session;

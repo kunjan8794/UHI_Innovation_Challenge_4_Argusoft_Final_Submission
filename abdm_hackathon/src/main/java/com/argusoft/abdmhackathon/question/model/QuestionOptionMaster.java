@@ -70,4 +70,10 @@ public class QuestionOptionMaster {
     public void setOptionGu(String optionGu) {
         this.optionGu = optionGu;
     }
+
+    public static class Fields {
+
+        public static final String CONSTANT = "constant";
+        public static final String QUE_ID = "queId";
+    }
 }

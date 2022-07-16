@@ -40,6 +40,10 @@ public class FlowServiceImpl implements FlowService {
             if (nextQuestionId == null) {
                 nextQuestionId = flowMasterDao.getFlowByQuestionIDAndAnswer(questionId, null);
             }
+            // For last question
+            if (nextQuestionId == null) {
+                return null;
+            }
         }
         return QuestionModelToDtoMapper.convertQuestionModelToDto(questionService.getQuestionByQuestionId(nextQuestionId), preferredLanguage);
     }
