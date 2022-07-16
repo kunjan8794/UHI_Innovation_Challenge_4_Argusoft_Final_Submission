@@ -37,7 +37,7 @@ class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
     override fun initObserver() {
         observeNotNull(dashboardViewModel.labDataApiState) { apiResponse ->
             apiResponse.handleListApiView(binding.progressLayout, onClickListener = {
-                dashboardViewModel.getQuestion()
+                dashboardViewModel.getLabData(requireArguments().getInt(INTENT_EXTRA_PATIENT_ID))
             }) {
                 it?.let { it1 -> patientReportAdapter.addAll(it1) }
                 it.timber()

@@ -29,7 +29,7 @@
             android:orientation="vertical"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/default_margin"
-            tools:listitem="@layout/list_item_triaging"
+            tools:listitem="@layout/list_item_triaging_report"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </com.uhi.widget.ApiViewStateConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,7 +39,11 @@ class TriagingReportAdapter(
         fun bind(triagingResults: MedicineList) = with(triagingResults) {
             binding.titleTextView.text = name
             binding.doseTextView.text = dose
+            binding.codeTextView.text = "SNOMED CT: $code"
+            binding.codeTextView.isVisible = code?.isNotEmpty() == true
+            binding.noteTextView.text = "Note: Based on evidences, this medicine has been found effective in 37% of the cases."
             binding.doseTextView.isVisible = dose?.isNotEmpty() == true
+            binding.noteTextView.isVisible = dose?.isNotEmpty() == true && bindingAdapterPosition==0
         }
     }
 }

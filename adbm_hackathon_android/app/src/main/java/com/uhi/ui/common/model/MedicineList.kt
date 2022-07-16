@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 data class MedicineList(
     var name: String? = null,
     var dose: String? = null,
-    var code: Int? = null
+    var code: String? = null
 )

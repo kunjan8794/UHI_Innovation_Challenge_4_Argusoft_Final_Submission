@@ -1,37 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MaterialCardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/default_margin"
-    android:layout_marginTop="@dimen/default_margin">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        style="@style/MaterialCardView"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_12sdp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp">
+        android:layout_marginBottom="@dimen/_4sdp"
+        app:layout_constraintBottom_toTopOf="@+id/noteTextView"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/titleTextView"
-            style="@style/TextView.Title.Bold"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="55" />
+            android:layout_margin="@dimen/_10sdp">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/doseTextView"
-            style="@style/TextView.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:text="@string/label_symptoms"
-            app:layout_constraintStart_toStartOf="@id/titleTextView"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/titleTextView"
+                style="@style/TextView.Title.Bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="55" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/codeTextView"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textSize="15sp"
+                android:text="@string/label_symptoms"
+                app:layout_constraintStart_toStartOf="@id/titleTextView"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/doseTextView"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textSize="14sp"
+                android:text="@string/label_symptoms"
+                app:layout_constraintStart_toStartOf="@id/codeTextView"
+                app:layout_constraintTop_toBottomOf="@id/codeTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/noteTextView"
+        style="@style/TextView.Small"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textColor="@color/colorLightBlack"
+        android:textStyle="italic"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="55" />
+</androidx.constraintlayout.widget.ConstraintLayout>

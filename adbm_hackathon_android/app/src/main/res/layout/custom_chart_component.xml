@@ -28,7 +28,8 @@
 
                 <TextView
                     android:id="@+id/disease_title"
-                    style="@style/MaterialAlertDialog.Material3.Body.Text"
+                    style="@style/TextView.Medium"
+                    android:textSize="14sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center" />
@@ -37,6 +38,7 @@
 
             <View
                 android:layout_width="1dp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:layout_height="match_parent"
                 android:background="@color/colorLightBlack" />
 
@@ -64,14 +66,14 @@
 
                 <TextView
                     android:id="@+id/disease_value"
-                    style="@style/TextView.Title"
+                    style="@style/TextView.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />
 
                 <TextView
                     android:id="@+id/disease_unit"
-                    style="@style/MaterialAlertDialog.Material3.Body.Text"
+                    style="@style/TextView.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" />
@@ -80,6 +82,7 @@
 
             <View
                 android:layout_width="1dp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:layout_height="match_parent"
                 android:background="@color/colorLightBlack" />
 
