@@ -22,4 +22,10 @@
         <attr name="enableRecyclerView" format="boolean" />
         <attr name="enableSwipeRefreshLayout" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="CustomChartComponent">
+        <attr name="diseaseTitle" format="string"/>
+        <attr name="diseaseValue" format="string"/>
+        <attr name="diseaseUnit" format="string"/>
+    </declare-styleable>
 </resources>
