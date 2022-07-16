@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.QueryMap
+import java.util.*
 
 interface ApiService {
 
@@ -15,5 +16,8 @@ interface ApiService {
 
     @POST("mobile/get-triaging-result")
     suspend fun getResults(@Body since: TriagingRequest?): Response<Map<String, String>?>
+
+    @GET("mobile/get-lab-data")
+    suspend fun getLabData(): Response<Map<Int, Map<String, Map<String, Float>>>?>
 
 }

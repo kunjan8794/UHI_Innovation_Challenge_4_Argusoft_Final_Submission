@@ -2,15 +2,9 @@ package com.uhi.ui.dashboard.triaging
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.uhi.R
-import com.uhi.data.local.pref.PreferenceManager.Companion.EN
-import com.uhi.data.local.pref.PreferenceManager.Companion.GU
-import com.uhi.data.local.pref.PreferenceManager.Companion.HN
 import com.uhi.databinding.FragmentTriagingBinding
 import com.uhi.ui.common.base.BaseFragment
-import com.uhi.ui.common.languageList
-import com.uhi.ui.dashboard.quetion.QuestionAdapter
-import com.uhi.ui.dashboard.quetion.QuestionViewModel
+import com.uhi.ui.dashboard.DashboardViewModel
 import com.uhi.utils.extention.*
 import com.uhi.utils.glide.GlideApp
 import com.uhi.utils.glide.GlideRequests
@@ -21,7 +15,7 @@ class TriagingFragment : BaseFragment<FragmentTriagingBinding>() {
 
     private lateinit var triagingAdapter: TriagingAdapter
     private lateinit var glideRequests: GlideRequests
-    private val questionViewModel: QuestionViewModel by viewModels()
+    private val dashboardViewModel: DashboardViewModel by viewModels()
 
     override fun initView() {
         glideRequests = GlideApp.with(this)
@@ -33,9 +27,9 @@ class TriagingFragment : BaseFragment<FragmentTriagingBinding>() {
     }
 
     override fun initObserver() {
-        observeNotNull(questionViewModel.apiState) {
+        observeNotNull(dashboardViewModel.apiState) {
             it.handleListApiView(binding.progressLayout, onClickListener = {
-                questionViewModel.getQuestion()
+                dashboardViewModel.getQuestion()
             }) {
                 triagingAdapter.add(it)
             }

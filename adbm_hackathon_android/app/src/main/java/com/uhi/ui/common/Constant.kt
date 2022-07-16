@@ -1,6 +1,6 @@
 package com.uhi.ui.common
 
-const val INTENT_EXTRA_ALBUM = "INTENT_EXTRA_ALBUM"
+const val INTENT_EXTRA_PATIENT_ID= "INTENT_EXTRA_PATIENT_ID"
 const val MY_UPDATE_REQUEST_CODE = 50
 
  val languageList = arrayOf("English","Hindi","Gujarati")

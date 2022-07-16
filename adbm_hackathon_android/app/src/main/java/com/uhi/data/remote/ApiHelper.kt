@@ -1,10 +1,12 @@
 package com.uhi.data.remote
 
+import com.uhi.utils.common.NetworkHelper
 import retrofit2.Response
 import java.net.ConnectException
 import java.net.UnknownHostException
 
-inline fun <T> executeApiHelper(responseMethod: () -> Response<T>): ApiResponse<T> {
+inline fun <T> executeApiHelper(networkHelper: NetworkHelper, responseMethod: () -> Response<T>): ApiResponse<T> {
+    if (!networkHelper.isInternetAvailable()) return ApiResponse.NoInternetConnection
     return try {
         val response = responseMethod.invoke()
         when (response.code()) {
@@ -23,7 +25,7 @@ inline fun <T> executeApiHelper(responseMethod: () -> Response<T>): ApiResponse<
     } catch (exception: Exception) {
         exception.printStackTrace()
         when (exception) {
-            is UnknownHostException, is ConnectException -> ApiResponse.NoInternetConnection
+            is UnknownHostException -> ApiResponse.NoInternetConnection
             else -> ApiResponse.ServerError("Unexpected internal server error.")
         }
     }

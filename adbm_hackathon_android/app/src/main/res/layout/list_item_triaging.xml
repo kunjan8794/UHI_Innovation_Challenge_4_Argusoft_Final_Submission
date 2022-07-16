@@ -11,16 +11,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp">
-
+        android:layout_margin="@dimen/_10sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/testReportImageView"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
-            android:padding="@dimen/_4sdp"
-            android:backgroundTint="@color/colorGray"
             android:background="@drawable/drawable_circle"
+            android:backgroundTint="@color/colorGray"
+            android:padding="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="@id/titleTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/titleTextView"
@@ -30,10 +29,10 @@
             android:id="@+id/medicineImageview"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
-            android:padding="@dimen/_4sdp"
-            android:backgroundTint="@color/colorGray"
-            android:background="@drawable/drawable_circle"
             android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@drawable/drawable_circle"
+            android:backgroundTint="@color/colorGray"
+            android:padding="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="@id/titleTextView"
             app:layout_constraintEnd_toStartOf="@+id/testReportImageView"
             app:layout_constraintTop_toTopOf="@+id/titleTextView"
@@ -75,7 +74,7 @@
             android:id="@+id/dividerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/ic_divider"
             app:layout_constraintTop_toBottomOf="@+id/symptomsTextView" />
 
@@ -84,7 +83,7 @@
             style="@style/TextView.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/label_suggestions"
             app:layout_constraintStart_toStartOf="@id/titleTextView"
             app:layout_constraintTop_toBottomOf="@id/dividerView" />
@@ -100,5 +99,10 @@
             app:layout_constraintStart_toStartOf="@id/titleTextView"
             app:layout_constraintTop_toBottomOf="@id/suggestionsLabelTextView" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/suggestionsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="dividerView,suggestionsLabelTextView,suggestionsTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

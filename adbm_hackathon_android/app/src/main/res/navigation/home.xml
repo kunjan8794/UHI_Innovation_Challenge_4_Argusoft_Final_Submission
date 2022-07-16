@@ -13,29 +13,34 @@
         <action
             android:id="@+id/action_dashboardFragment_to_questionsFragment"
             app:destination="@id/questionsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_patientFragment"
+            app:destination="@id/patientFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/questionsFragment"
         android:name="com.uhi.ui.dashboard.quetion.QuestionsFragment"
-        tools:layout="@layout/fragment_quetions">
+        tools:layout="@layout/fragment_question">
 
     </fragment>
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:label="Home"
-        android:name="com.uhi.ui.dashboard.home.HomeFragment"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/patientFragment"
+        android:name="com.uhi.ui.dashboard.timeseries.PatientFragment"
+        tools:layout="@layout/fragment_patient">
+
         <action
-            android:id="@+id/action_homeFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            android:id="@+id/action_patientFragment_to_patientReportFragment"
+            app:destination="@id/patientReportFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/detailFragment"
-        android:label="Home"
-        android:name="com.uhi.ui.dashboard.home.detail.DetailFragment"
-        tools:layout="@layout/fragment_detail"/>
+        android:id="@+id/patientReportFragment"
+        android:name="com.uhi.ui.dashboard.timeseries.PatientReportFragment"
+        tools:layout="@layout/fragment_patient_report">
+
+    </fragment>
+
 
 </navigation>

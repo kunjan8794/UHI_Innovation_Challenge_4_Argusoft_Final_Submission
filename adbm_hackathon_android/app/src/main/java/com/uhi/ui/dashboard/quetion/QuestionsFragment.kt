@@ -1,31 +1,32 @@
 package com.uhi.ui.dashboard.quetion
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateViewModelFactory
-import androidx.navigation.navGraphViewModels
 import com.uhi.R
 import com.uhi.data.local.pref.PreferenceManager.Companion.EN
 import com.uhi.data.local.pref.PreferenceManager.Companion.GU
 import com.uhi.data.local.pref.PreferenceManager.Companion.HN
-import com.uhi.databinding.FragmentDashboardBinding
-import com.uhi.databinding.FragmentQuetionsBinding
+import com.uhi.databinding.FragmentQuestionBinding
 import com.uhi.ui.common.base.BaseFragment
 import com.uhi.ui.common.languageList
-import com.uhi.ui.common.model.Question
+import com.uhi.ui.dashboard.DashboardViewModel
 import com.uhi.utils.extention.*
 import com.uhi.utils.glide.GlideApp
 import com.uhi.utils.glide.GlideRequests
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
+class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
 
     private lateinit var questionAdapter: QuestionAdapter
     private lateinit var glideRequests: GlideRequests
-    private val questionViewModel: QuestionViewModel by viewModels()
+    private val dashboardViewModel: DashboardViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dashboardViewModel.getQuestion()
+    }
 
     override fun initView() {
         glideRequests = GlideApp.with(this)
@@ -41,21 +42,21 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
     }
 
     override fun initObserver() {
-        observeNotNull(questionViewModel.apiState) {
+        observeNotNull(dashboardViewModel.apiState) {
             it.handleListApiView(binding.progressLayout, onClickListener = {
-                questionViewModel.getQuestion()
+                dashboardViewModel.getQuestion()
             }) {
                 questionAdapter.add(it)
                 binding.viewPager.setCurrentItem(questionAdapter.getItemsList().lastIndex, false)
             }
         }
-        observeNotNull(questionViewModel.resultApiState) { apiResponse ->
+        observeNotNull(dashboardViewModel.resultApiState) { apiResponse ->
             apiResponse.handleApiView(binding.progressLayout, onClickListener = {
-                questionViewModel.getQuestion()
+                dashboardViewModel.getQuestion()
             }) { map ->
                 val question = questionAdapter.getSingleItem(binding.viewPager.currentItem)
                 if (map?.isEmpty() == true) {
-                    questionViewModel.getQuestion(question?.id, question?.answer, true)
+                    dashboardViewModel.getQuestion(question?.id, question?.answer, true)
                 } else {
                     val stringBuilder = StringBuilder()
                     var index = 0
@@ -69,7 +70,7 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
                         setMessage(stringBuilder.toString())
                         setCancelable(false)
                         setPositiveButton(R.string.button_continue) { dialogInterface, i ->
-                            questionViewModel.getQuestion(question?.id, question?.answer, true)
+                            dashboardViewModel.getQuestion(question?.id, question?.answer, true)
                         }
                         setNegativeButton(R.string.button_go_to) { dialogInterface, i ->
 
@@ -88,7 +89,7 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
                 if (question?.answer.isNullOrEmpty()) {
                     showSnackBar(binding.progressLayout, getString(R.string.error_msg_select_answer))
                 } else {
-                    questionViewModel.getResult(questionAdapter.getItemsList())
+                    dashboardViewModel.getResult(questionAdapter.getItemsList())
 //                    questionViewModel.getQuestion(question?.id, question?.answer, true)
                 }
             }
@@ -98,7 +99,7 @@ class QuestionsFragment : BaseFragment<FragmentQuetionsBinding>() {
                     binding.viewPager.setCurrentItem(position, false)
                     questionAdapter.getItemsList().removeAt(binding.viewPager.currentItem + 1)
                 } else {
-                    questionViewModel.previousClassifications.clear()
+                    dashboardViewModel.previousClassifications.clear()
                     requireActivity().onBackPressed()
                 }
             }
