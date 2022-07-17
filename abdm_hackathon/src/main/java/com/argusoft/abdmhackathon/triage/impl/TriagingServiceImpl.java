@@ -415,7 +415,6 @@ public class TriagingServiceImpl implements TriagingService {
             List<String> severeMeaslesSuggestions = new ArrayList<>();
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             severeMeaslesResult.setDisease(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "TEMP_GTE_37_5", preferredLanguage));
             if (cough) {
                 severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "COUGH", preferredLanguage));
             }
@@ -449,7 +448,6 @@ public class TriagingServiceImpl implements TriagingService {
             List<String> severeMeaslesSuggestions = new ArrayList<>();
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             measlesWithEyeorMouthInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "TEMP_GTE_37_5", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MOUTH_SORES_ULCERS_NOT_DEEP", preferredLanguage));
             severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "PUS_DRAINING_FROM_EYE", preferredLanguage));
