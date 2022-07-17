@@ -43,7 +43,7 @@ class TriagingReportAdapter(
             binding.codeTextView.isVisible = code?.isNotEmpty() == true
             binding.noteTextView.text = "Note: Based on evidences, this medicine has been found effective in 37% of the cases."
             binding.doseTextView.isVisible = dose?.isNotEmpty() == true
-            binding.noteTextView.isVisible = dose?.isNotEmpty() == true && bindingAdapterPosition==0
+            binding.noteTextView.isVisible = bindingAdapterPosition == 0
         }
     }
 }

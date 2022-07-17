@@ -3,6 +3,7 @@ package com.uhi.ui.dashboard.timeseries
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.components.Legend
@@ -13,7 +14,10 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.uhi.R
 import com.uhi.databinding.CustomChartComponentBinding
 import com.uhi.ui.common.base.BaseAdapter
@@ -102,21 +106,49 @@ class PatientReportAdapter(
             val mapIndexed = question.labTestData?.mapIndexed { index, labTestData ->
                 Entry(
                     index.toFloat(),
-                    labTestData.value!!
+                    labTestData.value!!,
+                    AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_arrow_down)
                 )
             }
 
-           binding.graph.axisRight.setDrawLabels(false)
-           binding.graph.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+            binding.graph.axisRight.setDrawLabels(false)
+            binding.graph.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
 
 
             val xAxis: XAxis = binding.graph.xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
+            question.labTestData?.size?.let { xAxis.setLabelCount(it, true) }
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return question.labTestData?.getOrNull(value.toInt())?.date.convertDate()
                 }
             }
+
+            binding.graph.setTouchEnabled(true)
+            // create marker to display box when values are selected
+
+            // create marker to display box when values are selected
+            val mv = MyMarkerView(binding.root.context, R.layout.custom_marker_view)
+            mv.chartView = binding.graph
+            binding.graph.marker = mv
+
+                binding.graph.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                    override fun onValueSelected(e: Entry?, h: Highlight?) {
+                        val highlight = arrayOfNulls<Highlight>(binding.graph.getData().getDataSets().size)
+                        for (j in 0 until binding.graph.getData().getDataSets().size) {
+                            val iDataSet: IDataSet<*> = binding.graph.getData().getDataSets().get(j)
+                            for (i in (iDataSet as LineDataSet).values.indices) {
+                                if (iDataSet.values[i].x == e!!.x) {
+                                    highlight[j] = Highlight(e.x, e.y, j)
+                                }
+                            }
+                        }
+                        binding.graph.highlightValues(highlight)
+                    }
+
+                    override fun onNothingSelected() {
+                    }
+                })
 
             val lineDataSet = LineDataSet(mapIndexed, "Data 1")
 
