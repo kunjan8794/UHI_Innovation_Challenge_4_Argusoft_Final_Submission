@@ -28,7 +28,7 @@ class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
     override fun initView() {
         glideRequests = GlideApp.with(this)
         binding.headerLayout.toolbar.setTitle(R.string.report)
-        patientReportAdapter = PatientReportAdapter(arrayListOf(), glideRequests, this)
+        patientReportAdapter = PatientReportAdapter(arrayListOf(), context!!, requireArguments().getInt(INTENT_EXTRA_PATIENT_ID))
         binding.recyclerView.adapter = patientReportAdapter
     }
 
