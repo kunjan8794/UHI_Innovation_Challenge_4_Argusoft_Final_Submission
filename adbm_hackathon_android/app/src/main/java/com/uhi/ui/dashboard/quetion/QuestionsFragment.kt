@@ -2,12 +2,8 @@ package com.uhi.ui.dashboard.quetion
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.uhi.R
-import com.uhi.data.local.pref.PreferenceManager.Companion.EN
-import com.uhi.data.local.pref.PreferenceManager.Companion.GU
-import com.uhi.data.local.pref.PreferenceManager.Companion.HN
 import com.uhi.databinding.FragmentQuestionBinding
 import com.uhi.ui.common.INTENT_EXTRA_QUESTIONS
 import com.uhi.ui.common.base.BaseFragment
@@ -33,6 +29,10 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
     }
 
     override fun initView() {
+        binding.headerLayout.toolbar.setTitle(R.string.label_symptoms_triaging)
+        binding.headerLayout.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
         binding.viewPager.adapter = questionAdapter
         binding.viewPager.isUserInputEnabled = false
     }
@@ -112,26 +112,7 @@ class QuestionsFragment : BaseFragment<FragmentQuestionBinding>() {
                 }
             }
             R.id.languageImageView -> {
-                val selectedPosition = when (preference.getAppLanguage()) {
-                    EN -> 0
-                    HN -> 1
-                    GU -> 2
-                    else -> -1
-                }
-                context?.alertDialog {
-                    setTitle(R.string.title_language)
-                    setSingleChoiceItems(languageList, selectedPosition) { dialogInterface, i ->
-                        preference.setAppLanguage(
-                            when (i) {
-                                0 -> EN
-                                1 -> HN
-                                else -> GU
-                            }
-                        )
-                        dialogInterface.dismiss()
-                        restartApp()
-                    }
-                }?.show()
+
             }
         }
     }

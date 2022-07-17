@@ -13,7 +13,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/titleTextView"
-            style="@style/TextView.Title"
+            style="@style/TextView.Title.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:layout_constraintDimensionRatio="1:0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

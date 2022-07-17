@@ -29,17 +29,17 @@
                 <TextView
                     android:id="@+id/disease_title"
                     style="@style/TextView.Medium"
-                    android:textSize="14sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
-                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:background="@color/colorLightBlack" />
 
             <LinearLayout
@@ -82,8 +82,8 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:background="@color/colorLightBlack" />
 
             <RelativeLayout

@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.uhi.R
 import com.uhi.databinding.ListItemTriagingBinding
 import com.uhi.databinding.ListItemTriagingReportBinding
 import com.uhi.ui.common.base.BaseAdapter
@@ -41,7 +42,9 @@ class TriagingReportAdapter(
             binding.doseTextView.text = dose
             binding.codeTextView.text = "SNOMED CT: $code"
             binding.codeTextView.isVisible = code?.isNotEmpty() == true
-            binding.noteTextView.text = "Note: Based on evidences, this medicine has been found effective in 37% of the cases."
+            binding.noteTextView.text = if (dose?.isNotEmpty() == true)
+                binding.root.getString(R.string.action_medicine)
+            else binding.root.getString(R.string.action_test_report)
             binding.doseTextView.isVisible = dose?.isNotEmpty() == true
             binding.noteTextView.isVisible = bindingAdapterPosition == 0
         }

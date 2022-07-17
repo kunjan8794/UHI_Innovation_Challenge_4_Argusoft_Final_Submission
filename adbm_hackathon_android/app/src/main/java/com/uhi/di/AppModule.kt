@@ -1,6 +1,7 @@
 package com.uhi.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.uhi.Application
 import com.uhi.data.local.database.Database
 import com.uhi.data.local.database.DatabaseManager
@@ -24,11 +25,12 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppEncSharedPref(@ApplicationContext context: Context): EncPref {
-        return EncPref.Builder()
-            .serPrefName(context.packageName)
-            .setContext(context)
-            .build()
+    fun provideAppEncSharedPref(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(
+            context.packageName,
+            Context.MODE_PRIVATE
+        )
+
     }
 
     /*   @Singleton
@@ -43,7 +45,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppPreference(encPref: EncPref): Preference {
+    fun provideAppPreference(encPref: SharedPreferences): Preference {
         return PreferenceManager(encPref)
     }
 

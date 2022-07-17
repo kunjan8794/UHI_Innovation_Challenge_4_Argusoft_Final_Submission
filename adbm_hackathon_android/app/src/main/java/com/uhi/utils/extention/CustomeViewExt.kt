@@ -54,6 +54,7 @@ inline fun <reified T> ApiResponse<T>?.handleListApiView(
     progressLayout: ApiViewStateConstraintLayout?,
     skipIds: List<Int> = emptyList(),
     onClickListener: View.OnClickListener? = null,
+    msgResId: String? = null,
     crossinline isSuccess: (t: T?) -> Unit = {}
 ) {
     val adapter: BaseAdapter<T>? = progressLayout?.recyclerView?.adapter as? BaseAdapter<T>?
@@ -65,10 +66,10 @@ inline fun <reified T> ApiResponse<T>?.handleListApiView(
             } else {
                 progressLayout?.swipeRefreshLayout?.isRefreshing = isRefresh
                 if (!isRefresh) {
-                    progressLayout?.showProgress()
+                    progressLayout?.showProgress(skipIds)
                     progressLayout?.swipeRefreshLayout?.isEnabled = false
-                }else{
-                    progressLayout?.showHorizontalProgress()
+                } else {
+                    progressLayout?.showHorizontalProgress(skipIds)
                 }
             }
         }
@@ -82,10 +83,11 @@ inline fun <reified T> ApiResponse<T>?.handleListApiView(
                 progressLayout?.recyclerView?.post {
                     adapter?.removeLoadMore()
                     adapter?.addAll(it)
+                    data?.let { isSuccess(it) }
                     if ((adapter?.itemCount ?: 0) == 0) {
                         progressLayout.showError(
                             R.drawable.ic_no_record,
-                            message = successMessage ?: progressLayout.getString(R.string.no_record_found),
+                            message = successMessage ?: msgResId ?: progressLayout.getString(R.string.no_record_found),
                             buttonTextResId = R.string.button_refresh,
                             onClickListener = onClickListener
                         )

@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">नैदानिक सहायता प्रणाली</string>
+
+    <!--Button Text-->
+    <string name="button_yes">हाँ</string>
+    <string name="button_no">नहीं</string>
+    <string name="button_undo">पूर्ववत</string>
+    <string name="button_ok">ठीक है</string>
+    <string name="button_cancel">रद्द करना</string>
+    <string name="button_settings">समायोजन</string>
+    <string name="button_try_again">पुनः प्रयास करें</string>
+    <string name="button_refresh">ताज़ा करना</string>
+    <string name="button_turn_on_internet_connectivity">इंटरनेट कनेक्टिविटी चालू करें</string>
+
+    <!--Messages Text-->
+    <string name="no_internet_title">कोई इंटरनेट उपलब्ध नहीं</string>
+    <string name="no_record_found">कोई रिकॉर्ड नहीं मिला</string>
+    <string name="server_error_title">कुछ गलत चाहते हैं</string>
+    <string name="no_internet_message">सुनिश्चित करें कि मोबाइल डेटा या वाई-फ़ाई चालू है, फिर पुन: प्रयास करें</string>
+    <string name="rationale_camera">This app needs access to your camera to capture and save images</string>
+    <string name="rationale_gallery">This app needs access to your gallery to pick images</string>
+    <string name="rationale_location">This app needs access to your location to pick current location</string>
+    <string name="alert_error_selecting_image">Error selecting the image, please try again.</string>
+    <string name="alert_message_error">कुछ गलत हुआ कृपया कुछ देर बाद प्रयास करें।</string>
+    <string name="action_ok">ठीक है</string>
+
+    <string name="error_msg_select_answer">कृपया प्रश्न का उत्तर दें</string>
+    <string name="title_language">भाषा चुने</string>
+    <string name="title_attention">ध्यान</string>
+    <string name="button_continue">"परामर्श जारी रखें"</string>
+    <string name="button_go_to">इलाज पर जाएं</string>
+    <string name="select_triaging">ट्राइएजिंग</string>
+    <string name="label_symptoms">लक्षण:</string>
+    <string name="label_suggestions">सुझाव:</string>
+    <string name="parameter_history_graph">पैरामीटर इतिहास ग्राफ</string>
+    <string name="label_symptoms_triaging">लक्षण आधारित ट्राइएजिंग</string>
+    <string name="label_time_series">समय श्रृंखला\nडेटा विज़ुअलाइज़ेशन</string>
+    <string name="report">प्रतिवेदन</string>
+    <string name="mgdl">mg/dl</string>
+    <string name="title_medicine">%1$s के लिये दवाइयाँ</string>
+    <string name="title_test_report">%1$s के लिये परीक्षण रिपोर्ट</string>
+    <string name="action_language">भाषा</string>
+    <string name="action_share" >शेयर करना</string>
+    <string name="action_medicine" >"नोट: सबूतों के आधार पर, यह दवा 37% मामलों में प्रभावी पाई गई है।"</string>
+    <string name="action_test_report" >नोट: यह परीक्षण जब समान लक्षणों वाले रोगियों के लिए निर्धारित किया जाता है, तो यह आगे के निदान के लिए 63% बार प्रभावी रहा है।</string>
+    <string name="no_found_traiging">कोई ट्राइएजिंग नहीं मिला</string>
+    <string name="no_found_medicins">कोई दवा नहीं मिली</string>
+    <string name="no_found_test_rports">कोई परीक्षण रिपोर्ट नहीं मिली</string>
+</resources>

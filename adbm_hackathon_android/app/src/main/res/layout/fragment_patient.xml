@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/layout_header_with_back" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/andersonCardView"
         style="@style/MaterialCardView"

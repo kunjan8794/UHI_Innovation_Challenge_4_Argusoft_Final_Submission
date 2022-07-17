@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">ક્લિનિકલ સપોર્ટ સિસ્ટમ્સ</string>
+
+
+    <!--Button Text-->
+    <string name="button_yes">હા</string>
+    <string name="button_no">ના</string>
+    <string name="button_undo">પૂર્વવત્ કરો</string>
+        <string name="button_ok">બરાબર</string>
+    <string name="button_cancel">રદ કરો</string>
+    <string name="button_settings">સેટિંગ્સ</string>
+    <string name="button_try_again">ફરીથી પ્રયત્ન કરો</string>
+    <string name="button_refresh">તાજું કરો</string>
+    <string name="button_turn_on_internet_connectivity">ઇન્ટરનેટ કનેક્ટિવિટી ચાલુ કરો</string>
+
+    <!--Messages Text-->
+    <string name="no_internet_title">કોઈ ઈન્ટરનેટ ઉપલબ્ધ નથી</string>
+    <string name="no_record_found">કોઈ રેકોર્ડ મળ્યો નથી</string>
+    <string name="server_error_title">કંઈક ખોટું જોઈએ છે</string>
+    <string name="no_internet_message">ખાતરી કરો કે મોબાઇલ ડેટા અથવા Wi-Fi ચાલુ છે, પછી ફરી પ્રયાસ કરો</string>
+    <string name="rationale_camera">This app needs access to your camera to capture and save images</string>
+    <string name="rationale_gallery">This app needs access to your gallery to pick images</string>
+    <string name="rationale_location">This app needs access to your location to pick current location</string>
+    <string name="alert_error_selecting_image">Error selecting the image, please try again.</string>
+    <string name="alert_message_error">કંઈક ખોટું થયું છે, કૃપા કરીને થોડીવાર પછી પ્રયાસ કરો.</string>
+    <string name="action_ok">બરાબર</string>
+
+    <string name="error_msg_select_answer">કૃપા કરીને પ્રશ્નનો જવાબ આપો</string>
+    <string name="title_language">ભાષા પસંદ કરો</string>
+    <string name="title_attention">ધ્યાન</string>
+    <string name="button_continue">"પરામર્શ ચાલુ રાખો"</string>
+    <string name="button_go_to">સારવાર પર જાઓ</string>
+    <string name="select_triaging">ટ્રાયજિંગ</string>
+    <string name="label_symptoms">લક્ષણો:</string>
+    <string name="label_suggestions">સૂચનો:</string>
+    <string name="parameter_history_graph">પરિમાણ ઇતિહાસ ગ્રાફ</string>
+    <string name="label_symptoms_triaging">લક્ષણો આધારિત ટ્રાયજીંગ</string>
+    <string name="label_time_series">સમય શ્રેણી\nડેટા વિઝ્યુલાઇઝેશન</string>
+    <string name="report">જાણ કરો</string>
+    <string name="mgdl">mg/dl</string>
+    <string name="title_medicine">%1$s માટે દવાઓ </string>
+    <string name="title_test_report">%1$s માટે ટેસ્ટ રિપોર્ટ્સ</string>
+    <string name="action_language">ભાષા</string>
+    <string name="action_share" >શેર કરો</string>
+    <string name="action_medicine" >"નોંધ: પુરાવાઓના આધારે, આ દવા 37% કેસોમાં અસરકારક જોવા મળી છે."</string>
+    <string name="action_test_report" >નોંધ: આ ટેસ્ટ જ્યારે સમાન લક્ષણો ધરાવતા દર્દીઓ માટે સૂચવવામાં આવે છે, ત્યારે તે વધુ નિદાન માટે 63% વખત અસરકારક રહી છે.</string>
+    <string name="no_found_traiging">કોઈ ટ્રાયિંગ મળ્યું નથી</string>
+    <string name="no_found_medicins">કોઈ ટેસ્ટ રિપોર્ટ મળ્યા નથી</string>
+    <string name="no_found_test_rports">No found test reports</string>
+</resources>

@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uhi.data.local.pref.Preference
+import com.uhi.data.local.pref.PreferenceManager.Companion.EN
+import com.uhi.data.local.pref.PreferenceManager.Companion.GU
+import com.uhi.data.local.pref.PreferenceManager.Companion.HN
 import com.uhi.data.remote.Api
 import com.uhi.data.remote.ApiResponse
 import com.uhi.ui.common.model.LabTest
@@ -51,7 +54,7 @@ class DashboardViewModel @Inject constructor(
     fun getQuestion(questionId: Int? = null, answer: String? = null, isRefresh: Boolean = false) {
         _apiState.value = ApiResponse.Loading(isRefresh)
         val map = HashMap<String, Any?>()
-        map["preferredLanguage"] = preference.getAppLanguage()
+        map["preferredLanguage"] = preference.getAppLanguage().send()
         questionId?.let { map["questionId"] = it }
         answer?.let { map["answer"] = it }
         job = viewModelScope.launch {
@@ -104,6 +107,17 @@ class DashboardViewModel @Inject constructor(
         _medicineApiState.value = ApiResponse.Loading()
         job = viewModelScope.launch {
             _medicineApiState.value = if (isMedicine) api.getMedicine(code) else api.getTestReport(code)
+        }
+    }
+}
+
+fun String.send(): String? {
+    return when (this) {
+        EN -> "EN"
+        HN -> "HN"
+        GU -> "GU"
+        else -> {
+            ""
         }
     }
 }

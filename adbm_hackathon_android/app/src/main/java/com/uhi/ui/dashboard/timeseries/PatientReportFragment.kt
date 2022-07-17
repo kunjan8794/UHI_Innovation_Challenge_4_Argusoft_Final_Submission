@@ -3,6 +3,7 @@ package com.uhi.ui.dashboard.timeseries
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.uhi.R
 import com.uhi.databinding.FragmentPatientReportBinding
 import com.uhi.ui.common.INTENT_EXTRA_PATIENT_ID
 import com.uhi.ui.common.base.BaseFragment
@@ -26,12 +27,15 @@ class PatientReportFragment : BaseFragment<FragmentPatientReportBinding>() {
 
     override fun initView() {
         glideRequests = GlideApp.with(this)
+        binding.headerLayout.toolbar.setTitle(R.string.report)
         patientReportAdapter = PatientReportAdapter(arrayListOf(), glideRequests, this)
         binding.recyclerView.adapter = patientReportAdapter
     }
 
     override fun initListener() {
-
+        binding.headerLayout.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun initObserver() {

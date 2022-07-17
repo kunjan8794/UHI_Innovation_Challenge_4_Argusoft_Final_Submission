@@ -12,7 +12,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvCamera"
         style="@style/Style_BottomSheet_tv"
-        android:text="@string/label_open_camera" />
+        android:text="Open Camera" />
 
     <View
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvGallery"
         style="@style/Style_BottomSheet_tv"
-        android:text="@string/label_open_gallery" />
+        android:text="Open Gallary" />
 
     <View
         android:layout_width="match_parent"

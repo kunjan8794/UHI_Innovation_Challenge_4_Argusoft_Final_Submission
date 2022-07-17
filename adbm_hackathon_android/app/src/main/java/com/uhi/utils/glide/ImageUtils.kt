@@ -38,7 +38,7 @@ fun GlideRequests.loadUrl(
 ) {
     takeIf { url?.isNotEmpty() == true && url.isValidURL() }?.let {
         if (url?.contains(".gif") == true) {
-            asGif().placeholder(resPlaceHolderId).error(resPlaceHolderId).load(url).into(imageView)
+            asGif().placeholder(resPlaceHolderId).load(url).into(imageView)
         } else {
             val glideRequests = load(url)
                 .placeholder(resPlaceHolderId).error(resPlaceHolderId)
@@ -48,7 +48,6 @@ fun GlideRequests.loadUrl(
                     .placeholder(resPlaceHolderId).error(resPlaceHolderId)
                 thumbnail.into(imageView)
             } else {
-                glideRequests.centerCrop()
                 glideRequests.into(imageView)
             }
         }

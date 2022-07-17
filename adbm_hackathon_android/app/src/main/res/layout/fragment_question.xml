@@ -5,33 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/titleTextView"
-        style="@style/TextView.Title.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
-        android:text="@string/app_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/layout_header_with_back" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/languageImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:padding="@dimen/default_margin"
-        app:srcCompat="@drawable/ic_baseline_language_24"
-        app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/headerLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+        app:layout_constraintTop_toTopOf="@id/headerLayout"
+        app:srcCompat="@drawable/ic_baseline_language_24" />
 
     <com.uhi.widget.ApiViewStateConstraintLayout
         android:id="@+id/progressLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+        app:layout_constraintTop_toBottomOf="@+id/headerLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

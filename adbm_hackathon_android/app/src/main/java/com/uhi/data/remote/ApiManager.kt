@@ -7,6 +7,7 @@ import com.uhi.ui.common.model.MedicineList
 import com.uhi.ui.common.model.Question
 import com.uhi.ui.common.model.TriagingRequest
 import com.uhi.ui.common.model.TriagingResults
+import com.uhi.ui.dashboard.send
 import com.uhi.utils.common.NetworkHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -44,7 +45,7 @@ class ApiManager(
     }
 
     override suspend fun getResults(request: Map<String, Any?>, previousClassifications: Map<String, Any?>): ApiResponse<List<TriagingResults>?> {
-        return executeApiHelper(networkHelper) { apiService.getResults(TriagingRequest(request, previousClassifications, preference.getAppLanguage())) }
+        return executeApiHelper(networkHelper) { apiService.getResults(TriagingRequest(request, previousClassifications, preference.getAppLanguage().send())) }
     }
 
     override suspend fun getLabData(): ApiResponse<Map<Int, Map<String, Map<Date, Float>>>?> {

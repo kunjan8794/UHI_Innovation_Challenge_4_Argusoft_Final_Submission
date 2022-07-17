@@ -9,6 +9,7 @@ import com.uhi.data.local.pref.PreferenceManager.Companion.HN
 import com.uhi.databinding.FragmentDashboardBinding
 import com.uhi.ui.common.base.BaseFragment
 import com.uhi.ui.common.languageList
+import com.uhi.utils.extention.alertDialog
 import com.uhi.utils.extention.getKey
 import com.uhi.utils.extention.navigate
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,30 +18,36 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
     override fun initView() {
-        binding.autoCompleteTextView.setSimpleItems(languageList)
-        binding.autoCompleteTextView.setText(
-            when (preference.getAppLanguage().toUpperCase()) {
-                EN -> languageList[0]
-                HN -> languageList[1]
-                GU -> languageList[2]
-                else -> ""
-            }, false
-        )
-        binding.autoCompleteTextView.setOnItemClickListener { adapterView, view, i, l ->
-            preference.setAppLanguage(
-                when (i) {
-                    0 -> EN
-                    1 -> HN
-                    else -> GU
-                }
-            )
-            restartApp()
-        }
+        binding.headerLayout.toolbar.setTitle(R.string.app_name)
+        binding.headerLayout.toolbar.inflateMenu(R.menu.menu_dashboard)
     }
 
     override fun initListener() {
         binding.symptomsCardView.setOnClickListener(this)
         binding.timeSeriesCardView.setOnClickListener(this)
+        binding.headerLayout.toolbar.setOnMenuItemClickListener {
+            val selectedPosition = when (preference.getAppLanguage()) {
+                EN -> 0
+                HN -> 1
+                GU -> 2
+                else -> -1
+            }
+            context?.alertDialog {
+                setTitle(R.string.title_language)
+                setSingleChoiceItems(languageList, selectedPosition) { dialogInterface, i ->
+                    preference.setAppLanguage(
+                        when (i) {
+                            0 -> EN
+                            1 -> HN
+                            else -> GU
+                        }
+                    )
+                    dialogInterface.dismiss()
+                    restartApp()
+                }
+            }?.show()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     override fun initObserver() {

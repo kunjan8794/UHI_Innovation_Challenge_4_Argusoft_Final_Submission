@@ -19,10 +19,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class PatientFragment : BaseFragment<FragmentPatientBinding>() {
 
     override fun initView() {
-
+        binding.headerLayout.toolbar.setTitle(R.string.label_time_series)
     }
 
     override fun initListener() {
+        binding.headerLayout.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
         binding.andersonCardView.setOnClickListener(this)
         binding.daniellaCardView.setOnClickListener(this)
     }

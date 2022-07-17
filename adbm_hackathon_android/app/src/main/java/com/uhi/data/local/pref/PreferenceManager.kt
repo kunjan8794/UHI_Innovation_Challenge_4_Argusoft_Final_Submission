@@ -1,20 +1,21 @@
 package com.uhi.data.local.pref
 
+import android.content.SharedPreferences
 import androidx.core.content.edit
 import java.util.*
 
-class PreferenceManager(private val sharedPreferences: EncPref) : Preference {
+class PreferenceManager(private val sharedPreferences: SharedPreferences) : Preference {
 
     companion object {
         private const val IS_LOGIN = "pref_is_login"
         const val APP_LANGUAGE = "APP_LANGUAGE"
-        const val EN = "EN"
-        const val HN = "HN"
-        const val GU = "GU"
+        const val EN = "en"
+        const val HN = "hi"
+        const val GU = "gu"
     }
 
     override fun setLogin() {
-        sharedPreferences.putBoolean(IS_LOGIN, true)
+        sharedPreferences.edit().putBoolean(IS_LOGIN, true).apply()
     }
 
     override fun isLogin(): Boolean {
@@ -22,15 +23,15 @@ class PreferenceManager(private val sharedPreferences: EncPref) : Preference {
     }
 
     override fun clear() {
-        sharedPreferences.clear()
+//        sharedPreferences.c/()
     }
 
     override fun setAppLanguage(lanCode: String) {
-        sharedPreferences. putString(APP_LANGUAGE, lanCode)
+        sharedPreferences.edit().putString(APP_LANGUAGE, lanCode).apply()
     }
 
     override fun getAppLanguage(): String {
-        return sharedPreferences.getString(APP_LANGUAGE, EN)
+        return sharedPreferences.getString(APP_LANGUAGE, EN) ?: EN
     }
 
 }
