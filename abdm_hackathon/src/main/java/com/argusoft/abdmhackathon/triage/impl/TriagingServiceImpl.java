@@ -475,60 +475,6 @@ public class TriagingServiceImpl implements TriagingService {
         }
     }
 
-    private static void forDiarrhoeaWithNoDehydration(Map<Integer, String> mapOfAnswers) {
-        //DIARRHOEA
-        //AND
-        //NOT ENOUGH SIGNS TO CLASSIFY AS SOME DEHYDRATION
-        //OR
-        //SEVERE DEHYDRATION
-    }
-
-    private static void forVerySevereFebrileDisease(Map<Integer, String> mapOfAnswers) {
-        //DANGER SIGN
-        //AND/OR
-        //STIFF NECK
-    }
-
-    private static void forMalaria(Map<Integer, String> mapOfAnswers) {
-        //MALARIA STATUS UNKNOWN/UNAVAILABLE/INVALID/NOT FEASIBLE
-        //OR
-        //HIGH MALARIA RISK
-        //OR
-        //LOW MALARIA RISK
-        //AND
-        //NO OBVIOUS  CAUSE OF FEVER
-
-        //MALARIA POSITIVE
-    }
-
-    private static void forSevereComplicatedMeasles(Map<Integer, String> mapOfAnswers) {
-        //MEASLES NOW
-        //OR
-        //MEASLES IN LAST 3 MONTHS
-        //OR
-        //ANY DANGER SIGN
-        //OR
-        //CLOUDING OF THE  CORNEA
-        //OR
-        //MOUTH SORES or MOUTH ULCERS- DEEP AND EXTENSIVE
-        //AND
-        //ONE OR MORE OF THE FOLLOWING:
-        // COUGH/RUNNY NOSE/RED EYES
-    }
-
-    private static void forMeaslesWithEyeOrMouthComplication(Map<Integer, String> mapOfAnswers) {
-        //MEASLES NOW
-        //OR
-        //MEASLES IN LAST 3 MONTHS
-        // OR
-        //PUS DRAINING FROM THE EYE
-        //AND/OR
-        //MOUTH SORES or MOUTH  ULCERS- NOT DEEP AND EXTENSIVE
-        //AND
-        //ONE OR MORE OF THE FOLLOWING:
-        // COUGH/RUNNY NOSE/RED EYES
-    }
-
     private static void removeMultipleClassificationsForAllTraige(List<TriagingResultsDto> results, String preferredLanguage) {
         List<TriagingResultsDto> severeMeaslesResult = results.stream().filter(data -> data.getDisease().equals(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES", preferredLanguage))).collect(Collectors.toList());
         if (severeMeaslesResult.size() > 0) {
