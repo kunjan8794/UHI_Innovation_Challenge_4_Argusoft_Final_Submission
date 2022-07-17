@@ -1,5 +1,6 @@
 package com.uhi.ui.dashboard.timeseries
 
+import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
@@ -25,15 +26,14 @@ import com.uhi.ui.common.labParameterUnitMap
 import com.uhi.ui.common.labParameterValueMap
 import com.uhi.ui.common.model.LabTest
 import com.uhi.utils.extention.toBinding
-import com.uhi.utils.glide.GlideRequests
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class PatientReportAdapter(
     private val list: ArrayList<LabTest?> = arrayListOf(),
-    private val glideRequests: GlideRequests,
-    private val onClickListener: View.OnClickListener
+    private val context: Context,
+    private val patientId: Int
 ) : BaseAdapter<LabTest>(list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -103,24 +103,30 @@ class PatientReportAdapter(
             binding.mainSlider.valueFrom = binding.rangeSlider.valueFrom
             binding.mainSlider.valueTo = binding.rangeSlider.valueTo
             binding.mainSlider.value = mainValue
-            val mapIndexed = question.labTestData?.mapIndexed { index, labTestData ->
+
+            val mapIndexed = sortedList?.mapIndexed { index, labTestData ->
                 Entry(
                     index.toFloat(),
                     labTestData.value!!,
                     AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_arrow_down)
                 )
             }
+            val lineDataSet = LineDataSet(mapIndexed, question.title)
 
             binding.graph.axisRight.setDrawLabels(false)
             binding.graph.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
 
+            binding.chartLegendCustom.text =
+                "Normal Range : " + labParameterValueMap.get(question.title)?.first?.toFloat() + "-" + labParameterValueMap.get(
+                    question.title
+                )?.second?.toFloat()
 
             val xAxis: XAxis = binding.graph.xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             question.labTestData?.size?.let { xAxis.setLabelCount(it, true) }
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return question.labTestData?.getOrNull(value.toInt())?.date.convertDate()
+                    return sortedList?.getOrNull(value.toInt())?.date.convertDate()
                 }
             }
 
@@ -132,38 +138,44 @@ class PatientReportAdapter(
             mv.chartView = binding.graph
             binding.graph.marker = mv
 
-                binding.graph.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                    override fun onValueSelected(e: Entry?, h: Highlight?) {
-                        val highlight = arrayOfNulls<Highlight>(binding.graph.getData().getDataSets().size)
-                        for (j in 0 until binding.graph.getData().getDataSets().size) {
-                            val iDataSet: IDataSet<*> = binding.graph.getData().getDataSets().get(j)
-                            for (i in (iDataSet as LineDataSet).values.indices) {
-                                if (iDataSet.values[i].x == e!!.x) {
-                                    highlight[j] = Highlight(e.x, e.y, j)
-                                }
+            binding.graph.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    val highlight =
+                        arrayOfNulls<Highlight>(binding.graph.getData().getDataSets().size)
+                    for (j in 0 until binding.graph.getData().getDataSets().size) {
+                        val iDataSet: IDataSet<*> = binding.graph.getData().getDataSets().get(j)
+                        for (i in (iDataSet as LineDataSet).values.indices) {
+                            if (iDataSet.values[i].x == e!!.x) {
+                                highlight[j] = Highlight(e.x, e.y, j)
                             }
                         }
-                        binding.graph.highlightValues(highlight)
                     }
+                    binding.graph.highlightValues(highlight)
+                }
 
-                    override fun onNothingSelected() {
-                    }
-                })
+                override fun onNothingSelected() {
+                }
+            })
 
-            val lineDataSet = LineDataSet(mapIndexed, "Data 1")
 
             val l: Legend = binding.graph.legend
 
             // modify the legend ...
 
             // modify the legend ...
-            l.form = LegendForm.LINE
+            l.form = LegendForm.SQUARE
             l.textSize = 11f
-            l.textColor = Color.WHITE
             l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             l.orientation = Legend.LegendOrientation.HORIZONTAL
             l.setDrawInside(false)
+            l.isWordWrapEnabled = true
+
+            if (patientId == 2 && question.title.equals("VLDL Cholesterol")) {
+                binding.extraTextInChart.text =
+                    "** Based on historical records, the patient had daily dose of Fluvastatin tablets from 3rd November to 17th of February.";
+                binding.extraTextInChart.isVisible = true
+            }
 
             binding.graph.data = LineData(listOf<ILineDataSet>(lineDataSet))
             binding.graphClickLayout.setOnClickListener {
