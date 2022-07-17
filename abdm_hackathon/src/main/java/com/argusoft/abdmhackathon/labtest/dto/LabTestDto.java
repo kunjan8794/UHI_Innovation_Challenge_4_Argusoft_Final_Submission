@@ -10,7 +10,7 @@ package com.argusoft.abdmhackathon.labtest.dto;
  */
 public class LabTestDto {
     private String name;
-    private Integer code;
+    private String code;
     private String desc;
 
     public String getName() {
@@ -21,11 +21,11 @@ public class LabTestDto {
         this.name = name;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

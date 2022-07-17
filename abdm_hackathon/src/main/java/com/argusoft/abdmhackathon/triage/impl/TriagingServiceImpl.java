@@ -366,10 +366,10 @@ public class TriagingServiceImpl implements TriagingService {
             feverSuggestions.add(ConstantUtil.FEVER_SUGGESTION2);
             feverResult.setSymptoms(feverSymptoms);
             feverResult.setSuggestions(feverSuggestions);
+            feverResult.setCode("FEVER");
             results.add(feverResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
-            /*results.put(POSSIBLE_BONE_INFECTION, POSSIBLE_BONE_INFECTION_DESC);*/
             TriagingResultsDto boneInfectionResult = new TriagingResultsDto();
             List<String> boneInfectionSuggestions = new ArrayList<>();
             List<String> boneInfectionSymptoms = new ArrayList<>();
@@ -385,7 +385,6 @@ public class TriagingServiceImpl implements TriagingService {
             results.add(boneInfectionResult);
         }
         if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
-            /*results.put(POSSIBLE_URINE_INFECTION, POSSIBLE_URINE_INFECTION_DESC);*/
             TriagingResultsDto urineInfectionResult = new TriagingResultsDto();
             List<String> urineInfectionSuggestions = new ArrayList<>();
             List<String> urineInfectionSymptoms = new ArrayList<>();
@@ -457,7 +456,6 @@ public class TriagingServiceImpl implements TriagingService {
             results.add(severeMeaslesResult);
         }
         if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
-            /*results.put(MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION, MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION_DESC);*/
             TriagingResultsDto measlesWithEyeorMouthInfectionResult = new TriagingResultsDto();
             List<String> severeMeaslesSuggestions = new ArrayList<>();
             List<String> severeMeaslesSymptoms = new ArrayList<>();
