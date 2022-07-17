@@ -175,6 +175,10 @@ class PatientReportAdapter(
                 binding.extraTextInChart.text =
                     "** Based on historical records, the patient had daily dose of Fluvastatin tablets from 3rd November to 17th of February.";
                 binding.extraTextInChart.isVisible = true
+            } else if (patientId == 1 && question.title.equals("VLDL Cholesterol")) {
+                binding.extraTextInChart.text =
+                    "** Based on historical records, the patient has daily dose of Fluvastatin tablets starting from 17th January to current date."
+                binding.extraTextInChart.isVisible = true
             }
 
             binding.graph.data = LineData(listOf<ILineDataSet>(lineDataSet))
