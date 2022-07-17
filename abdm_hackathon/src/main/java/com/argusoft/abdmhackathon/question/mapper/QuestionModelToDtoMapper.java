@@ -32,7 +32,7 @@ public class QuestionModelToDtoMapper {
         } else if (lang != null && lang.equals("HN")) {
             questionDto.setQuestion(questionMaster.getQuestionHn());
             questionDto.setTitle(questionMaster.getTitleHn());
-            questionDto.setDescription(questionMaster.getDescriptionGu());
+            questionDto.setDescription(questionMaster.getDescriptionHn());
             questionDto.setOptions(getHnOptionsForQuestion(questionMaster.getOptions()));
         } else {
             questionDto.setQuestion(questionMaster.getQuestion());
