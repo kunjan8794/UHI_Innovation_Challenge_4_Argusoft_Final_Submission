@@ -479,7 +479,7 @@ public class TriagingServiceImpl implements TriagingService {
             List<TriagingResultsDto> measlesWithComplicationResult = results.stream().filter(data -> data.getDisease().equals(ConstantUtil.getKeyByLanguage("MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION", preferredLanguage))).collect(Collectors.toList());
             if (measlesWithComplicationResult.size() > 0) {
                 results.stream().filter(data -> data.getDisease().equals(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES", preferredLanguage))).forEach(d -> {
-                    d.getSuggestions().addAll(measlesWithComplicationResult.get(0).getSymptoms());
+                    d.getSymptoms().addAll(measlesWithComplicationResult.get(0).getSymptoms());
                 });
                 results.removeAll(measlesWithComplicationResult);
             }
