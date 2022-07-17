@@ -78,7 +78,6 @@ public class TriagingServiceImpl implements TriagingService {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "COUGH_GT14", preferredLanguage));
                 }
 
-
                 if (symptoms.contains("CHEST_INDRAWING")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "CHEST_INDRAWING", preferredLanguage));
                 }
@@ -89,9 +88,6 @@ public class TriagingServiceImpl implements TriagingService {
 
                 if (symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
                     pneumoniaSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(23, "DIFFICULTY_BREATHING_GT14", preferredLanguage));
-                }
-
-                if (symptoms.contains("CHEST_INDRAWING") || symptoms.contains("RECURRENT_WHEEZING") || symptoms.contains("DIFFICULTY_BREATHING_GT14")) {
                 }
 
                 if (pneumoniaSymptoms.size() > 0) {
