@@ -405,45 +405,46 @@ public class TriagingServiceImpl implements TriagingService {
     }
 
     private void checkForMeaslesSymptoms(Map<Integer, String> mapOfAnswers, List<TriagingResultsDto> results, String preferredLanguage) {
-        String feverResults = mapOfAnswers.get(24) != null ? mapOfAnswers.get(24).replace(" ", "") : null;
+        String feverResults = mapOfAnswers.get(27) != null ? mapOfAnswers.get(27).replace(" ", "") : null;
         String[] feverResultsArray = feverResults != null ? feverResults.trim().split(",") : new String[0];
         if (feverResultsArray.length == 0) {
             return;
         }
-        boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);
+        /*boolean hasFever = Arrays.stream(feverResultsArray).anyMatch("TEMP_GTE_37_5"::equals);*/
         boolean measlesInLast3Months = Arrays.stream(feverResultsArray).anyMatch("MEASLES_IN_LAST_3MONTHS"::equals);
         boolean pusDrainingFromEye = Arrays.stream(feverResultsArray).anyMatch("PUS_DRAINING_FROM_EYE"::equals);
         boolean mouthUlcersNotDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_NOT_DEEP"::equals);
         boolean mouthUlcersDeep = Arrays.stream(feverResultsArray).anyMatch("MOUTH_SORES_ULCERS_DEEP"::equals);
         boolean cough = Arrays.stream(feverResultsArray).anyMatch("COUGH"::equals);
         boolean runnyNose = Arrays.stream(feverResultsArray).anyMatch("RUNNY_NOSE"::equals);
+        boolean mrunnyNose = Arrays.stream(feverResultsArray).anyMatch("RUNNY_NOSE"::equals);
         boolean redEyes = Arrays.stream(feverResultsArray).anyMatch("RED_EYES"::equals);
         boolean cloudingOfCornea = Arrays.stream(feverResultsArray).anyMatch("CLOUDING_OF_CORNEA"::equals);
 
-        if (hasFever && (cough || runnyNose || redEyes) && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
+        if ((cough || runnyNose || redEyes) && (measlesInLast3Months || cloudingOfCornea || mouthUlcersDeep)) {
             /*results.put(SEVERE_COMPLICATED_MEASLES, SEVERE_COMPLICATED_MEASLES_DESC);*/
             TriagingResultsDto severeMeaslesResult = new TriagingResultsDto();
             List<String> severeMeaslesSuggestions = new ArrayList<>();
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             severeMeaslesResult.setDisease(ConstantUtil.getKeyByLanguage("SEVERE_COMPLICATED_MEASLES", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "TEMP_GTE_37_5", preferredLanguage));
             if (cough) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "COUGH", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "COUGH", preferredLanguage));
             }
             if (runnyNose) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "RUNNY_NOSE", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "RUNNY_NOSE", preferredLanguage));
             }
             if (redEyes) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "RED_EYES", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "RED_EYES", preferredLanguage));
             }
             if (measlesInLast3Months) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
             }
             if (cloudingOfCornea) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "CLOUDING_OF_CORNEA", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "CLOUDING_OF_CORNEA", preferredLanguage));
             }
             if (mouthUlcersDeep) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MOUTH_SORES_ULCERS_DEEP", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MOUTH_SORES_ULCERS_DEEP", preferredLanguage));
             }
             severeMeaslesResult.setSymptoms(severeMeaslesSymptoms);
             severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION1);
@@ -455,24 +456,24 @@ public class TriagingServiceImpl implements TriagingService {
             severeMeaslesResult.setCode("MEASLES");
             results.add(severeMeaslesResult);
         }
-        if (hasFever && measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
+        if (measlesInLast3Months && pusDrainingFromEye && mouthUlcersNotDeep && (cough || runnyNose || redEyes)) {
             TriagingResultsDto measlesWithEyeorMouthInfectionResult = new TriagingResultsDto();
             List<String> severeMeaslesSuggestions = new ArrayList<>();
             List<String> severeMeaslesSymptoms = new ArrayList<>();
             measlesWithEyeorMouthInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("MEASLES_WITH_EYE_OR_MOUTH_COMPLICATION", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "MOUTH_SORES_ULCERS_NOT_DEEP", preferredLanguage));
-            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "PUS_DRAINING_FROM_EYE", preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "TEMP_GTE_37_5", preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MEASLES_IN_LAST_3MONTHS", preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "MOUTH_SORES_ULCERS_NOT_DEEP", preferredLanguage));
+            severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "PUS_DRAINING_FROM_EYE", preferredLanguage));
 
             if (cough) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "COUGH", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "COUGH", preferredLanguage));
             }
             if (runnyNose) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "RUNNY_NOSE", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "RUNNY_NOSE", preferredLanguage));
             }
             if (redEyes) {
-                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "RED_EYES", preferredLanguage));
+                severeMeaslesSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(27, "RED_EYES", preferredLanguage));
             }
             measlesWithEyeorMouthInfectionResult.setSymptoms(severeMeaslesSymptoms);
             severeMeaslesSuggestions.add(ConstantUtil.MEASLES_SUGGESTION1);
