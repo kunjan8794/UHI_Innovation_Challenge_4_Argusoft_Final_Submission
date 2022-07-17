@@ -353,12 +353,12 @@ public class TriagingServiceImpl implements TriagingService {
             feverResult.setCode("FEVER");
             results.add(feverResult);
         }
-        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
+        if ( feverResults.contains("REFUSAL_USE_LIMB") && feverResults.contains("WARM_TENDER_SWOLLEN_JOINT_BONE")) {
             TriagingResultsDto boneInfectionResult = new TriagingResultsDto();
             List<String> boneInfectionSuggestions = new ArrayList<>();
             List<String> boneInfectionSymptoms = new ArrayList<>();
             boneInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("POSSIBLE_BONE_INFECTION", preferredLanguage));
-            boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
+            /*boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));*/
             boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "REFUSAL_USE_LIMB", preferredLanguage));
             boneInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "WARM_TENDER_SWOLLEN_JOINT_BONE", preferredLanguage));
             boneInfectionSuggestions.add(ConstantUtil.getKeyByLanguage("POSSIBLE_BONE_INFECTION_SUGGESTION1", preferredLanguage));
@@ -368,12 +368,12 @@ public class TriagingServiceImpl implements TriagingService {
             boneInfectionResult.setCode("BONE_INFECTION");
             results.add(boneInfectionResult);
         }
-        if (feverResults.contains("TEMP_GTE_37_5") && feverResults.contains("DIFFICULTY_PASSING_URINE")) {
+        if (feverResults.contains("DIFFICULTY_PASSING_URINE")) {
             TriagingResultsDto urineInfectionResult = new TriagingResultsDto();
             List<String> urineInfectionSuggestions = new ArrayList<>();
             List<String> urineInfectionSymptoms = new ArrayList<>();
             urineInfectionResult.setDisease(ConstantUtil.getKeyByLanguage("POSSIBLE_URINE_INFECTION", preferredLanguage));
-            urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));
+            /*urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "TEMP_GTE_37_5", preferredLanguage));*/
             urineInfectionSymptoms.add(questionMasterDao.getQuestionOptionByPreferredLanguage(24, "DIFFICULTY_PASSING_URINE", preferredLanguage));
             urineInfectionSuggestions.add(ConstantUtil.getKeyByLanguage("POSSIBLE_URINE_INFECTION_SUGGESTION1", preferredLanguage));
             urineInfectionSuggestions.add(ConstantUtil.getKeyByLanguage("POSSIBLE_URINE_INFECTION_SUGGESTION2", preferredLanguage));
